@@ -19,12 +19,12 @@
     </header>
 
     <div id="navWrap" class="nav_aside">
-        <a href="./userProfile.html" class="active">Profile</a>
-        <a href="./red-flagSettings.html">Create a case record</a>
+        <a href="./userProfile.html" >Profile</a>
+        <a href="./red-flagSettings.html" class="active">Create a case record</a>
     </div>
-    <div id="siteBody">
+    <div class="siteBody">
         <div>
-            <form action="">
+            <form action="" id="newCaseForm">
                 <Legend id="reportLabel">Report a case</Legend>
 
                 <input id="caseTitle" type="text" placeholder="Title" required />
@@ -37,9 +37,9 @@
                 </select>
                 <BR></BR>
 
-                <textarea name="description" id="description" cols="10" rows="6" placeholder=" Enter a brief description of your report."></textarea>
+                <textarea name="description" id="description" cols="10" rows="4" placeholder=" Enter a brief description of your report."></textarea>
                 <BR></BR>
-                <button type="submit" id="submitRep"> Report</button>
+                <button type="submit" id="submitReport" class="button"> Report</button>
 
             </form>
         </div>
@@ -53,6 +53,7 @@
                         <th>Case ID</th>
                         <th>Category</th>
                         <th>Title</th>
+                        <th>Description</th>
                         <th>Geolocation</th>
                         <th>Status</th>
 
