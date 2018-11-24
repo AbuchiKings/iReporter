@@ -213,7 +213,7 @@ body #logInWrap {
     }
 }
 
-.from, .to, .byIdInput, #caseTitle, #location {
+#caseTitle, #location {
     width: 170px;
     padding: 10px;
     font-size: 15px;
@@ -253,7 +253,7 @@ textarea{
 }
 
 @media(max-width: 780px) {
-    .from, .to, .byIdInput, .selStatus, #selStat,
+    .selStatus, #selStat,
      #statReset, #statSubmit, #idEntry, #caseTitle, #location {
         display: block;
         width: 70%;
@@ -274,9 +274,24 @@ textarea{
       
     }
 }
+.userStats_container ul li{
+    list-style-type: none;
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+    margin-top: 5px;
+}
+
+.userStats_container p, .tableContainer p{
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+}
 
 .tableContainer {
-    width: 100%
+    width: 100%;
+    margin-top: 30px;
+
 }
 
 .table {
@@ -286,7 +301,8 @@ textarea{
 }
 
 .table th {
-    padding: 30px
+    padding: 30px;
+    font-size: 17px
 }
 
 #footer {
