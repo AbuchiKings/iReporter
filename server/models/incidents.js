@@ -24,7 +24,7 @@ const incidents = [
       createdBy: 67,
       type: 'Intervention',
       location: 'Latitude: 5.6079545, Longitude: 53.6217802',
-      status: undefined,
+      status: '',
       comment: 'Government intervention needed in community school'
     }
   ];

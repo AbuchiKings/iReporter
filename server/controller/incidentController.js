@@ -16,7 +16,8 @@ class IncidentController {
   }
 
   static get0ne(req, res) {
-    const incident = IncidentHelper.findOne(req.params.id);
+    const id = parseInt(req.params.id, 10)
+    const incident = IncidentHelper.findOne(id);
     if (!incident) {
       res.status(404).json({
         status: 404,
