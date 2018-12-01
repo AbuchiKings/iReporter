@@ -10,16 +10,21 @@ router.use((bodyParser.urlencoded({ extended: false })));
 
 router.get('/incidents', IncidentController.getAll);
 
-router.get('/incidents/:id', validator.validateId, 
+router.get('/incidents/:id', 
+validator.validateId, 
 validator.validationHandler, 
 IncidentController.get0ne
 );
 
 router.post('/incidents/post',    
-validator.validateNewIncident, validator.validationHandler,
+validator.validateNewIncident, 
+validator.validationHandler,
 IncidentController.createIncident
 );
 
-
+router.delete('/incidents/:id', 
+validator.validateId, 
+validator.validationHandler, 
+IncidentController.deleteIncident)
 
 export default router;

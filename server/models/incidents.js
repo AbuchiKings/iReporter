@@ -19,7 +19,7 @@ const incidents = [
       comment: 'Continuous award of fictitious projects by LG Chairman'
     },
     {
-      id: 21,
+      id: 3,
       createdOn: 'Thu Nov 29 2018 13:01:35 GMT+0100',
       createdBy: 67,
       type: 'Intervention',

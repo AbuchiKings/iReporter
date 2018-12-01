@@ -16,7 +16,7 @@ const validate = {
 
     incidentLocation: req => {
         const match = /(Lat:\s+(\d){2}\.(\d){2,6}\sLong:\s+(\d){2}\.(\d){2,6})/i;
-        if (!req.body.location) || match.test(req.body.location) === false) {
+        if (!req.body.location || match.test(req.body.location) === false) {
             validationErrors.push('Location  must be written in this format: Lat:34.87 Long: 87.98')
         }
     },
