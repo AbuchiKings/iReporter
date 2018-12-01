@@ -1,4 +1,6 @@
 import IncidentHelper from '../helper/incidentHelper';
+import validator from '../middleware/inputValidation';
+import { runInNewContext } from 'vm';
 
 class IncidentController {
 
@@ -9,7 +11,8 @@ class IncidentController {
       data: [
         {
           id: newIncident.id,
-          message: "Created red-flag record"
+          message: "Created red-flag record",
+          newIncident
         }
       ]
     });
@@ -40,12 +43,13 @@ class IncidentController {
   }
 
   static update(req, res) {
-    const incident = IncidentHelper.findOne(req.params.id);
+    const id = parseInt(req.params.id, 10)
+    const incident = IncidentHelper.findOne(id);
     if (!incident) {
       res.status(404).json({ status: 404, error: "Incident not found" });
       return;
     }
-    const updatedIncident = IncidentHelper.update(req.params.id, req.body);
+    const updatedIncident = IncidentHelper.updateIncident(req.params.id, req.body);
     res.status(200).json({
       status: 200,
       data: [
@@ -76,17 +80,18 @@ class IncidentController {
   }
 
   static deleteIncident(req, res) {
-    const incident = IncidentHelper.findOne(req.params.id);
-    if (!incident) {
+    const id = parseInt(req.params.id, 10);
+    const incident = IncidentHelper.findOne(id);
+   if (!incident) {
       res.status(404).json({ status: 404, error: "Incident not found" });
       return;
     }
     const deletedIncident = IncidentHelper.delete(req.params.id);
-    res.status(204).json({
+    res.json({
       status: 204,
       data: [
         {
-          id: deletedIncident.id,
+          id: id,
           message: "red-flag record has been deleted"
         }
       ]

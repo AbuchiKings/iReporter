@@ -1,14 +1,17 @@
 import incidents from '../models/incidents'
 
 class IncidentHelper {
+    constructor(){
+        this.incidents = incidents;
+    }
     static create(data) {
         const newIncident = {
             id: incidents.length + 1,
             createdOn: new Date(),
-            createdBy: data.username,
+            createdBy: parseInt(data.createdBy, 10),
             type: data.type,
             location: data.location,
-            status: data.status,
+            status: 'draft',
             comment: data.comment
         };
         incidents.push(newIncident);
@@ -23,7 +26,7 @@ class IncidentHelper {
         return incidents;
     }
 
-    static update(id, data) {
+    static updateIncident(id, data) {
         const incident = incidents.find(incident => incident.id === id);
         const index = incidents.indexOf(incident);
         incidents[index].comment = data.comment || incident.comment;
