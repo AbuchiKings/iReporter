@@ -26,8 +26,7 @@ class IncidentHelper {
         return incidents;
     }
 
-    static updateIncident(id, data) {
-        const incident = incidents.find(incident => incident.id === id);
+    static updateIncident(incident, data) {
         const index = incidents.indexOf(incident);
         incidents[index].comment = data.comment || incident.comment;
         incidents[index].modifiedDate = new Date();

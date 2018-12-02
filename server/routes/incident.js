@@ -22,6 +22,12 @@ validator.validationHandler,
 IncidentController.createIncident
 );
 
+router.patch('/incidents/comment/:id',
+validator.validateNewComment,
+validator.validationHandler, 
+IncidentController.updateComment);
+
+
 router.delete('/incidents/:id', 
 validator.validateId, 
 validator.validationHandler, 

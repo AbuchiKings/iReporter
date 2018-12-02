@@ -9,14 +9,15 @@ const validate = {
 
     userId: req => {
         
-        if (!output.createdBy|| /^([1-9]+|[1-9][0-9]+)$/.test(output.createdBy) === false) {
+        if (!req.body.createdBy|| /^([1-9]+|[1-9][0-9]+)$/.test(req.body.createdBy) === false) {
             validationErrors.push('User Id must be a positve integer');
         }
     },
 
     incidentLocation: req => {
-        const match = /(Lat:\s+(\d){2}\.(\d){2,6}\sLong:\s+(\d){2}\.(\d){2,6})/i;
-        if (!req.body.location || match.test(req.body.location) === false) {
+        const match = /(Lat:\s+(\d){1,2}\.(\d){2,6}\s+Long:\s+(\d){1,2}\.(\d){2,6})/i;
+        if (!req.body.location || 
+            match.test(req.body.location) === false) {
             validationErrors.push('Location  must be written in this format: Lat:34.87 Long: 87.98')
         }
     },
@@ -24,7 +25,8 @@ const validate = {
     incidentType: req => {
         const match1 = /^(Red\-flag)$/i;
         const match2 = /^(Intervention)$/i;
-        const check = (() => { return match1.test(req.body.type) || match2.test(req.body.type) })();
+        const check = (() => { return match1.test(req.body.type) ||
+             match2.test(req.body.type) })();
         if (!req.body.type || check === false) {
             validationErrors.push('Incident type can either be a red flag or intervention');
         }
@@ -33,7 +35,9 @@ const validate = {
 
     newComment: req => {
         const match = /^[a-zA-Z0-9+-,?'";)(/.:\s!@#+&%"]+/g;
-        if (!req.body.comment || match.test(req.body.comment) === false) {
+        if (!req.body.comment || 
+            (match.test(req.body.comment) === false ||
+            isNaN(req.body.comment) !== true)) {
             validationErrors.push('Please, a valid comment is required');
         }
 
