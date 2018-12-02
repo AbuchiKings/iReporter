@@ -11,7 +11,7 @@ class IncidentController {
       data: [
         {
           id: newIncident.id,
-          message: "Created red-flag record",
+          message: "Created red-flag record"
         }
       ]
     });
@@ -42,7 +42,7 @@ class IncidentController {
   }
 
   static updateComment(req, res) {
-    const id = parseInt(req.params.id, 10)
+    const id = parseInt(req.params.id, 10);
     const incident = IncidentHelper.findOne(id);
     if (!incident) {
       res.status(404).json({ status: 404, error: "Incident not found" });
@@ -54,14 +54,15 @@ class IncidentController {
       data: [
         {
           id: updatedIncident.id,
-          message: "updated red-flag record's comment",
+          message: "updated red-flag record's comment"
         }
       ]
     });
   }
 
   static updateLocation(req, res) {
-    const incident = IncidentHelper.findOne(req.params.id);
+    const id = parseInt(req.params.id, 10);
+    const incident = IncidentHelper.findOne(id);
     if (!incident) {
       res.status(404).json({ status: 404, error: "Incident not found" });
       return;

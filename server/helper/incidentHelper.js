@@ -33,8 +33,7 @@ class IncidentHelper {
         return incidents[index];
     }
 
-    static updateLocation(id, data) {
-        const incident = incidents.find(incident => incident.id === id);
+    static updateLocation(incident, data) {
         const index = incidents.indexOf(incident);
         incidents[index].location = data.location || incident.location;
         incidents[index].modifiedDate = new Date();
