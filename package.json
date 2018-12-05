@@ -4,8 +4,8 @@
   "description": "iReporter is a web app that allows users to report instances of illegal conducts or situations in need of government intervention.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./dist/* && babel ./server --out-dir ./dist",
+    "test": "nyc --reporter=text-summary --reporter=html mocha ./server/test --exit --require babel-register",
+    "build": "rm -rf ./dist/* && babel ./server --out-dir ./dist --ignore ./server/test.js",
     "start": "npm run build && node ./dist/app"
   },
   "repository": {
@@ -23,6 +23,9 @@
     "babel-eslint": "^10.0.1",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "coveralls": "^3.0.2",
     "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.3.0",
@@ -30,7 +33,9 @@
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.11.1",
+    "mocha": "^5.2.0",
     "nodemon": "^1.18.7",
+    "nyc": "^13.1.0",
     "prettier": "^1.15.2"
   },
   "dependencies": {
