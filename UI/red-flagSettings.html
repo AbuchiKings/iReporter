@@ -25,22 +25,34 @@
     <div class="siteBody">
         <div>
             <form action="" id="newCaseForm">
+                <fieldset>
                 <Legend id="reportLabel">Report a case</Legend>
 
                 <input id="caseTitle" type="text" placeholder="Title" required />
-                <input id="location" type="text" placeholder=" Location" required />
+                <input id="city" type="text" placeholder=" City or State" required />
+                <BR></BR>
+                <input id="address" type="text" placeholder=" Address" required /> 
+                <input id="country" type="text" placeholder=" Country" required />
 
-                <select id="selCat" required>
+                <br>
+                <input id="geolocation" type="text" placeholder="Geolocation"  readonly /> 
+               <button class="getGeo" type="button">Get location</button>
+
+                <br>
+               <textarea name="description" id="description" cols="10" rows="4" placeholder="Enter a brief description of your report."></textarea>
+               <BR></BR>
+
+               
+               <BR></BR>           
+               <select id="selCat" required>
                     <option disabled selected value="Select Category">Select Category</option>
                     <option value="Red-flag">Red-flag </option>
                     <option value="Intervention">Intervention </option>
-                </select>
-                <BR></BR>
+                </select>      
 
-                <textarea name="description" id="description" cols="10" rows="4" placeholder=" Enter a brief description of your report."></textarea>
-                <BR></BR>
-                <button type="submit" id="submitReport" class="button"> Report</button>
-
+            </fieldset>
+            <BR></BR>
+            <button type="submit" id="submitReport" class="button"> Report</button>
             </form>
         </div>
 
@@ -51,11 +63,12 @@
                     <tr>
                         <th>Date</th>
                         <th>Case ID</th>
-                        <th>Category</th>
+                        <th>Type</th>
                         <th>Title</th>
-                        <th>Description</th>
-                        <th>Geolocation</th>
+                        <th>Comment</th>
+                        <th>Location</th>
                         <th>Status</th>
+                        <th>Actions</th>
 
                     </tr>
                 </thead>

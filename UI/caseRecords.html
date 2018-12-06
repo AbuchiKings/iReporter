@@ -22,87 +22,73 @@
 
     <div id="navWrap" class="nav_aside">
         <a href="./caseRecords.html" class="active">Case records</a>
-        <a href="./red-flagSettings.html">Create a case record</a>
 
     </div>
 
     <div class="siteBody">
-        <div id="retrieveContainer" class="retreiveWrap">
 
-            <form action="" id="adminForm1" class="byDate">
-                <legend class="byDateLegend">Retrieve by date</legend>
-                <br>
 
-                <label for="from">
-                    From: <input class="from" type="date" required />
-                </label>
-
-                <label for="to">
-                    To: <input id="" class="to" type="date" required />
-                </label>
-
-                <button type="submit" class="button"> Retrieve</button>
-
-            </form>
-            <BR></BR>
-            <form action="" id="adminForm2" class="byStatus">
-                <legend>Retrieve by status</legend>
-                <br>
-                <select class="selStatus" required>
-                    <option disabled selected value="Select Status">Select Status</option>
-                    <option value="resolved"> Resolved </option>
-                    <option value="rejected"> Rejected </option>
-                    <option value="Under-Investigation"> Under Investigation </option>
-                </select>
-                <button type="submit" class="button"> Retrieve</button>
-
-            </form>
-            <BR></BR>
-
-            <form action="" id="adminForm3" class="byId">
-                <legend>Retreive by ID</legend>
-                <br>
-                <input type="text" class="byIdInput" required placeholder="Enter case ID">
-                <button type="submit" class="button">Retreive</button>
-            </form>
-
-        </div>
         <div id="tableWrap" class="tableContainer">
-
-            <table id="record" class="table">
-                <thead>
+            
+            <p>Case records</p>
+            <table id="records" class="table">
                     <tr>
-                        <th>Date</th>
-                        <th>Username</th>
-                        <th>Case ID</th>
-                        <th>Category</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Geolocation</th>
-                        <th>Status</th>
-
-                    </tr>
-                </thead>
-
-                <tbody>
+                         <th>Date</th>
+                         <th>Case ID</th>
+                         <th>Created by</th>
+                         <th>Type</th>
+                         <th>Title</th>
+                         <th>Comment</th>
+                         <th>Location</th>
+                         <th>Status</th>
+                         <th>Actions</th>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
                 </tbody>
 
             </table>
             <BR></BR>
-            <form action="" id="changeStatForm">
-                <legend id="changeStatTitle">Change case status</legend>
-                <BR></BR>
-                <input type="number" id="idEntry" class="enterId" required placeholder="Input case ID">
-                <select id="selStat" required>
-                    <option disabled selected value="Select Status">Select Status</option>
-                    <option value="resolved"> Resolved </option>
-                    <option value="rejected"> Rejected </option>
-                    <option value="Under-Investigation"> Under Investigation </option>
-                </select>
-                <button type="reset" id="statReset" class="button">Reset Inputs</button>
-                <br>
-                <button type="submit" id="statSubmit" class="button">Change</button>
-            </form>
+
+            <form action="" id="userRetrieve">
+                    <legend id="retByType">Retrieve by type</legend>
+                    <select id="seltype" required>
+                        <option disabled selected value="Select Type">Select Type</option>
+                        <option value="redFlag"> Red-flag </option>
+                        <option value="inter"> Intervention </option>
+                    </select>
+        
+                    <button type="submit" id="" class="button">Retrieve</button>
+            .
+        </form>
 
         </div>
     </div>

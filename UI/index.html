@@ -1,50 +1,65 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Home -iReporter</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
-    <script src="main.js"></script>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="css/index.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Monoton"
+    />
+  </head>
 
-<body id="index">
+  <body id="index">
     <header class="siteHeader" id="topNav">
-
-        <a href="./index.html" id="logo">iReporter</a>
-
+      <a href="./index.html" id="logo">iReporter</a>
+       <a id="signUpLink">Log in</a>
     </header>
-    <section id="mainHome">
-        <div id="descptWrap" class="homeText">
-            <p id="descpt">iReporter enables any/every citizen to bring any form of
-                corruption to the notice of appropriate authorities and the general public.
-                You can also report on things that needs government intervention.
-            </p>
-        </div>
 
-        <div id="homeTextWrap2" class="homeText">
-            <p id="homeText2">iReporter prioritizes the safety of its users and
-                will not share your identity with the public.
-            </p>
-        </div>
+    <div id="mainHome">
 
-        <div id="homeTextWrap3" class="homeText">
-            <p id="homeText3">Join iReporter today and take the first step towards making
-                our world a better place. <strong><a href="./signUp.html"> Sign Up.</a></strong>
-            </p>
-            <p>Already have an account?<strong><a href="./logIn.html"> Log In</a></strong></p>
-        </div>
+        
 
-    </section>
-    <div>
-        <footer id="footer">
-            <p>iReporter &copy; 2018</p>
-        </footer>
+
+      <div id="imageContainer">
+            <img
+            id="bg"
+            class="slides"
+            src="./image/seesomething.png"
+            alt=""
+          />
+      </div>
+
+      <div id="text">
+            <p ><strong id="homeText1">iReporter is where change happens</strong></p>
+            <BR></BR>
+            <p>How it works</p>
+            <ul>
+                    <li> See an instance of corruption?</li>
+                    <li>See a situation in need of Government intervention?</li>
+                    <li>Observe</li>
+                    <li>Report</li>
+                    <br>
+        
+                    <p id="getStarted">Get started</p>
+        
+            </ul> 
+      </div>
     </div>
 
-</body>
-
+    <div>
+      <footer id="footer">
+        <p>iReporter &copy; 2018</p>
+        <p>Contact us:</p>
+      </footer>
+    </div>
+    <script src="./Javascript/main.js"></script>
+  </body>
 </html>

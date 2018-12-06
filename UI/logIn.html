@@ -14,18 +14,21 @@
 <body id="logIn">
     <header class="siteHeader" id="topNav">
         <a href="./" id="logo">iReporter</a>
-        <span id="signUpLink">Don't have an account yet?<a href="./signUp.html"> Sign Up</a></span>
+        <span id="signUpLink">Don't have an account yet?<a id="aSignUp" href="./signUp.html"> Sign Up</a></span>
     </header>
 
     <div id="logInWrap">
+        
         <form action="" id="logInForm">
-            
-            <input type="email" id="logInEmail" required placeholder="example@ymail.com" pattern="">
-            <BR></BR>
-            <input type="password" id="LogInPwd" required placeholder="password">
-            <BR></BR>
-            <button type="submit" id="logInSub">Log In</button>
-
+            <p id="loginHeader">Login</p>
+            <fieldset id="logfield"> <input type="email" id="logInEmail" required placeholder="example@ymail.com" pattern="">
+                <BR></BR>
+                <input type="password" id="LogInPwd" required placeholder="password">
+                <BR></BR>
+                <button type="submit" id="logInSub">Log In</button>
+            </fieldset>
+        
+        
         </form>
     </div>
 
