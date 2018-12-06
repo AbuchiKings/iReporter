@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sign Up - iReporter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
+    <script src="main.js"></script>
+</head>
+
+<body id="signUp">
+
+    <header class="siteHeader" id="topNav">
+        <a href="./" id="logo">iReporter</a>
+        <span id="logInLink">Already have an account?<a href="./logIn.html" id="aLogin"> Log In</a></span>
+    </header>
+
+    <div id="signUpWrap">
+        <form action="" id="signUpForm">
+         <fieldset id="signField">
+            <input type="text"  name="firstName" class="signUp" id="firstName" required placeholder="First Name">
+            <input type="text" name="lastName" class="signUp" id="lastName" required placeholder="Last Name">
+            <BR></BR>
+            <input type="text" name="otherName" id="otherName" placeholder="Other Name">
+            <input type="email" class="signUp" id="logInEmail" required placeholder="example@yourmail.com" pattern="">
+            <BR></BR>
+            <input type="password" class="signUp" id="LogInPwd" required placeholder="password">
+            
+            <input type="password" id="LogInPwd" required placeholder="retype password">
+            <BR></BR>
+            <button type="submit" id="signUpSub">Sign Up</button>
+         </fieldset>
+        </form>
+    </div>
+
+    <footer id="footer">
+        <p>iReporter &copy; 2018</p>
+    </footer>
+
+</body>
+
+</html>
