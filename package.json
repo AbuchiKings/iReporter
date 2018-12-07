@@ -4,8 +4,8 @@
   "description": "iReporter is a web app that allows users to report instances of illegal conducts or situations in need of government intervention.",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=text-summary --reporter=html mocha ./server/test --exit --require babel-register",
-    "build": "rm -rf ./dist/* && babel ./server --out-dir ./dist --ignore ./server/test.js",
+    "test": "nyc --reporter=text-summary --reporter=html mocha ./server/tests/test.js --exit --require babel-register",
+    "build": "rm -rf ./dist/* && babel ./server --out-dir ./dist --ignore ./server/tests/test.js",
     "start": "npm run build && node ./dist/app"
   },
   "repository": {

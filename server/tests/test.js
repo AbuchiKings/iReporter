@@ -1,17 +1,17 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from './app';
+import app from '../app';
 
 const { expect } = chai;
 chai.use(chaiHttp);
 describe('iReporter', () => {
 
-    describe('Incidents', () => {
-        describe('GET /incidents', () => {
-            it('Users should be able to get all red flag incidents', done => {
+    describe('red-flags', () => {
+        describe('GET /red-flags', () => {
+            it('Users should be able to get all red-flags', done => {
                 chai
                     .request(app)
-                    .get('/api/v1/incidents')
+                    .get('/api/v1/red-flags')
                     .end((err, res) => {
                         expect(res.status).to.equal(200);
                         expect(res.body).to.have.property('status');
@@ -25,11 +25,11 @@ describe('iReporter', () => {
 
 
 
-        describe('GET /incidents/:id', () => {
+        describe('GET /red-flags/:id', () => {
             it('A valid id should return a matching incident', done => {
                 chai
                     .request(app)
-                    .get('/api/v1/incidents/1')
+                    .get('/api/v1/red-flags/1')
                     .end((err, res) => {
                         expect(res.status).to.equal(200);
                         expect(res.body).to.have.property('data');
@@ -42,7 +42,7 @@ describe('iReporter', () => {
             it('A on-existing id should return a not found error', done => {
                 chai
                     .request(app)
-                    .get('/api/v1/incidents/7')
+                    .get('/api/v1/red-flags/7')
                     .end((err, res) => {
                         expect(res.status).to.equal(404);
                         expect(res.body).to.not.have.property('data');
@@ -53,11 +53,11 @@ describe('iReporter', () => {
         });
 
 
-        describe('POST /incidents/post', () => {
-            it('Users should be able to create incidents', done => {
+        describe('POST /red-flags', () => {
+            it('Users should be able to create red-flags', done => {
                 chai
                     .request(app)
-                    .post('/api/v1/incidents/post')
+                    .post('/api/v1/red-flags')
                     .send({
                         "createdBy": 5,
                         "type": "intervention",
@@ -78,7 +78,7 @@ describe('iReporter', () => {
         it('Invalid location inputs should return an unprocessable entry error', done => {
             chai
                 .request(app)
-                .post('/api/v1/incidents/post')
+                .post('/api/v1/red-flags')
                 .send({
                     location: "Lagos"
                 })
@@ -93,7 +93,7 @@ describe('iReporter', () => {
         it('Invalid createdBy inputs should return an unprocessable entry error', done => {
             chai
                 .request(app)
-                .post('/api/v1/incidents/post')
+                .post('/api/v1/red-flags')
                 .send({
                     createdBy: "name"
                 })
@@ -108,7 +108,7 @@ describe('iReporter', () => {
         it('Invalid type inputs should return an unprocessable entry error', done => {
             chai
                 .request(app)
-                .post('/api/v1/incidents/post')
+                .post('/api/v1/red-flags')
                 .send({
                     type: "Bribery"
                 })
@@ -120,11 +120,11 @@ describe('iReporter', () => {
         });
 
 
-        describe('PATCH /incidents/location/:id', () => {
+        describe('PATCH /red-flags/:id/location', () => {
             it('Invalid location input should return an unprocessable entry error', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/location/1')
+                    .patch('/api/v1/red-flags/1/location')
                     .send({
                         location: "Ondo",
                     })
@@ -137,7 +137,7 @@ describe('iReporter', () => {
             it('Invalid location input format should return an unprocessable entry error', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/location/1')
+                    .patch('/api/v1/red-flags/1/location')
                     .send({
                         location: "Lat: 16.5, Long: 3"
                     })
@@ -151,7 +151,7 @@ describe('iReporter', () => {
             it('Non-existing incident id should return a not found error during location update', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/location/36')
+                    .patch('/api/v1/red-flags/36/location')
                     .send({
                         location: "Latitude: 45.6079545 Longitude: 53.6217802"
 
@@ -165,7 +165,7 @@ describe('iReporter', () => {
             it('A valid incident format update should not return error', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/location/1')
+                    .patch('/api/v1/red-flags/1/location')
                     .send({
                         location: "Latitude: 45.6079545 Longitude: 53.6217802"                    })
                     .end((err, res) => {
@@ -175,11 +175,11 @@ describe('iReporter', () => {
                     });
             });
         });
-        describe('PATCH /incidents/comment/:id', () => {
+        describe('PATCH /red-flags/:id/comment', () => {
             it('Empty comment input should return an unprocessable entry error', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/comment/1')
+                    .patch('/api/v1/red-flags/1/comment')
                     .send({
                         comment: "",
                     })
@@ -189,10 +189,10 @@ describe('iReporter', () => {
                         done(err);
                     });
             });
-            it('An comment format should return an unprocessable entry error', done => {
+            it('An invalid comment format should return an unprocessable entry error', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/location/1')
+                    .patch('/api/v1/red-flags/1/comment')
                     .send({
                         comment: "123456789"
                     })
@@ -206,7 +206,7 @@ describe('iReporter', () => {
             it('Non-existing incident id should return a not found error during comment update', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/comment/36')
+                    .patch('/api/v1/red-flags/36/comment')
                     .send({
                         comment: "Government intervention needed in bad roads"
 
@@ -223,7 +223,7 @@ describe('iReporter', () => {
             it('A valid comment update should not return an error', done => {
                 chai
                     .request(app)
-                    .patch('/api/v1/incidents/comment/1')
+                    .patch('/api/v1/red-flags/1/comment')
                     .send({
                         comment: "Government intervention needed in bad roads"
                      })
@@ -236,11 +236,11 @@ describe('iReporter', () => {
             });
         });
 
-        describe('DELETE /incidents/:id', () => {
+        describe('DELETE /red-flags/:id', () => {
             it('Non-existing incident id should return a not found error', done => {
               chai
                 .request(app)
-                .del('/api/v1/incidents/10')
+                .del('/api/v1/red-flags/10')
                 .end((err, res) => {
                   expect(res.status).to.equal(404);
                   expect(res.body).to.have.a.property('status');
@@ -253,7 +253,7 @@ describe('iReporter', () => {
             it('An invalid incident id should return unprocessable entity error', done => {
               chai
                 .request(app)
-                .del('/api/v1/incidents/t')
+                .del('/api/v1/red-flags/t')
                 .end((err, res) => {
                   expect(res.status).to.equal(422);
                   expect(res.body).to.have.a.property('error');
@@ -265,7 +265,7 @@ describe('iReporter', () => {
             it('Users should be able to delete an incident with a valid incident id', done => {
               chai
                 .request(app)
-                .del('/api/v1/incidents/1')
+                .del('/api/v1/red-flags/1')
                 .end((err, res) => {
                   expect(res.status).to.equal(200);
                   expect(res.body).to.have.a.property('status');
