@@ -14,7 +14,8 @@ body {
     margin: 0;
     position: relative;
     min-height: 100%;
-    padding-bottom: 10rem;
+    padding-bottom: 3rem;
+    /* background-image: url(./image/seesomething2.png)*/
 }
 
 body::after {
@@ -47,7 +48,7 @@ body::after {
     font-size: 30px;
     width: 86%;
     margin-left: 7%;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 #mainHome::after {
@@ -65,11 +66,51 @@ body::after {
     color: #060e16;
     font-size: 25px;
     margin-left: 5px;
-    
+}
+#text2 {
+    margin-top: 30%;
+    float: left;
+    height: 200px;
+    width: 43%;
+    margin-top: 30%;
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: black;
+    font-size: 25px;
+    font-weight: bolder;
+    margin-right: 5px;
+}
+
+
+#bg {
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    float: left;
+}
+#bg2 {
+    height: auto;
+    width: auto;
+    max-width: 500px;
+    max-height: 500px;
+    float: right;
+}
+
+#imageContainer {
+    float: left;
+    width: 50%;
+}
+#imageContainer2 {
+    float: right;
+    margin-top: 15%;
+    width: 600px;
 }
 
 #getStarted {
-    background-color: #18d9e7;
+    background-color: #021a1bbd;
+    margin-top: 20%;
+    margin-left: 20%;
     padding: 10px;
     border: 5px solid 18d9e7;
     width: fit-content;
@@ -84,32 +125,17 @@ body::after {
 }
 
 
-#bg {
-    height: auto;
-    width: auto;
-    max-width: 100%;
-    max-height: 100%;
-    float: left;
-}
-
-#homeText1 {
-    padding: 2%;
-    color: #22211f;
-    font-weight: 800;
-}
-
 #mainHome {
     margin-bottom: 10px;
 }
 
 @media(max-width: 768px) {
-    #imageContainer{
+    #imageContainer {
         display: block;
-        width :100%;
+        width: 100%;
         text-align: center;
     }
-
-    #bg{
+    #bg {
         width: 100%;
         width: auto;
         display: block;
@@ -117,14 +143,13 @@ body::after {
         margin-top: 70px;
         max-width: 300px;
         max-height: 160px;
-        float: 
-
+        float:
     }
     #mainHome div {
         font-size: 20px;
         min-height: 100px;
     }
-    #text{
+    #text {
         width: 90%;
         display: block;
         margin-bottom: 60px;
@@ -142,25 +167,20 @@ body::after {
         margin-right: 0;
         color: #060e16;
     }
-
-
 }
 
-#aLogin, #aSignUp{
+#aLogin, #aSignUp {
     color: #060e16;
 }
 
-#imageContainer {
-    float: left;
-    width: 50%;
-}
+
 
 #signUpLink, #logInLink, #logOutlink {
     float: right;
     color: white;
     font-weight: 700;
     padding: 0.5%;
-    background-color: #18d9e7;
+    background-color: #021a1bbd;
     border: 5px solid 18d9e7;
     width: fit-content;
     margin-top: 2%;
@@ -177,7 +197,6 @@ body::after {
     padding: 3px;
     border: 5px solid 18d9e7;
     width: fit-content;
-
 }
 
 #signUpWrap {
@@ -193,12 +212,11 @@ body::after {
     margin-top: 35%;
 }
 
-#signUpForm{
+#signUpForm {
     margin-top: 5%;
-    
 }
 
-#loginHeader{
+#loginHeader {
     font-size: 25px;
     width: 400px;
     background: #18d9e7;
@@ -206,18 +224,17 @@ body::after {
     height: 40px
 }
 
-#logfield{
+#logfield {
     width: 400px;
     border: 2px solid #b8d0eb;
     height: 250px;
     text-align: center;
-    
 }
 
-#signField{
-    border: 2px solid #b8d0eb;; 
+#signField {
+    border: 2px solid #b8d0eb;
+    ;
     text-align: center;
-    
 }
 
 #signUpForm input, #logInForm input {
@@ -266,7 +283,8 @@ body #logInWrap {
     position: fixed;
     padding: 0;
     overflow: auto;
-    background-color: #cff0f1af;;
+    background-color: #cff0f1af;
+    ;
 }
 
 .nav_aside a {
@@ -284,7 +302,7 @@ body #logInWrap {
     color: #18d9e7;
 }
 
-.nav_aside a:hover:not(.active), .nav_aside a:hover .active  {
+.nav_aside a:hover:not(.active), .nav_aside a:hover .active {
     color: white;
     background-color: #18d9e7;
 }
@@ -325,16 +343,18 @@ body #logInWrap {
         margin-left: 30px;
     }
 }
-#newCaseForm{
+
+#newCaseForm {
     align-content: center
 }
-#newCaseForm fieldset{
+
+#newCaseForm fieldset {
     align-content: center;
     text-align: center;
     width: fit-content;
 }
-#caseTitle,#address {
-    
+
+#caseTitle, #address {
     float: left;
     width: 250px;
     padding: 10px;
@@ -352,7 +372,6 @@ body #logInWrap {
 
 #city, #country {
     float: left;
-    
     width: 250px;
     padding: 10px;
     margin-left: 20px;
@@ -366,18 +385,16 @@ body #logInWrap {
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
-
 }
 
-textarea{
+textarea {
     float: left;
-        margin-top: 10px;
-        width: 30%;
-        height: 150px;  
+    margin-top: 10px;
+    width: 30%;
+    height: 150px;
 }
 
-
-#newCaseForm .getGeo{
+#newCaseForm .getGeo {
     float: right;
     min-height: 40px;
     margin-top: 10px;
@@ -396,7 +413,6 @@ textarea{
 #newCaseForm legend {
     font-weight: 700;
     color: #060e16;
-    
 }
 
 .button {
@@ -414,24 +430,20 @@ textarea{
     font-size: 15px;
 }
 
-
-
 #geolocation {
     float: right;
     margin-top: 8px;
     width: 230px;
     padding: 10px;
     font-size: 15px;
-    min-height: 40px
-    margin-right: 35px;
+    min-height: 40px margin-right: 35px;
 }
 
-#selCat{
+#selCat {
     float: right;
     margin-right: 5px;
     width: 230px;
     padding: 10px;
-    
     margin-top: 8px;
 }
 
@@ -486,6 +498,12 @@ textarea{
     font-size: 17px;
 }
 
+td {
+    text-align: center;
+    padding-top: 15px;
+    border-bottom: 1px double black;
+}
+
 #footer {
     text-align: center;
     /*background-color: rgba(26, 3, 56, 0.068);*/
@@ -494,9 +512,9 @@ textarea{
     color: #185ae7;
     font-size: 18px;
     height: 10%;
-    bottom: 0;
+   margin-bottom: 0;
+   position: absolute;
     left: 0;
-    position: absolute;
     width: 100%;
     z-index: 10;
 }
@@ -506,26 +524,26 @@ a {
 }
 
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
+    display: none;
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: fit-content; 
-    height: 70%; 
-    overflow: auto; 
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
+    width: fit-content;
+    height: 70%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
     margin-left: 15%;
     margin-top: 10px;
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; 
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 90%; 
+    width: 90%;
 }
 
 .close {
@@ -535,13 +553,12 @@ a {
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close:hover, .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
 
-#modalBtn{
+#modalBtn {
     width: fit-content;
 }
