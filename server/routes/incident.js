@@ -21,6 +21,7 @@ validator.validationHandler,
 IncidentController.get0ne
 );
 
+router.get('/red-flags', IncidentController.getAll)
 
 
 export default router;

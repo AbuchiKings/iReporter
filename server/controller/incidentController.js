@@ -31,12 +31,27 @@ class IncidentController {
         data: [incident]
       });
     } catch (error) {
-
+      return error
     }
   }
 
-  static getAll(req, res) {
+  static async getAll(req, res) {
+    try {
+      const incidents = await IncidentHelper.findAll();
+      if(incidents === 404){
+        res.status(404).json({
+          status: 404,
+          error: "You have not created any incident"
+        });
+        return;
+      }
+      return res.status(200).json({
+        status: 200,
+        data: [incidents]
+      });
+    } catch (error) {
 
+    }
   }
 
   static updateComment(req, res) {

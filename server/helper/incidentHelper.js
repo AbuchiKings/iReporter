@@ -26,8 +26,14 @@ class IncidentHelper {
         }
     }
 
-    static findAll() {
-
+    static async findAll() {
+        try {
+            const { rows, rowCount } = await pool.query(query.getAllIncidents())
+            if(rowCount < 1) return 404;
+            return rows;
+        } catch (error) {
+            return error;
+        }
     }
 
     static updateIncident(incident, data) {
