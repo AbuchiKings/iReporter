@@ -33,7 +33,7 @@ $$;`
  * Create Tables
  */
 const incidentTable = `CREATE TABLE IF NOT EXISTS incidents(
-  id SERIAL  PRIMARY KEY NOT NULL,
+  incidentId SERIAL  PRIMARY KEY NOT NULL,
   createdBy INT NOT NULL,
   createdOn TIMESTAMPTZ DEFAULT CURRENT_DATE NOT NULL,
   type incident_type NOT NULL,
@@ -54,5 +54,3 @@ const incidentTable = `CREATE TABLE IF NOT EXISTS incidents(
     console.log(error)
   }
 })();
-
-

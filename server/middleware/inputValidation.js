@@ -8,8 +8,8 @@ const validate = {
     },
 
     userId: req => {
-        
-        if (!req.body.createdBy || /^([1-9]+|[1-9][0-9]+)$/.test(req.body.createdBy) === false) {
+       
+        if (!req.body.createdby || /^([1-9]+|[1-9][0-9]+)$/.test(Number(req.body.createdby)) === false) {
             validationErrors.push('User Id must be a positve integer');
         }
     },
@@ -54,7 +54,7 @@ const validateId = (req, res, next) => {
 
 const validateNewIncident = (req, res, next) => {
     validationErrors.length = 0;
-    validate.userId(req);
+   validate.userId(req);
    validate.incidentLocation(req);
     validate.incidentType(req);
     validate.newComment(req);
