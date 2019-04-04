@@ -36,7 +36,15 @@ class IncidentHelper {
         }
     }
 
-    static updateIncident(incident, data) {
+    static async updateIncident(id, data) {
+        try {
+            const { rows } = await pool.query(query.getIncident(id));
+            if (!rows[0]) return 404;
+            const result = await pool.query(query.updateIncident(id, data));
+            return result.rows[0];
+        } catch (error) {
+            console.log(error);
+        }
 
     }
 

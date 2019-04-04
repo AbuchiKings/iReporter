@@ -61,6 +61,15 @@ const validateNewIncident = (req, res, next) => {
    next();
 };
 
+const validateIncidentUpdate = (req, res, next) => {
+    validationErrors.length = 0;
+    validate.parameterId(req);
+    if (req.body.location) validate.incidentLocation(req);
+    if (req.body.type) validate.incidentType(req);
+    if (req.body.comment) validate.newComment(req);
+    next();
+};
+
 const validateNewLocation = (req, res, next) => {
     validationErrors.length = 0;
     validate.incidentLocation(req);
@@ -84,6 +93,7 @@ const validationHandler = (req, res, next) => {
 
 const validator = {
     validateId,
+    validateIncidentUpdate,
     validationHandler,
     validateNewIncident,
     validateNewLocation,

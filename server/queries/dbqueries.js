@@ -28,9 +28,10 @@ const query = {
         return ({
             text: `UPDATE incidents SET
             type = COALESCE($1, type),
-            location = COALESCE($2, location),
-            comment = COALESCE($3, comment)
-            WHERE incidentid = $4 RETURNING *`,
+            location = COALESCE ($2, location),
+            comment = COALESCE ($3, comment)
+            WHERE incidentid = $4  
+            RETURNING *`,
             values: [
                 incidentUpdate.type,
                 incidentUpdate.location,
