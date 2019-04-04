@@ -43,12 +43,20 @@ class IncidentHelper {
             const result = await pool.query(query.updateIncident(id, data));
             return result.rows[0];
         } catch (error) {
-            console.log(error);
+           
         }
 
     }
 
-    static updateLocation(incident, data) {
+    static async updateStatus(id, data) {
+        try {
+            const { rows } = await pool.query(query.getIncident(id));
+            if (!rows[0]) return 404;
+            const result = await pool.query(query.updateIncidentStatus(id, data));
+            return result.rows[0];
+        } catch (error) {
+           console.log(error);
+        }
 
     }
 

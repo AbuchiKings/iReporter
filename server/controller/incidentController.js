@@ -70,8 +70,27 @@ class IncidentController {
         data: [result]
       });
     } catch (error) {
-      console.log (error)
 
+    }
+  }
+
+  static async updateIncidentStaus(req, res) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      const result = await IncidentHelper.updateStatus(id, req.body);
+      if (result === 404) {
+        res.status(404).json({
+          status: 404,
+          error: "Incident not found"
+        });
+        return;
+      }
+      return res.status(200).json({
+        status: 200,
+        data: [result]
+      });
+    } catch (error) {  
+console.log(error);
     }
   }
 

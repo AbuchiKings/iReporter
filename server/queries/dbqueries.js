@@ -43,8 +43,9 @@ const query = {
     updateIncidentStatus(id, incidentUpdate) {
         return ({
             text:`UPDATE incidents SET
-            status = COALESCE($1, status)
-            WHERE incidentid = $2 RETURNING *`,
+            status = $1
+            WHERE incidentid = $2 
+            RETURNING *`,
             values: [
                 incidentUpdate.status,
                 id
@@ -52,6 +53,7 @@ const query = {
 
         })
     },
+    
     deleteIncident(id) {
         return ({
             title: `DELETE FROM incidents WHERE incidentid = $1`,

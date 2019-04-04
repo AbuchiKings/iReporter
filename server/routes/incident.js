@@ -27,7 +27,15 @@ router.patch('/red-flags/:id',
     jsonparser,
     validator.validateIncidentUpdate,
     validator.validationHandler,
-    IncidentController.updateIncident);
+    IncidentController.updateIncident
+);
+
+router.patch('/red-flags/status/:id',
+    jsonparser,
+    validator.validateStatusUpdate,
+    validator.validationHandler,
+    IncidentController.updateIncidentStaus
+);
 
 
 export default router;
