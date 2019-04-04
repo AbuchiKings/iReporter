@@ -89,16 +89,33 @@ class IncidentController {
         status: 200,
         data: [result]
       });
-    } catch (error) {  
-console.log(error);
+    } catch (error) {
+
     }
   }
 
-  static updateLocation(req, res) {
+  static async deleteIncident(req, res) {
+    try {
+      const id = parseInt(req.params.id, 10);
+      await IncidentHelper.deleteIncident(id);
+      if (result === 404) {
+        res.status(404).json({
+          status: 404,
+          error: "Incident not found"
+        });
+        return;
+      }
+      return res.send({
+        status: 204,
+        message: 'Incident deleted'
+      });
+    } catch (error) {
+      return error;
+    }
 
   }
 
-  static deleteIncident(req, res) {
+  static updateLocation(req, res) {
 
   }
 }

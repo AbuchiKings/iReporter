@@ -29,7 +29,7 @@ class IncidentHelper {
     static async findAll() {
         try {
             const { rows, rowCount } = await pool.query(query.getAllIncidents())
-            if(rowCount < 1) return 404;
+            if (rowCount < 1) return 404;
             return rows;
         } catch (error) {
             return error;
@@ -43,7 +43,7 @@ class IncidentHelper {
             const result = await pool.query(query.updateIncident(id, data));
             return result.rows[0];
         } catch (error) {
-           
+
         }
 
     }
@@ -55,12 +55,20 @@ class IncidentHelper {
             const result = await pool.query(query.updateIncidentStatus(id, data));
             return result.rows[0];
         } catch (error) {
-           console.log(error);
+
         }
 
     }
 
-    static delete(id) {
+    static async deleteIncident(id) {
+        try {
+            const { rows } = await pool.query(query.getIncident(id));
+            if (!rows[0]) return 404;
+            await pool.query(query.deleteIncident(id));
+            return;
+        } catch (error) {
+            console.log(error);
+        }
 
     }
 

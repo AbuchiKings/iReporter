@@ -37,5 +37,11 @@ router.patch('/red-flags/status/:id',
     IncidentController.updateIncidentStaus
 );
 
+router.delete('/red-flags/:id', 
+validator.validateId,
+validator.validationHandler,
+IncidentController.deleteIncident
+);
+
 
 export default router;
