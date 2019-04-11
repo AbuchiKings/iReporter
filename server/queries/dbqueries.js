@@ -85,7 +85,7 @@ const query = {
         })
     },
 
-    regUser(firstName, lastName, otherNames, email, phoneNumber, userName, hashedpassword) {
+    regUser(firstName, lastName, otherNames, email, phoneNumber, userName, hashpassword) {
         return ({
             text: `INSERT INTO users (first_name, last_name, other_names, 
                 email, phone_number, user_name, password)
@@ -98,7 +98,7 @@ const query = {
                 email,
                 phoneNumber,
                 userName,
-                hashedpassword]
+                hashpassword]
         })
     },
 

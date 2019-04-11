@@ -52,7 +52,7 @@ const incidentTable = `CREATE TABLE IF NOT EXISTS incidents(
   last_name TEXT NOT NULL,
   other_names TEXT,
   email TEXT UNIQUE NOT NULL,
-  phone_number TEXT NOT NULL,
+  phone_number TEXT UNIQUE NOT NULL,
   user_name TEXT UNIQUE,
   registered TIMESTAMP DEFAULT CURRENT_DATE NOT NULL,
   password VARCHAR(100),
