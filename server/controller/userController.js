@@ -1,28 +1,25 @@
 import 'babel-polyfill';
-import Helper from '../helper/authHelper'
+import Helper from '../helper/authHelper';
+import responseHandler from '../middleware/responseHandler';
+
 
 
 class UserController {
     static async createUser(req, res) {
+
+        const result = await Helper.createUser(req);
+        return responseHandler.handleResponse(res, 201, result, 'Account created successsfully')
+
+    }
+
+    static async login(req, res) {
         try {
-            const result = await Helper.createUser(req.body);
-            if (result === 409) {
-                res.status(409).send({
-                    status: 409,
-                    message: 'User with email, phonenumber or username already exist'
-                })
-                return;
-            }
-
-            res.status(201).send({ 
-                status: 201,
-                data: [result], 
-                message: 'Account created successfully'
-             })
+            const result = await Helper.login(req);
+            return responseHandler.handleResponse(res, 201, result, 'Logged in')
         } catch (error) {
-            console.log(error);
-
+            return console.log(error);
         }
+
     }
 }
 

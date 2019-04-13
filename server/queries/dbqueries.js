@@ -85,11 +85,11 @@ const query = {
         })
     },
 
-    regUser(firstName, lastName, otherNames, email, phoneNumber, userName, hashpassword) {
+    regUser(firstName, lastName, otherNames, email, phoneNumber, userName, hashpassword, isAdmin) {
         return ({
             text: `INSERT INTO users (first_name, last_name, other_names, 
-                email, phone_number, user_name, password)
-                VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+                email, phone_number, user_name, password, is_admin)
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
 
             values: [
                 firstName,
@@ -98,7 +98,9 @@ const query = {
                 email,
                 phoneNumber,
                 userName,
-                hashpassword]
+                hashpassword,
+                isAdmin
+            ]
         })
     },
 
@@ -135,15 +137,15 @@ const query = {
     updateUserEmail(email, userId) {
         return ({
             text: `UPDATE users SET
-            email = COALESCE($1, email) WHERE id = $2`,
+            email = COALESCE($1, email) WHERE id = $2 RETURNING *`,
             values: [email, userId]
         })
     },
-    updateUserPassword(newHashedPassword, userId) {
+    updateUserPassword(hashNewPassword, userId) {
         return ({
             text: `UPDATE users SET
-            password = COALESCE($1, password) WHERE id = $2`,
-            values: [newHashedPassword, userId]
+            password = COALESCE($1, password) WHERE id = $2 RETURNING *`,
+            values: [hashNewPassword, userId]
         })
     },
     updateUser(email, phoneNumber, userName, userId) {
@@ -171,7 +173,7 @@ const query = {
         })
     },
 
-  
+
     getOne(id) {
         return ({
 
@@ -180,7 +182,7 @@ const query = {
 
     deleteUser(userId) {
         return ({
-            text: `DELETE FROM users WHERE id = $1`,
+            text: `DELETE FROM users WHERE id = $1 RETURNING *`,
             values: [userId]
         })
     }
