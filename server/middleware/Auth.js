@@ -1,28 +1,35 @@
 import 'babel-polyfill';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import responseHandler from '../middleware/responseHandler';
 
 dotenv.config();
 const SECRET = process.env.JWT_KEY;
 
+
 const auth = {
 
-    async veryfyToken(req, next) {
-        try {
-            const autho = req.headers.authorization;
-            if (!autho) responseHandler.handleError(401, 'Unauthorised access');
+    verifyToken(req, res, next) {
 
-            const token = auth.split(' ');
-            const decodedToken = await jwt.verify(token, SECRET);
-            req.user = decodedToken;
-           
-            next()
-
-        } catch (error) {
-            return responseHandler.handleError(401, error.name);
+        const access = req.headers.authorization
+        if (!access) {
+            return res.status(401).send({ status: 401, message: 'Headers not set' });
         }
-    }
 
+        let bearerToken = access.split(' ');
+        const token = bearerToken[1];
+        jwt.verify(token, SECRET, (err, decodedToken) => {
+            if (err) {
+                res.status(401).json({
+                    status: 401,
+                    message: err.name
+                })
+                return;
+            }
+            req.user = decodedToken;
+           return next();
+        });
+
+    }
 }
+
 export default auth;

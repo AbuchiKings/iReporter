@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import Helper from '../helper/authHelper';
-import responseHandler from '../middleware/responseHandler';
+import responseHandler from '../tools/responseHandler';
 
 
 
@@ -17,9 +17,19 @@ class UserController {
             const result = await Helper.login(req);
             return responseHandler.handleResponse(res, 201, result, 'Logged in')
         } catch (error) {
-            return console.log(error);
+            res.send(error);
         }
 
+    }
+
+    static async updateUserEmail(req, res){
+        try {
+            
+            const result = await Helper.updateUserEmail(req);
+            return responseHandler.handleResponse(res, 201, result, 'Email updated')
+        } catch (error) {
+            res.send(error);
+        }
     }
 }
 

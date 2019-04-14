@@ -7,7 +7,7 @@ const router = Router();
 
 router.use('/api/v1', incidentApi);
 
-//router.use('/api/v1', usersApi);
+router.use('/api/v1', usersApi);
 
 router.use('/api/v1', authApi);
 

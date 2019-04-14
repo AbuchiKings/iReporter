@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import query from '../queries/dbqueries';
 import pool from '../queries/pool';
 import dotenv from 'dotenv';
-import responseHandler from '../middleware/responseHandler';
+import responseHandler from '../tools/responseHandler';
 
 dotenv.config();
 const SECRET = process.env.JWT_KEY;
@@ -71,7 +71,7 @@ class Helper {
 
     }
 
-    static async UpdateUserEmail(req) {
+    static async updateUserEmail(req) {
         try {
             const userId = parseInt(req.user.id, 10);
 
