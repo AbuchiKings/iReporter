@@ -1,6 +1,9 @@
 require('babel-polyfill')
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
+const query = require('./queries/dbqueries');
+const bcrypt = require('bcrypt');
+
 
 dotenv.config();
 
@@ -12,7 +15,10 @@ pool.on('connect', () => {
   console.log('connected to the db');
 });
 
-const  createIncidentType = `DO $$
+const createSchema = `CREATE SCHEMA IF NOT EXISTS myireportdb`;
+
+
+const createIncidentType = `DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'incident_type') THEN
         create type incident_type AS ENUM ('Red-flag', 'Intervention');
@@ -20,7 +26,7 @@ BEGIN
 END
 $$;`
 
-const  createIncidentStatus = `DO $$
+const createIncidentStatus = `DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'incident_status') THEN
         create type incident_status AS ENUM ('Draft', 'Under investigation', 'Rejected', 'Resolved');
@@ -32,7 +38,7 @@ $$;`
 /**
  * Create Tables
  */
-const incidentTable = `CREATE TABLE IF NOT EXISTS incidents(
+const incidentTable = `CREATE TABLE IF NOT EXISTS myireportdb.incidents(
   title VARCHAR(100) NOT NULL,
   createdBy INT NOT NULL,
   incidentId SERIAL  PRIMARY KEY NOT NULL,
@@ -41,12 +47,12 @@ const incidentTable = `CREATE TABLE IF NOT EXISTS incidents(
   location TEXT NOT NULL,
   status incident_status,
   comment VARCHAR(200) NOT NULL,
-  FOREIGN KEY (createdBy) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (createdBy) REFERENCES myireportdb.users(id) ON DELETE CASCADE
 
 );`;
 
 
-  const usersTable = `CREATE TABLE IF NOT EXISTS users(
+const usersTable = `CREATE TABLE IF NOT EXISTS myireportdb.users(
   id SERIAL PRIMARY KEY NOT NULL,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
@@ -60,14 +66,24 @@ const incidentTable = `CREATE TABLE IF NOT EXISTS incidents(
 
 );`;
 
+const check = `SELECT * FROM myireportdb.users`;
+
 
 (async function () {
   try {
-    await pool.query(createIncidentType)
-    await pool.query(createIncidentStatus)
+    await pool.query(createIncidentType);
+    await pool.query(createIncidentStatus);
+    await pool.query(createSchema);
     await pool.query(usersTable);
-    await pool.query(incidentTable); 
+    const { rowCount } = await pool.query(check);
+    if(rowCount < 1){
+      const pass = 'qwerty'
+      const result = await bcrypt.hash(pass, 10);
+      await pool.query(query.regUser('Abuchi', 'Kingsley', 'Tony', 'abuchikings@ireporter.com', '0806215xxxx', 
+      'abuchikings', result, true));
+    }
+    await pool.query(incidentTable);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 })();

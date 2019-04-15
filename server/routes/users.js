@@ -4,11 +4,26 @@ import auth from '../middleware/Auth'
 
 const router = Router();
 
-router.use(
-    '/users/email-update',
+router.patch(
+    '/users/update-email',
     auth.verifyToken,
     UserController.updateUserEmail
-)
+);
+
+router.patch('/users/update-password',
+    auth.verifyToken,
+    UserController.updatePassword
+);
+
+router.get('/users/get-by-username/:username',
+    auth.verifyToken,
+    UserController.getUserByUserName
+);
+
+router.get('/users/:id',
+    auth.verifyToken,
+    UserController.getUserById
+);
 
 
 export default router

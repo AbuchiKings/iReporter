@@ -4,14 +4,13 @@ import jwt from 'jsonwebtoken';
 import query from '../queries/dbqueries';
 import pool from '../queries/pool';
 import dotenv from 'dotenv';
-import responseHandler from '../tools/responseHandler';
 
 dotenv.config();
 const SECRET = process.env.JWT_KEY;
 
 class Helper {
 
-    static async createUser(req, next) {
+    static async createUser(req) {
         try {
             const { firstName, lastName, otherNames, email, password, userName, phoneNumber } = req.body;
             const username1 = userName.toLowerCase();
@@ -20,9 +19,9 @@ class Helper {
             const foundUser = await pool.query(query.getUserByEmail(email));
             const result = await pool.query(query.getUserByPhone(phoneNumber));
 
-            if (rowCount > 0) return responseHandler.handleError(409, 'User with username already exist');
-            if (foundUser.rowCount > 0) return responseHandler.handleError(409, 'User with email already exist');
-            if (result.rowCount > 0) return responseHandler.handleError(409, 'User with phone number already exist');
+            if (rowCount > 0) return 'notUniqueUserName';
+            if (foundUser.rowCount > 0) return 'notUniqueEmail';
+            if (result.rowCount > 0) return 'notUniquePhoneNumber';
 
             let isAdmin;
             if (req.user && (req.user.id === 1 && req.user.isAdmin === true)) {
@@ -49,15 +48,15 @@ class Helper {
                 let username1 = userName.toLowerCase();
                 result = await pool.query(query.getUserByUserName(username1));
             }
-           /* else if (email) {
-                result = await pool.query(query.getUserByUserName(email));
-            }*/
+            /* else if (email) {
+                 result = await pool.query(query.getUserByUserName(email));
+             }*/
 
-            if (!result.rows[0]) return responseHandler.handleError(404, 'Account not found');
+            if (!result.rows[0]) return 'accountNotFound';
             const db = result.rows[0];
             const validPassword = await bcrypt.compare(password, db.password);
 
-            if (!validPassword) return  responseHandler.handleError(401, 'Invalid password');
+            if (!validPassword) return 'invalidPassword';
 
             const { id, is_admin } = db;
 
@@ -76,10 +75,10 @@ class Helper {
             const userId = parseInt(req.user.id, 10);
 
             const { rows } = await pool.query(query.getUserById(userId));
-            if (!rows[0]) responseHandler.handleError(404, 'Account not found');
+            if (!rows[0]) return 'accountNotFound';
 
             const foundUser = await pool.query(query.getUserByEmail(req.body.email));
-            if (foundUser.rowCount > 0) responseHandler.handleError(409, 'Email already exist');
+            if (foundUser.rowCount > 0) return 'notUniqueEmail';
 
             const result = await pool.query(query.updateUserEmail(req.body.email, userId));
 
@@ -100,16 +99,17 @@ class Helper {
             const userId = parseInt(req.user.id, 10);
 
             const { rows } = await pool.query(query.getUserById(userId));
-            if (!rows[0]) responseHandler.handleError(404, 'Account not found');
+            if (!rows[0]) return 'accountNotFound';
 
             const { oldPassword, newPassword } = req.body;
-            const validPassword = bcrypt.compare(rows[0].password, oldPassword);
+            const db = rows[0];
+            const validPassword = await bcrypt.compare(oldPassword, db.password);
 
-            if (!validPassword) responseHandler.handleError(401, 'Invalid password');
+            if (!validPassword) return 'invalidPassword';
 
             const hashNewPassword = await bcrypt.hash(newPassword, 10);
 
-            result = await pool.query(query.updateUserPassword(hashNewPassword, userId));
+            const result = await pool.query(query.updateUserPassword(hashNewPassword, userId));
 
             const user = result.rows[0];
             const { id, email, is_admin } = user;
@@ -119,50 +119,44 @@ class Helper {
             return { token, user };
 
         } catch (error) {
-            return error;
+            console.log(error);
         }
     }
 
     static async getUserByUserName(req) {
         try {
-            const userId = req.user.id;
-            const { rows, rowCount } = await pool.query(query.getUserById(userId));
+            const isAdmin = req.user.is_admin;
 
-            if (rowCount < 1) responseHandler.handleError(404, 'Your account was not found');
-
-            const user = rows[0];
-            if (!user.is_admin) {
-                responseHandler.handleError(403, 'Forbidden');
+            if (!isAdmin) {
+                return 'forbidden';
             }
 
-            let username = toLowerCase(request.params.username);
-            const result = await pool.query(query.getUserByUserName(username));
+            let username1 = req.params.username.toLowerCase();
+            const result = await pool.query(query.getUserByUserName(username1));
+            if (result.rowCount < 1) return 'accountNotFound';
 
             return result.rows[0];
 
         } catch (error) {
-            return error;
+            console.log(error);
         }
     }
 
     static async getUserById(req) {
         try {
-            const userId = req.user.id;
-            const { rows, rowCount } = await pool.query(query.getUserById(userId));
+            const isAdmin = req.user.is_admin;
 
-            if (rowCount < 1) responseHandler.handleError(404, 'Your account was not found');
-
-            const user = rows[0];
-            if (!user.is_admin) {
-                responseHandler.handleError(403, 'Forbidden');
+            if (!isAdmin) {
+                return 'forbidden';
             }
 
-            let id = parseInt(request.params.id, 10);
-            const result = await pool.query(query.getUserByUserName(id));
+            let id = parseInt(req.params.id, 10);
+            const result = await pool.query(query.getUserById(id));
+            if (result.rowCount < 1) return 'accountNotFound';
 
             return result.rows[0];
         } catch (error) {
-
+            console.log(error);
         }
     }
 
@@ -171,15 +165,15 @@ class Helper {
             const userId = req.user.id;
             const { rows, rowCount } = await pool.query(query.getUserById(userId));
 
-            if (rowCount < 1) responseHandler.handleError(404, 'Your account was not found');
+            if (rowCount < 1) return 'accountNotFound';
 
             const user = rows[0];
             if (!user.is_admin) {
-                responseHandler.handleError(403, 'Forbidden');
+                return 'forbidden';
             }
 
             const result = await pool.query(query.getAllUsers());
-            if (result.rowCount < 1) responseHandler.handleError(404, 'No user account found');
+            if (result.rowCount < 1) return 'accountNotFound';
 
             return result.rows[0];
         } catch (error) {
@@ -193,11 +187,11 @@ class Helper {
             const userId = req.user.id;
             const { rows, rowCount } = await pool.query(query.getUserById(userId));
 
-            if (rowCount < 1) responseHandler.handleError(404, 'Your account was not found');
+            if (rowCount < 1) return 'accountNotFound';
 
             const user = rows[0];
             if (user.is_admin && user.id === 1) {
-                responseHandler.handleError(405, 'Deletion of admin account not allowed')
+                return 'forbidden';
             }
 
             const result = await pool.query(query.deleteUser(userId));
