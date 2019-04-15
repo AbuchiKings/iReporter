@@ -137,6 +137,29 @@ class UserController {
             console.log(error);
         }
     }
+
+    static async getAllUsers(req, res) {
+        try {
+            const result = await Helper.getAllUsers(req);
+            switch (result) {
+
+                case 'forbidden':
+                    return res.status(403).json({ status: 403, message: 'Forbidden' });
+
+                case 'accountNotFound':
+                    return res.status(404).json({ status: 404, message: 'Account not found' });
+            }
+            return res.status(200).json({
+                status: 200,
+                data: [result]
+
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    
 }
 
 export default UserController;

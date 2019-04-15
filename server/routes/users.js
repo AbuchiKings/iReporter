@@ -25,5 +25,10 @@ router.get('/users/:id',
     UserController.getUserById
 );
 
+router.get('/users',
+    auth.verifyToken,
+    UserController.getAllUsers
+);
+
 
 export default router

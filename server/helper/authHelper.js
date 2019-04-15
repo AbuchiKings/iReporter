@@ -160,24 +160,22 @@ class Helper {
         }
     }
 
-    static async getUsers(req) {
+    static async getAllUsers(req) {
         try {
-            const userId = req.user.id;
-            const { rows, rowCount } = await pool.query(query.getUserById(userId));
 
-            if (rowCount < 1) return 'accountNotFound';
+            const isAdmin = req.user.is_admin;
 
-            const user = rows[0];
-            if (!user.is_admin) {
+            if (!isAdmin) {
                 return 'forbidden';
             }
 
             const result = await pool.query(query.getAllUsers());
+
             if (result.rowCount < 1) return 'accountNotFound';
 
-            return result.rows[0];
+            return result.rows;
         } catch (error) {
-            return error;
+            console.log(error);
         }
 
     }

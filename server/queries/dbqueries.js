@@ -141,6 +141,7 @@ const query = {
             values: [email, userId]
         })
     },
+
     updateUserPassword(hashNewPassword, userId) {
         return ({
             text: `UPDATE myireportdb.users SET
@@ -148,6 +149,7 @@ const query = {
             values: [hashNewPassword, userId]
         })
     },
+
     updateUser(email, phoneNumber, userName, userId) {
         return ({
             text: `UPDATE myireportdb.users SET
