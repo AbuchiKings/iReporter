@@ -30,5 +30,10 @@ router.get('/users',
     UserController.getAllUsers
 );
 
+router.delete('/users/delete',
+    auth.verifyToken,
+    UserController.deleteUser
+)
+
 
 export default router

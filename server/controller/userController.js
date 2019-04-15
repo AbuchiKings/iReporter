@@ -159,6 +159,28 @@ class UserController {
         }
     }
 
+    static async deleteUser(req, res) {
+        try {
+            const result = await Helper.deleteUser(req);
+            switch (result) {
+
+                case 'forbidden':
+                    return res.status(403).json({ status: 403, message: 'Forbidden' });
+
+                case 'accountNotFound':
+                    return res.status(404).json({ status: 404, message: 'Account not found' });
+            }
+            return res.status(204).json({
+                status: 204,
+                data: [result],
+                message: 'Account deleted successfully'
+
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     
 }
 

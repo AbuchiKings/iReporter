@@ -182,7 +182,7 @@ class Helper {
 
     static async deleteUser(req) {
         try {
-            const userId = req.user.id;
+            const userId = parseInt(req.user.id, 10);
             const { rows, rowCount } = await pool.query(query.getUserById(userId));
 
             if (rowCount < 1) return 'accountNotFound';
@@ -196,7 +196,7 @@ class Helper {
             return result.rows[0];
 
         } catch (error) {
-            return error;
+            console.log (error);
         }
     }
 }
