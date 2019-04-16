@@ -4,40 +4,51 @@ class IncidentController {
 
   static async createIncident(req, res) {
     try {
-      const result = await IncidentHelper.create(req.body);
+      const result = await IncidentHelper.create(req.body, req.user);
+      if (result === 'notAllowed') return res.status(403).json({
+        status: 403,
+        message: 'Creation of incident by an admin user is not allowed'
+      })
       return res.status(201).json({
         status: 201,
         data: [result]
       });
     } catch (error) {
-      return error;
+      console.log(error);
     }
 
   }
 
   static async get0ne(req, res) {
     try {
-      const id = parseInt(req.params.id, 10)
-      const incident = await IncidentHelper.findOne(id);
+      const incident = await IncidentHelper.findOne(req);
+
       if (incident === 404) {
-        res.status(404).json({
+        return res.status(404).json({
           status: 404,
           error: "Incident not found"
         });
-        return;
+
+      } else if (incident === 'noIncidentWithId') {
+        return res.status(405).json({
+          status: 405,
+          error: "You can only view reports created by you"
+        });
       }
+
       return res.status(200).json({
         status: 200,
         data: [incident]
       });
+
     } catch (error) {
-      return error
+      console.log(error);
     }
   }
 
   static async getAll(req, res) {
     try {
-      const incidents = await IncidentHelper.findAll();
+      const incidents = await IncidentHelper.findAll(req);
       if (incidents === 404) {
         res.status(404).json({
           status: 404,
@@ -50,25 +61,31 @@ class IncidentController {
         data: [incidents]
       });
     } catch (error) {
-
+      console.log(error);
     }
   }
 
   static async updateIncident(req, res) {
     try {
-      const id = parseInt(req.params.id, 10);
-      const result = await IncidentHelper.updateIncident(id, req.body);
+      const result = await IncidentHelper.updateIncident(req);
       if (result === 404) {
-        res.status(404).json({
+        return res.status(404).json({
           status: 404,
           error: "Incident not found"
         });
-        return;
+        
+      } else if(result === 405){
+        return res.status(405).json({
+          status: 405,
+          error: "You are not allowed to update this incident"
+        });
       }
+
       return res.status(200).json({
         status: 200,
         data: [result]
       });
+
     } catch (error) {
 
     }

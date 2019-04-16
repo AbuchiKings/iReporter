@@ -6,6 +6,21 @@ const query = {
             values: [id]
         })
     },
+
+    getUserIncidents(userId) {
+        return ({
+            text: `SELECT * FROM myireportdb.incidents WHERE createdby = $1`,
+            values: [userId]
+        })
+    },
+
+    getUserIncident(userId, id) {
+        return ({
+            text: `SELECT * FROM myireportdb.incidents WHERE createdby = $1 AND incidentid = $2`,
+            values: [userId, id]
+        })
+    },
+
     getAllIncidents() {
         return ({
             text: `SELECT * FROM myireportdb.incidents`,
@@ -27,12 +42,13 @@ const query = {
         })
     },
 
-    createIncident(newIncident) {
+    createIncident(newIncident, user) {
         return ({
-            text: `INSERT INTO myireportdb.incidents (createdby, type, location, comment, status)
-            VALUES($1, $2, $3, $4, $5) RETURNING *`,
+            text: `INSERT INTO myireportdb.incidents (title, createdby, type, location, comment, status)
+            VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
             values: [
-                newIncident.createdby,
+                newIncident.title,
+                user.id,
                 newIncident.type,
                 newIncident.location,
                 newIncident.comment,
@@ -165,20 +181,6 @@ const query = {
         return ({
             text: `SELECT COUNT(*) FROM myireportdb.incidents WHERE createdby = $1 AND status = $2`,
             values: [userId, status]
-        })
-    },
-
-    getUserIncidents(userId) {
-        return ({
-            text: `SELECT * FROM myireportdb.incidents WHERE createdby = $1`,
-            values: [userId]
-        })
-    },
-
-
-    getOne(id) {
-        return ({
-
         })
     },
 

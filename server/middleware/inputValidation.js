@@ -73,7 +73,7 @@ const validateId = (req, res, next) => {
 
 const validateNewIncident = (req, res, next) => {
     validationErrors.length = 0;
-    validate.userId(req);
+    //validate.userId(req);
     validate.incidentLocation(req);
     validate.incidentType(req);
     validate.newComment(req);
