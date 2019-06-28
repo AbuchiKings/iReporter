@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import bodyParser from 'body-parser';
+import auth from '../middleware/Auth'
 
 import IncidentController from '../controller/incidentController';
 import validator from '../middleware/inputValidation';
@@ -10,37 +11,34 @@ router.use((bodyParser.urlencoded({ extended: false })));
 
 router.post('/red-flags',
     jsonparser,
-    validator.validateNewIncident,
-    validator.validationHandler,
+    auth.verifyToken,
     IncidentController.createIncident
 );
 
 router.get('/red-flags/:id',
-    validator.validateId,
-    validator.validationHandler,
-    IncidentController.get0ne
+    auth.verifyToken,
+    IncidentController.getOne
 );
 
-router.get('/red-flags', IncidentController.getAll);
+router.get('/red-flags',
+    auth.verifyToken,
+    IncidentController.getAll);
 
 router.patch('/red-flags/:id',
     jsonparser,
-    validator.validateIncidentUpdate,
-    validator.validationHandler,
+    auth.verifyToken,
     IncidentController.updateIncident
 );
 
 router.patch('/red-flags/status/:id',
     jsonparser,
-    validator.validateStatusUpdate,
-    validator.validationHandler,
+    auth.verifyToken,
     IncidentController.updateIncidentStaus
 );
 
-router.delete('/red-flags/:id', 
-validator.validateId,
-validator.validationHandler,
-IncidentController.deleteIncident
+router.delete('/red-flags/:id',
+    auth.verifyToken,
+    IncidentController.deleteIncident
 );
 
 

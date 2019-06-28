@@ -7,22 +7,23 @@ class IncidentController {
       const result = await IncidentHelper.create(req.body);
       return res.status(201).json({
         status: 201,
-        data: [result]
+        data: [result],
+        message: 'Report was submitted successfully'
       });
     } catch (error) {
-      return error;
+      console.log(error);
     }
 
   }
 
-  static async get0ne(req, res) {
+  static async getOne(req, res) {
     try {
       const id = parseInt(req.params.id, 10)
       const incident = await IncidentHelper.findOne(id);
       if (incident === 404) {
         res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
         return;
       }
@@ -37,11 +38,11 @@ class IncidentController {
 
   static async getAll(req, res) {
     try {
-      const incidents = await IncidentHelper.findAll();
+      const incidents = await IncidentHelper.findAll(req);
       if (incidents === 404) {
         res.status(404).json({
           status: 404,
-          error: "You have not created any incident"
+          message: "No incident report found"
         });
         return;
       }
@@ -50,7 +51,7 @@ class IncidentController {
         data: [incidents]
       });
     } catch (error) {
-
+      console.log(error);
     }
   }
 
@@ -61,7 +62,7 @@ class IncidentController {
       if (result === 404) {
         res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
         return;
       }
@@ -81,7 +82,7 @@ class IncidentController {
       if (result === 404) {
         res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
         return;
       }
@@ -101,7 +102,7 @@ class IncidentController {
       if (result === 404) {
         res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
         return;
       }
