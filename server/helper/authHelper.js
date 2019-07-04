@@ -62,7 +62,7 @@ class Helper {
             const { id, is_admin } = db;
 
             const token = jwt.sign({ id, email, is_admin }, SECRET, { expiresIn: '12h' });
-            mailer.mail();
+            //mailer.mail();
             return { id, token, is_admin };
         } catch (error) {
             console.log(error);
@@ -146,16 +146,58 @@ class Helper {
     static async getUserById(req) {
         try {
             const isAdmin = req.user.is_admin;
-
-            if (!isAdmin) {
+            let data = null;
+            let incidents = undefined;
+            if (isAdmin) {
                 return 'forbidden';
             }
 
             let id = parseInt(req.params.id, 10);
             const result = await pool.query(query.getUserById(id));
+            data = await pool.query(query.getAllUserIncidents(id))
+
+            let redFlags = 0, interventions = 0, underInvestigation = 0;
+            let draft = 0, resvd = 0, rejected = 0;
+
             if (result.rowCount < 1) return 'accountNotFound';
 
-            return result.rows[0];
+            const user = result.rows[0];
+            const { email, registered, image, user_name } = user;
+
+            if (data.rows[0]) {
+                incidents = data.rows
+                incidents.forEach(incident => {
+                    switch (incident.status) {
+                        case 'Draft':
+                            draft++
+                            break;
+                        case 'Resolved':
+                            resvd++
+                            break;
+                        case 'Under investigation':
+                            underInvestigation++
+                            break;
+                        case 'Rejected':
+                            rejected++
+                            break;
+                    }
+                    switch (incident.type) {
+                        case 'Red-flag':
+                            redFlags++
+                            break;
+                        case 'Intervention':
+                            interventions++
+                            break;
+                    }
+
+                });
+            }
+            const total = redFlags + interventions;
+            const values = {
+                redFlags, interventions, resvd, total, email, user_name,
+                rejected, draft, underInvestigation, registered, image
+            };
+            return values;
         } catch (error) {
             console.log(error);
         }
