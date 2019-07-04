@@ -27,6 +27,24 @@ const query = {
             values: []
         })
     },
+    getAllUserIncidents(id) {
+        return ({
+            text: `SELECT * FROM myireportdb.incidents WHERE createdby = $1`,
+            values: [id]
+        })
+    },
+    getUserIncidentsByType(id, type) {
+        return ({
+            text: `SELECT * FROM myireportdb.incidents WHERE createdby = $1 AND type = $2`,
+            values: [id, type]
+        })
+    },
+    getUserIncidentsByStatus(id, status) {
+        return ({
+            text: `SELECT * FROM myireportdb.incidents WHERE createdby = $1 AND status = $2`,
+            values: [id, status]
+        })
+    },
 
     getIncidentsByType(type) {
         return ({
@@ -37,7 +55,7 @@ const query = {
 
     getIncidentsByStatus(status) {
         return ({
-            text: `SELECT * FROM myireportdb.incidents WHERE status = 1`,
+            text: `SELECT * FROM myireportdb.incidents WHERE status = $1`,
             values: [status]
         })
     },
@@ -48,7 +66,11 @@ const query = {
             VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
             values: [
                 newIncident.title,
+<<<<<<< HEAD
                 user.id,
+=======
+                newIncident.createdby,
+>>>>>>> ft-implement-real-time-email-notification
                 newIncident.type,
                 newIncident.location,
                 newIncident.comment,
@@ -101,16 +123,15 @@ const query = {
         })
     },
 
-    regUser(firstName, lastName, otherNames, email, phoneNumber, userName, hashpassword, isAdmin) {
+    regUser(firstName, lastName, email, phoneNumber, userName, hashpassword, isAdmin) {
         return ({
-            text: `INSERT INTO myireportdb.users (first_name, last_name, other_names, 
+            text: `INSERT INTO myireportdb.users (first_name, last_name, 
                 email, phone_number, user_name, password, is_admin)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+                VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
 
             values: [
                 firstName,
                 lastName,
-                otherNames,
                 email,
                 phoneNumber,
                 userName,
@@ -123,6 +144,13 @@ const query = {
     getAllUsers() {
         return ({
             text: `SELECT * FROM myireportdb.users`,
+            values: []
+        })
+    },
+    getAllUsernames() {
+        return ({
+            text: `SELECT user_name, id FROM myireportdb.users
+            ORDER BY user_name ASC`,
             values: []
         })
     },

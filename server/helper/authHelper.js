@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import query from '../queries/dbqueries';
 import pool from '../queries/pool';
+import mailer from './mailer'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,7 +13,7 @@ class Helper {
 
     static async createUser(req) {
         try {
-            const { firstName, lastName, otherNames, email, password, userName, phoneNumber } = req.body;
+            const { firstName, lastName, email, password, userName, phoneNumber } = req.body;
             const username1 = userName.toLowerCase();
 
             const { rowCount } = await pool.query(query.getUserByUserName(username1));
@@ -31,12 +32,12 @@ class Helper {
             //if(password.length < 8) responseHandler.handleError('Password less than acceptable length')
 
             const hashpassword = await bcrypt.hash(password, 10);
-            const user = await pool.query(query.regUser(firstName, lastName, otherNames, email, phoneNumber, userName, hashpassword, isAdmin));
+            const user = await pool.query(query.regUser(firstName, lastName, email, phoneNumber, userName, hashpassword, isAdmin));
 
             return user.rows[0];
 
         } catch (error) {
-            return error;
+            console.log(error);
         }
     }
 
@@ -48,9 +49,9 @@ class Helper {
                 let username1 = userName.toLowerCase();
                 result = await pool.query(query.getUserByUserName(username1));
             }
-            /* else if (email) {
-                 result = await pool.query(query.getUserByUserName(email));
-             }*/
+            else if (email) {
+                result = await pool.query(query.getUserByEmail(email));
+            }
 
             if (!result.rows[0]) return 'accountNotFound';
             const db = result.rows[0];
@@ -61,10 +62,10 @@ class Helper {
             const { id, is_admin } = db;
 
             const token = jwt.sign({ id, email, is_admin }, SECRET, { expiresIn: '12h' });
-
-            return { token, is_admin };
+            //mailer.mail();
+            return { id, token, is_admin };
         } catch (error) {
-            return error;
+            console.log(error);
 
         }
 
@@ -145,16 +146,58 @@ class Helper {
     static async getUserById(req) {
         try {
             const isAdmin = req.user.is_admin;
-
-            if (!isAdmin) {
+            let data = null;
+            let incidents = undefined;
+            if (isAdmin) {
                 return 'forbidden';
             }
 
             let id = parseInt(req.params.id, 10);
             const result = await pool.query(query.getUserById(id));
+            data = await pool.query(query.getAllUserIncidents(id))
+
+            let redFlags = 0, interventions = 0, underInvestigation = 0;
+            let draft = 0, resvd = 0, rejected = 0;
+
             if (result.rowCount < 1) return 'accountNotFound';
 
-            return result.rows[0];
+            const user = result.rows[0];
+            const { email, registered, image, user_name } = user;
+
+            if (data.rows[0]) {
+                incidents = data.rows
+                incidents.forEach(incident => {
+                    switch (incident.status) {
+                        case 'Draft':
+                            draft++
+                            break;
+                        case 'Resolved':
+                            resvd++
+                            break;
+                        case 'Under investigation':
+                            underInvestigation++
+                            break;
+                        case 'Rejected':
+                            rejected++
+                            break;
+                    }
+                    switch (incident.type) {
+                        case 'Red-flag':
+                            redFlags++
+                            break;
+                        case 'Intervention':
+                            interventions++
+                            break;
+                    }
+
+                });
+            }
+            const total = redFlags + interventions;
+            const values = {
+                redFlags, interventions, resvd, total, email, user_name,
+                rejected, draft, underInvestigation, registered, image
+            };
+            return values;
         } catch (error) {
             console.log(error);
         }
@@ -169,7 +212,7 @@ class Helper {
                 return 'forbidden';
             }
 
-            const result = await pool.query(query.getAllUsers());
+            const result = await pool.query(query.getAllUsernames());
 
             if (result.rowCount < 1) return 'accountNotFound';
 
@@ -196,7 +239,7 @@ class Helper {
             return result.rows[0];
 
         } catch (error) {
-            console.log (error);
+            console.log(error);
         }
     }
 }

@@ -11,7 +11,8 @@ class IncidentController {
       })
       return res.status(201).json({
         status: 201,
-        data: [result]
+        data: [result],
+        message: 'Report was submitted successfully'
       });
     } catch (error) {
       console.log(error);
@@ -19,14 +20,14 @@ class IncidentController {
 
   }
 
-  static async get0ne(req, res) {
+  static async getOne(req, res) {
     try {
       const incident = await IncidentHelper.findOne(req);
 
       if (incident === 404) {
         return res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
 
       } else if (incident === 'noIncidentWithId') {
@@ -52,7 +53,7 @@ class IncidentController {
       if (incidents === 404) {
         res.status(404).json({
           status: 404,
-          error: "You have not created any incident"
+          message: "No incident report found"
         });
         return;
       }
@@ -71,7 +72,7 @@ class IncidentController {
       if (result === 404) {
         return res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
         
       } else if(result === 405){
@@ -98,7 +99,7 @@ class IncidentController {
       if (result === 404) {
         res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
         return;
       }
@@ -118,7 +119,7 @@ class IncidentController {
       if (result === 404) {
         res.status(404).json({
           status: 404,
-          error: "Incident not found"
+          message: "Incident not found"
         });
         return;
       }
