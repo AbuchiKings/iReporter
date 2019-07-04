@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import query from '../queries/dbqueries';
 import pool from '../queries/pool';
-import mailer from './mailer'
 import dotenv from 'dotenv';
 
 dotenv.config();
