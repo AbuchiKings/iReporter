@@ -66,11 +66,7 @@ const query = {
             VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
             values: [
                 newIncident.title,
-<<<<<<< HEAD
-                user.id,
-=======
                 newIncident.createdby,
->>>>>>> ft-implement-real-time-email-notification
                 newIncident.type,
                 newIncident.location,
                 newIncident.comment,
