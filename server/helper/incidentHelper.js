@@ -8,8 +8,6 @@ class IncidentHelper {
     static async create(data, user) {
         try {
             if (user.is_admin) return 'notAllowed';
-            data.status = 'Pending';
-
             const { rows } = await pool.query(query.createIncident(data, user));
             return rows[0];
 
@@ -41,19 +39,6 @@ class IncidentHelper {
     static async findAll(req) {
         try {
             const isAdmin = req.user.is_admin;
-<<<<<<< HEAD
-            if (isAdmin) {
-                const { rows, rowCount } = await pool.query(query.getAllIncidents())
-                if (rowCount < 1) return 404;
-                return rows;
-            }
-
-            const userId = req.user.id;
-            const { rows, rowCount } = await pool.query(query.getUserIncidents(userId))
-            if (rowCount < 1) return 404;
-            return rows;
-
-=======
             const id = req.user.id;
             let result, reports;
             const userId = req.query.userId;
@@ -86,7 +71,6 @@ class IncidentHelper {
             if (result.rowCount < 1) return 404;
             reports = result.rows;
             return reports;
->>>>>>> ft-implement-real-time-email-notification
         } catch (error) {
             console.log(error);
         }

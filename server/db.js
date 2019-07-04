@@ -29,7 +29,7 @@ $$;`
 const createIncidentStatus = `DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'incident_status') THEN
-        create type incident_status AS ENUM ('Pending', 'Under investigation', 'Rejected', 'Resolved');
+        create type incident_status AS ENUM ('Draft', 'Under investigation', 'Rejected', 'Resolved');
     END IF;
 END
 $$;`
