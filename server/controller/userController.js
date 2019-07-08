@@ -62,6 +62,9 @@ class UserController {
 
                 case 'accountNotFound':
                     return res.status(404).json({ status: 404, message: 'Account not found' });
+
+                case 'invalidPassword':
+                    return res.status(401).json({ status: 401, message: 'Invalid password' });
             }
             return res.status(201).json({
                 status: 201,
@@ -169,10 +172,12 @@ class UserController {
 
                 case 'accountNotFound':
                     return res.status(404).json({ status: 404, message: 'Account not found' });
+
+                case 'invalidPassword':
+                    return res.status(401).json({ status: 401, message: 'Invalid password' });
             }
-            return res.status(204).json({
+            return res.status(200).json({
                 status: 204,
-                data: [result],
                 message: 'Account deleted successfully'
 
             })
@@ -181,7 +186,7 @@ class UserController {
         }
     }
 
-    
+
 }
 
 export default UserController;

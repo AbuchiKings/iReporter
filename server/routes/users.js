@@ -30,7 +30,7 @@ router.get('/users',
     UserController.getAllUsers
 );
 
-router.delete('/users/delete',
+router.post('/users/delete',
     auth.verifyToken,
     UserController.deleteUser
 )

@@ -73,12 +73,17 @@ class Helper {
     static async updateUserEmail(req) {
         try {
             const userId = parseInt(req.user.id, 10);
-
-            const { rows } = await pool.query(query.getUserById(userId));
-            if (!rows[0]) return 'accountNotFound';
+            const password = req.body.password;
+            const data = await pool.query(query.getUserById(userId));
+            if (!data.rows[0]) return 'accountNotFound';
+            const db = data.rows[0];
 
             const foundUser = await pool.query(query.getUserByEmail(req.body.email));
             if (foundUser.rowCount > 0) return 'notUniqueEmail';
+
+            const validPassword = await bcrypt.compare(password, db.password);
+
+            if (!validPassword) return 'invalidPassword';
 
             const result = await pool.query(query.updateUserEmail(req.body.email, userId));
 
@@ -90,7 +95,7 @@ class Helper {
             return { token, user };
 
         } catch (error) {
-            return error;
+            console.log(error);
         }
     }
 
@@ -229,7 +234,12 @@ class Helper {
 
             if (rowCount < 1) return 'accountNotFound';
 
+            const password = req.body.psw;
             const user = rows[0];
+            const validPassword = await bcrypt.compare(password, user.password);
+          
+            if (!validPassword) return 'invalidPassword';
+
             if (user.is_admin && user.id === 1) {
                 return 'forbidden';
             }
