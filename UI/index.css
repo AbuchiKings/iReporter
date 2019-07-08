@@ -1,0 +1,429 @@
+html, body {
+    margin: 0 auto;
+    box-sizing: border-box;
+    font-family: 'Roboto Mono', monospace;
+    overflow-x: hidden;
+    font-size: 13.5px;
+    min-height: 100%;
+}
+
+body {
+    position: relative;
+}
+
+/*********************popup form****************************/
+
+div.signup {
+    display: none;
+    text-align: center;
+    background: rgb(0, 0, 0, 0.7);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    color: white;
+}
+
+form {
+    margin-bottom: auto;
+    background: rgb(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px 20px;
+    width: 60%;
+    margin: auto;
+    border-radius: 1em;
+    justify-content: space-around;
+    align-items: center;
+    top: 45px;
+    position: absolute;
+    left: 50%;
+    margin-left: -33%;
+}
+
+form .form-inputs-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.input-container {
+    margin-left: 4px;
+    margin-right: 4px;
+    flex: 0 45%;
+    font-weight: 500;
+    font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
+}
+
+form .sign-up {
+    font-size: calc(15px + (30 - 15) * ((100vw - 300px) / (1600 - 300)));
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+}
+
+form label span {
+    font-weight: 700;
+}
+
+input {
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+    max-width: 100%;
+    padding-left: 5px;
+    height: 40px;
+    display: block;
+    width: 100%;
+    min-width: 192px;
+    font-size: 14px;
+    text-align: start;
+    border-style: none;
+    border-radius: 3px;
+    background-color: rgb(238, 247, 245);
+    line-height: 20px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+}
+
+input:focus {
+    outline: none;
+}
+
+div button[type=submit] {
+    background-color: #e80a89;
+}
+
+div button {
+    width: 100%;
+    font: 14px sans-serif;
+    color: #fff;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    opacity: 0.7;
+    border: none;
+    outline: none;
+}
+
+div button.cancel {
+    background-color: red;
+    margin-top: 10px;
+}
+
+.signup div button:hover {
+    background-color: #2b050c;
+}
+
+.form-submit-container div:nth-of-type(2) {
+    font-size: 13px;
+    text-align: center;
+    color: #fff;
+}
+
+div.returning-here a {
+    color: rgb(67, 141, 6);
+}
+
+div.returning-here a:hover {
+    color: #e80a89;
+    text-decoration: underline;
+}
+
+.input-errors {
+    display: none;
+    color: red;
+    font-size: 13px;
+    width: 100%;
+}
+
+/************************end*******************************/
+
+.section1 {
+    background: linear-gradient( to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(./images/african.jpg);
+    color: white;
+    background-position: center;
+    min-height: 100vh;
+    width: 100%;
+}
+
+header {
+    display: block;
+    top: 0px;
+    z-index: 2;
+    width: 100%;
+}
+
+.section1 nav {
+    padding: 10px;
+}
+
+.div-left {
+    display: inline-block;
+    font-weight: bolder;
+}
+
+.div-right {
+    margin-left: auto;
+    float: right;
+}
+
+.div-right span {
+    padding: 8px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.main-top {
+    text-align: center;
+}
+
+.main-top h1 {
+    margin-top: 70px;
+    font-size: 60px;
+}
+
+.main-top h1 span {
+    color: rgb(67, 141, 6);
+    font-family: Lobster, sans-serif;
+    /*font-family: "Cabin Sketch", cursive;*/
+}
+
+.app-name p {
+    font-size: 15px;
+    font-style: italic;
+}
+
+.div-seeSomething {
+    font-size: 20px;
+}
+
+.button1 {
+    margin-bottom: 100px;
+}
+
+.button1, .section3 div.over-button button {
+    background-color: rgb(41, 49, 121);
+    color: white;
+    outline: none;
+    border: none;
+    height: 40px;
+    width: 230px;
+    padding: 3px;
+    font-size: 15px;
+    cursor: pointer;
+    opacity: 0.8;
+    word-spacing: 5px;
+    letter-spacing: 3px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+.button1:hover, .section3 div.over-button button:hover {
+    opacity: 1;
+    width: 235px;
+    height: 45px;
+}
+
+.section2 {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.section2 .div {
+    flex: 1 50%;
+    min-width: 300px;
+}
+
+.section2 .div-left {
+    background: linear-gradient( to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(./images/activism_.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    position: relative;
+    min-height: 100vh;
+}
+
+.div-left div {
+    position: absolute;
+    top: 50%;
+    margin-top: -120px;
+    left: 50%;
+    margin-left: -140px;
+}
+
+.section2 .div-left h1 {
+    font-size: 45px;
+    color: white;
+    padding: 10px;
+}
+
+.section2 .div-left h1:nth-of-type(1) {
+    padding-top: 0px;
+}
+
+.section2 .div-right {
+    text-align: center;
+    background-color: white;
+    color: rgb(34, 34, 34);
+    margin-top: 20px;
+}
+
+.section2 .div-right div.over {
+    padding: 15px 20px;
+    font-size: 20px;
+}
+
+.section2 .div-right div:nth-of-type(2), .section2 .div-right div:nth-of-type(3) {
+    margin-top: 50px;
+}
+
+#about .div-right img {
+    width: 80px;
+    height: 90px;
+}
+
+.section2 .div-right p {
+    padding: 0px 20px;
+    font-size: 20px;
+}
+
+.section3 {
+    margin-top: 30px;
+    min-height: 40vh;
+    color: white;
+    background-color: rgb(34, 34, 34);
+    padding: 10px;
+    position: relative;
+}
+
+.section3>p:nth-of-type(1) {
+    font-size: 35px;
+}
+
+.section3 div:nth-of-type(1) {
+    text-align: center;
+}
+
+.steps {
+    font-size: 20px;
+    text-align: left;
+    display: inline-block;
+}
+
+div.over-button {
+    text-align: center;
+}
+
+.section3 div.over-button button {
+    background-color: #e80a89;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.section3 div.over-button span {
+    margin-right: 5px;
+    font-size: 12px;
+}
+
+.section3 div.over-button .a-login {
+    color: rgb(67, 141, 6);
+    font-size: 12px;
+}
+
+.section3 div.over-button .a-login:hover {
+    text-decoration: underline;
+    color: #e80a89;
+}
+
+footer {
+    background-color: #fff;
+    background-color: rgb(12, 14, 15);
+    color: rgb(100, 100, 100);
+    font-weight: bold;
+    width: 100%;
+    padding: 20px 0 5px 0;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    text-align: left;
+    font-size: 13px;
+}
+
+footer div:nth-of-type(1) span {
+    display: inline-block;
+}
+
+footer div:nth-of-type(2) {
+    margin-top: 20px;
+    text-align: center;
+}
+
+footer span {
+    padding: 5px;
+}
+
+@media(max-width: 45em) {
+    form {
+        padding-top: 0;
+        padding-bottom: 3px;
+        top: 5px;
+        margin-left: -35%;
+        width: 80%;
+        left: 50%;
+        margin-left: -45%;
+    }
+    form label {
+        display: none;
+    }
+    input {
+        height: 30px;
+        margin: 2px;
+    }
+    div button {
+        height: 30px;
+    }
+    .input-container {
+        flex: 1 45%;
+    }
+}
+
+@media(max-width: 30em) {
+    .section2 .cards {
+        border: 1px solid rgb(240, 240, 240);
+        box-shadow: 1px 5px 5px 1px;
+        border-radius: 10px;
+        min-height: 300px;
+        min-width: 200px;
+        margin: 50px 5px;
+    }
+    #about .div-right img {
+        margin-top: 25px
+    }
+    .section2 .div-left {
+        background: linear-gradient( to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(./images/activism_1.jpg);
+        background-position: center;
+        min-height: 80vh;
+    }
+    .section3 {
+        text-align: center;
+    }
+    .steps {
+        font-size: 20px;
+    }
+    .section3 div:nth-of-type(1) {
+        text-align: left;
+    }
+}
