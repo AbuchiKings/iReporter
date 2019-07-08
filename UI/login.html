@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Abuchi Ndinigwe">
+    <meta name="keyword" content="iReporter, Red-flag, Intervention, Corruption, End corruption">
+    <meta name="description"
+        content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
+    <title>iReporter-Login</title>
+    <link href="login.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+</head>
+
+<body class="login-body">
+
+    <header>
+        <nav class="nav-bar">
+            <a href="index.html" class="app-name"><span>iR</span>eporter</a>
+            <a href="./signup.html"><span class="signup-link">GET STARTED</span></a>
+        </nav>
+    </header>
+
+
+    <section id="login-main">
+
+        <div id="aside">
+            <h1 class="see-something">
+                <p>See Something</p>
+                <p>Say Something</p>
+            </h1>
+        </div>
+
+        <div id="login-wrapper">
+            <form id="login-form">
+                <p class="log-in">Log in</p>
+                <div class="errors"></div>
+                <div class="login-inputs-wrapper">
+                    <div class="login-errors">
+                    </div>
+                    <p>
+                        <label for="email">
+                            <span>Email </span>
+                        </label>
+                    </p>
+                    <p>
+                        <input type="text" id="email" name="email">
+
+                    </p>
+                    <br>
+                    <p>
+                        <label for="pwd">
+                            <span>Password </span>
+                        </label>
+                    </p>
+                    <p>
+                        <input type="password" id="pwd" name="password">
+
+                    </p>
+                    <BR>
+
+                    <p> <button type="submit" class="login-bt" disabled>Log in</button> </p>
+
+                    <div class="report-input-errors input-errors"></div>
+
+                    <p class="new-here">New here? <a href="">Create an account</a> </p>
+
+
+                </div>
+
+
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div>
+            <span>Privacy policy</span>
+            <span>Terms of use</span>
+        </div>
+        <div>
+            <p>&copy 2019 iReporter. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/checks.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

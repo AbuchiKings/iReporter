@@ -1,0 +1,256 @@
+html {
+    font-family: 'Roboto Mono', monospace;
+    background: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(./images/abj-women-protest2.png);
+    background-position: center;
+}
+
+body {
+    margin: 0 auto;
+    background-position: center;
+    background-color: black;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    min-height: 100vh;
+}
+
+header {
+    padding: 15px 0;
+    background-color: black;
+    box-sizing: border-box;
+    margin-bottom: 40px;
+    border-bottom: 4px solid rgb(67, 141, 6);
+}
+
+header nav {
+    padding: 10px;
+}
+
+header span {
+    color: rgb(67, 141, 6);
+}
+
+a {
+    text-decoration: none;
+    color: initial;
+}
+
+a.app-name {
+    font-size: calc(30px + (40 - 30) * ((100vw - 300px) / (1600 - 300)));
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 2px;
+    float: left;
+    font-weight: bolder;
+}
+
+header .signup-link {
+    color: #fff;
+    float: right;
+    font-size: calc(17px + (20 - 17) * ((100vw - 300px) / (1600 - 300)));
+    font-weight: lighter;
+}
+
+#login-main {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 85%;
+    justify-content: center;
+    align-items: center;
+}
+
+main, aside {
+    flex: 1 45%;
+    margin: auto;
+    max-width: 400px;
+    display: inline-block;
+}
+
+section #aside {
+    width: 45%;
+    text-align: center;
+    background: rgb(34, 34, 34);
+}
+
+.see-something {
+    font-family: Monoton;
+    font-weight: 900;
+    font-size: 5vw;
+    font-style: italic;
+    color: #523ee8;
+    word-spacing: 10px;
+    letter-spacing: 3px;
+    vertical-align: middle;
+}
+
+section #login-wrapper, section #aside {
+    flex: 40%;
+}
+
+section #login-wrapper{
+    margin-bottom: 20px;
+}
+
+div #login-form {
+    box-sizing: border-box;
+    min-width: 300px;
+    padding: 1em;
+    border-radius: 1em;
+    background: rgb(34, 34, 34);
+}
+
+#login-form div {
+    margin:  8%;
+}
+
+form .log-in, label span {
+    width: 120px;
+    font-weight: 700;
+    color: white;
+}
+
+form .log-in {
+    font-size: calc(15px + (30 - 15) * ((100vw - 300px) / (1600 - 300)));
+}
+
+label span {
+    font-size: calc(13px + (15 - 13) * ((100vw - 300px) / (1600 - 300)));
+}
+
+input, input #pwd {
+    font: 13px sans-serif;
+    width: 100%;
+    height: 40px;
+    background-color: rgb(238, 247, 245);
+    box-sizing: border-box;
+    border: 2px solid rgb(214, 212, 212);
+    border-radius: 0.4em;
+    -webkit-border-radius: 0.4em;
+    -moz-border-radius: 0.4em;
+    -ms-border-radius: 0.4em;
+    -o-border-radius: 0.4em;
+}
+
+input:focus {
+    outline: none;
+}
+
+input:focus {
+    border-color: none;
+}
+
+label {
+    position: relative;
+}
+
+p button {
+    background-color: #e80a89;
+    border: 1px solid #e80a89;
+    width: 100%;
+    font: 14px sans-serif;
+    color: #fff;
+    height: 35px;
+    cursor: pointer;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+}
+
+form .login-bt:hover {
+    background-color: #2b050c;
+}
+
+.input-errors {
+    display: none;
+    color: red;
+    font-size: 13px;
+    width: 100%;
+}
+.errors {
+    display: block;
+    color: white;
+    font-size: 13px;
+    width: 100%;
+}
+
+div .new-here {
+    font-size: 13px;
+    text-align: center;
+    color: #fff;
+}
+
+.new-here a {
+    text-decoration: none;
+    color: rgb(67, 141, 6);
+}
+
+/*.new-here a:visited {
+    color: #9c21a0;
+}*/
+
+.new-here a:hover {
+    color: #e80a89;
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #fff;
+    background-color: rgb(12, 14, 15);
+    color: rgb(100, 100, 100);
+    font-weight: bold;
+    width: 100%;
+    padding: 20px 0 5px 0;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    text-align: left;
+    font-size: 13px;
+}
+
+footer div:nth-of-type(1) span {
+    display: inline-block;
+}
+
+footer div:nth-of-type(2) {
+    margin-top: 20px;
+    text-align: center;
+}
+
+footer span {
+    padding: 5px;
+}
+
+@media(max-width: 700px) {
+    h1.see-something {
+        font-size: 6vw;
+    }
+    div #login-form {
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
+    }
+}
+
+@media(max-width: 480px) {
+    section #aside {
+        display: none;
+        margin-right: -1000px;
+        font-size: 6vw;
+    }
+    section #login-wrapper {
+        width: 100%;
+    }
+    div #login-form {
+        border: none;
+        min-width: 90%;
+    }
+    #login-form div {
+        margin: 0;
+    }
+}
