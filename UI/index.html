@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Abuchi Ndinigwe">
+    <meta name="keyword" content="iReporter, Red-flag, Intervention, Corruption, End corruption">
+    <meta name="description"
+        content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
+    <link rel="stylesheet" type="text/css" media="screen" href="index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <title>iReporter - Home</title>
+</head>
+
+<body>
+    <!-------------------popup form------------------------->
+    <div class="signup">
+        <form action="" class="signup-form" id="signup-form">
+            <div class=".errors"></div>
+            <p class="sign-up">Sign up</p>
+
+            <div class="form-inputs-container">
+                <div class="input-container">
+                    <p>
+                        <label for="first-name">
+                            <span>First name </span>
+                        </label>
+                    </p>
+
+                    <input type="text" id="first-name" name="first-name" placeholder="First name" required>
+
+
+                </div>
+
+                <div class="input-container">
+                    <p>
+                        <label for="last-name">
+                            <span>Last name </span>
+                        </label>
+                    </p>
+                    <input type="text" id="last-name" name="last-name" placeholder="Last name" required>
+
+
+                </div>
+
+
+                <div class="input-container">
+                    <p>
+                        <label for="email">
+                            <span>Email </span>
+                        </label>
+                    </p>
+
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+
+
+                </div>
+
+
+                <div class="input-container">
+                    <p>
+                        <label for="phone-number">
+                            <span>Phone number </span>
+                        </label>
+                    </p>
+
+                    <input type="text" id="phone-number" name="phone-number" placeholder="Phone number" required>
+
+
+                </div>
+
+                <div class="input-container">
+                    <p>
+                        <label for="username">
+                            <span>Username</span>
+                        </label>
+                    </p>
+                    <input type="text" id="username" name="username" placeholder=" Username" required>
+
+                </div>
+
+                <div class="input-container">
+                    <p>
+                        <label for="password">
+                            <span>Password </span>
+                        </label>
+                    </p>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+
+
+                </div>
+
+            </div>
+            <BR>
+            <div class="form-submit-container">
+                <div>
+                    <button type="submit" class="signup-bt">Sign up</button>
+
+                    <button type="button" class="btn cancel" onclick="closeSignupForm()">Close</button>
+
+                </div>
+
+                <br>
+                <div class="returning-here">Already have an account? <a href="login.html">Sign in</a> </div>
+            </div>
+            <div class=" input-errors"></div>
+
+        </form>
+
+
+
+    </div>
+    <!---------------------------------------------------------------------------->
+
+    <section class="section1">
+        <header>
+            <nav class="nav-bar">
+                <div class="div-left">
+                    <h1>Welcome!</h1>
+                </div>
+                <div class="div-right">
+                    <span> <a href="login.html" class="links">Sign in</a></span>
+                    <span> <a href="#about" class="links">About</a></span>
+                    <span> <a href="#faq" class="links">FAQ</a></span>
+                    <p class="icons">
+
+                    </p>
+                </div>
+            </nav>
+        </header>
+        <div class="response"></div>
+        <div class="main-top">
+            <div class="app-name">
+                <h1><span>iR</span>eporter</h1>
+                <p>"Even you can help make the world a better place"</p>
+            </div>
+            <BR></BR>
+            <div class="div-seeSomething">
+                <p>See a societal situation in need of change?</p>
+                <br>
+                <button class="button1" onclick="openSignupForm()">Let's get started</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section2" id="about">
+        <div class="div-left div">
+            <div class="div-over-h1" h>
+                <h1>Who We Are</h1>
+                <h1>What We Do</h1>
+            </div>
+        </div>
+        <div class="div-right div">
+
+            <div class="cards">
+                <img src="images/bank-building.png" alt=" House icon">
+                <p>iReporter is a non-profit organinazition</p>
+            </div>
+
+
+            <div class="cards">
+                <img src="images/megaphone.svg" alt=" House icon">
+                <p>
+                    iReporter enables any/every citizen to bring any form of corruption to the notice of appropriate
+                    authorities and the general public.
+
+                </p>
+            </div>
+            <div class="cards">
+                <img src="images/notes.svg" alt=" House icon">
+                <p>You can also report on situations in need of government intervention.</p>
+
+            </div>
+
+
+
+        </div>
+    </section>
+
+    <section class="section3" id="faq">
+        <p class="">How It Works</p>
+        <div>
+            <div class="steps">
+                <p>Sign up</p>
+                <p>Get verified </p>
+                <p>Start reporting on issues around you</p>
+            </div>
+        </div>
+
+        <div class="over-button">
+            <button onclick="openSignupForm()">Get started</button>
+            <p><span>Already have an account? </span><a class="a-login" href="login.html">Sign in</a></p>
+        </div>
+
+    </section>
+    <footer>
+        <div>
+            <span>Privacy policy</span>
+            <span>Terms of use</span>
+        </div>
+        <div>
+            <p>&copy 2019 iReporter. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/checks.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
