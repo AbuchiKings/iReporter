@@ -201,6 +201,16 @@ const query = {
         })
     },
 
+    updateUserImage(imageId, imageUrl, userId) {
+        return ({
+            text: `UPDATE myireportdb.users SET
+            image = COALESCE($1, image),
+            image_id = COALESCE($2, image_id)
+            WHERE id = $3 RETURNING *`,
+            values: [imageUrl, imageId, userId]
+        })
+    },
+
     getUserReportsCount(status, userId) {
         return ({
             text: `SELECT COUNT(*) FROM myireportdb.incidents WHERE createdby = $1 AND status = $2`,
