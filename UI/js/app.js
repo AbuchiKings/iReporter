@@ -16,6 +16,8 @@ const profilePix = document.querySelector('#profile-picture');
 const newEmailForm = document.querySelector('.email-update');
 const newPasswordForm = document.querySelector('.password-update');
 const deleteForm = document.querySelector('.delete-form');
+const dpForm = document.querySelector('#dp-upload');
+const uploadDp = document.querySelector('.uploadDp');
 
 
 
@@ -23,11 +25,36 @@ const deleteForm = document.querySelector('.delete-form');
 
 /***************functions******************/
 
+const onSuccess = async (res) => {
+    if (res.ok) return res.json()
+        .then(response => response)
+    else {
+        //const er; 
+        return Promise.reject(await res.json());
+    }
+
+};
+
+const onError = (err) => {
+    const { message, error } = err;
+    if (message) {
+        if (
+            message.includes('JsonWebTokenError') ||
+            message.includes('TokenExpiredError') ||
+            message.includes('Unauthorized Access')
+        ) {
+            localStorage.clear();
+            window.location.replace('./index.html');
+        }
+    }
+    return ({ error, message });
+};
+
 const requestHandler = (method = 'GET', url, body = undefined) => {
     const token = localStorage.getItem('token');
     const headers = new Headers({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
     });
 
     const options = {
@@ -40,28 +67,8 @@ const requestHandler = (method = 'GET', url, body = undefined) => {
     const request = new Request(url, options)
 
     return fetch(request)
-        .then(async (res) => {
-            if (res.ok) return res.json();
-            else {
-                //const er; 
-                return Promise.reject(await res.json());
-            }
-        })
-        .then(response => response)
-        .catch((err) => {
-            const { message, error } = err;
-            if (message) {
-                if (
-                    message.includes('JsonWebTokenError') ||
-                    message.includes('TokenExpiredError') ||
-                    message.includes('Unauthorized Access')
-                ) {
-                    localStorage.clear();
-                    window.location.replace('./index.html');
-                }
-            }
-            return ({ error, message });
-        });
+        .then(onSuccess)
+        .catch(onError);
 };
 
 const createTag = (parentNode, tag, content, class_name = undefined) => {
@@ -71,9 +78,11 @@ const createTag = (parentNode, tag, content, class_name = undefined) => {
     parentNode.appendChild(el)
 };
 
-const errorHandler = (input) => {
-
+const spinner = () => {
+    const loader = document.querySelector('.loader-div');
+    loader.classList.toggle('over-spinner');
 }
+
 
 const removeIncidentCards = () => {
     if (dashboard && dashboard.firstChild) {
@@ -280,6 +289,10 @@ const getUserProfile = async () => {
         return;
     }
     const [values] = response.data;
+    const img = document.querySelector('#profile-picture');
+    if (values.image !== null) {
+        img.src = values.image;
+    }
     const properties = Object.keys(values);
     properties.forEach((prop) => {
         let el = document.querySelector(`[data-${prop}-value]`);
@@ -291,6 +304,7 @@ const getUserProfile = async () => {
 
 const updateEmail = async (e) => {
     e.preventDefault();
+    spinner();
     const password = newEmailForm.psw.value;
     const email = newEmailForm.email.value;
     const data = { password, email };
@@ -307,14 +321,16 @@ const updateEmail = async (e) => {
     if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
     createTag(mesgContainer, 'p', response.message)
     getUserProfile();
+    spinner()
     return;
 };
 
 const updatePassword = async (e) => {
     e.preventDefault();
+    spinner();
     const oldPassword = newPasswordForm.oldPsw.value;
     const newPassword = newPasswordForm.newPsw.value;
-    const data = { oldPassword, newPassword };
+    const data = ({ oldPassword, newPassword });
     const updateURL = `${baseURL}/users/update-password`;
     const mesgContainer = document.querySelector('.response2');
     const response = await requestHandler('PATCH', updateURL, data);
@@ -323,17 +339,65 @@ const updatePassword = async (e) => {
             if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
             createTag(mesgContainer, 'p', response.message)
         }
+        spinner();
         return;
     }
     if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
     createTag(mesgContainer, 'p', response.message)
+    spinner();
     return;
 
+}
+
+const setDp = async (e) => {
+    e.preventDefault();
+    spinner();
+    const picURL = `${baseURL}/users/profile-picture`;
+    const upload = document.getElementById('dp');
+    const myImg = upload.files[0];
+    const mesgContainer = document.querySelector('.response3');
+    const img = document.querySelector('#profile-picture');
+    const data = new FormData();
+    data.append('profilePic', myImg);
+    const token = localStorage.getItem('token');
+    const headers = new Headers({
+        Authorization: `Bearer ${token}`
+    });
+
+    const options = {
+        method: 'PATCH',
+        mode: 'cors',
+        headers,
+        body: data
+    }
+
+    const request = new Request(picURL, options)
+    const response = await fetch(request)
+        .then(onSuccess)
+        .catch(onError);
+
+
+    if (!response.data) {
+        if (response.message) {
+            if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
+            createTag(mesgContainer, 'p', response.message)
+        }
+        spinner()
+        return;
+    }
+    if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
+    createTag(mesgContainer, 'p', response.message);
+    const { image } = response.data[0];
+    img.src = image;
+    upload.value= '';
+    spinner()
+    return;
 }
 
 const deleteUser = async (e) => {
     e.preventDefault();
     confirm('Account and all reports will be deleted. Continue?');
+    spinner();
     const deleteURL = `${baseURL}/users/delete`;
     const psw = deleteForm.password.value;
     const data = { psw };
@@ -345,6 +409,7 @@ const deleteUser = async (e) => {
             if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
             createTag(mesgContainer, 'p', response.message)
         }
+        spinner()
         return;
     }
     window.location.replace('./index.html')
@@ -390,6 +455,9 @@ if (newPasswordForm) {
 }
 if (deleteForm) {
     deleteForm.addEventListener('submit', deleteUser);
+}
+if (dpForm) {
+    dpForm.addEventListener('submit', setDp);
 }
 
 
