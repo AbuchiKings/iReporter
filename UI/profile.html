@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>iReporter - Profile</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="profile.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="spinner.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="loader-div">
+        <div class="spinner"></div>
+    </div>
+    <div class="popup-div first-popup">
+        <form action="" class="popup-form email-update" id="email-update">
+            <h3>Update email</h3>
+            <br>
+            <div class="response"></div>
+            <br>
+            <p class="over-input">
+                <label for="password">Password</label>
+                <input type="password" name="psw" placeholder="Enter password" required>
+            </p>
+
+            <p class="over-input">
+                <label for="new-email">New email</label>
+                <input type="email" name="email" placeholder="Enter new email" required>
+            </p>
+
+            <button type="submit" class="btn">Submit</button>
+            <button type="button" class="btn cancel" onclick="closeEmailForm()">Close</button>
+        </form>
+    </div>
+
+
+    <div class="popup-div second-popup">
+        <form action="" class="popup-form password-update" id="password-update">
+            <h3>Update password</h3>
+            <br>
+            <div class="response2"></div>
+            <br>
+            <p class="over-input">
+                <label for="oldPSW">Old password</label>
+                <input type="password" name="oldPsw" placeholder="Enter old password" required>
+            </p>
+
+            <p class="over-input">
+                <label for="newPsw">New password</label>
+                <input type="password" name="newPsw" minlength="5" placeholder="Enter new password" required>
+            </p>
+
+            <button type="submit" class="btn">Submit</button>
+            <button type="button" class="btn cancel" onclick="closePasswordForm()">Close</button>
+        </form>
+    </div>
+
+    <div class="popup-div third-popup">
+        <form action="" class="popup-form dp-upload" id="dp-upload" enctype="multipart/form-data">
+            <h3>Upload Picture</h3>
+            <br>
+            <div class="response3"></div>
+            <p class="over-input">
+                <input type="file" id="dp" name="profilePic" accept="image/*;capture=camera">
+            </p>
+            <button type="submit" class="btn uploadDp">Submit</button>
+            <button type="button" class="btn cancel" onclick="closeImageForm()">Close</button>
+        </form>
+    </div>
+
+    <div class="popup-div fourth-popup">
+        <form action="" class="popup-form delete-form " id="deletion">
+            <h3>Delete Account</h3>
+            <br>
+            <div class="response4"></div>
+            <br>
+            <p class="over-input">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autofocus required placeholder="Enter password">
+            </p>
+
+            <button type="submit" class="btn">Delete</button>
+            <button type="button" class="btn cancel" onclick="closeDeleteForm()">Close</button>
+        </form>
+    </div>
+
+    <header>
+        <nav class="nav-bar">
+            <div class="logo-wrapper">
+                <a href="" class="app-name"><span>iR</span>eporter</a>
+                <a href="javascript:void(0)" class="first-icon" onclick="openNav()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="side-nav" id="nav-div">
+        <a href="javascript:void(0)" class="icon" id="icon" onclick="closeNav()">&times;</a>
+        <a href="user-dashboard.html" class="link" id="first-link">MY DASHBOARD</a>
+        <a href="create-report.html" class="link" id="second-link">CREATE REPORT</a>
+        <a href="profile.html" class="link active" id="third-link">MY PROFILE</a>
+        <a href="./login.html" class="signout-link link">SIGN OUT</a>
+
+    </div>
+    <section class="bg-design"></section>
+    <div class="profile-top-wrapper">
+        <div class="server-errors"></div>
+        <div class="profile-actions">
+            <div class="joined">
+                <p>
+                    <span class=" value join-date" data-registered-value></span>
+                </p>
+
+
+            </div>
+            <div class="dropdown settings">
+                <p class="dropbtn">Manage<span></span></p>
+                <div class="dropdown-content">
+                    <p id="update-email">Email</p>
+                    <p id="update-password">Password</p>
+                    <p id="delete-account">Delete Account</p>
+                </div>
+            </div>
+
+        </div>
+        <div class="dp-wrapper">
+            <div class="user-photo" id="user-photo">
+                <img src="https://via.placeholder.com/150" alt="Profile picture" id="profile-picture">
+            </div>
+            <div class="dp-popup" id="img-options">
+                <p class="dp-paragraph" id="change-dp" onclick="openImageForm()">Change</p>
+                <p class="dp-paragraph" id="view-dp">View</p>
+            </div>
+        </div>
+
+        <p>
+            <p class="value" data-user_name-value></p>
+            <br>
+            <p class="value" data-email-value></p>
+
+        </p>
+        <div class="section">
+            <div class="details-wrap">
+                <div class="details statistics">
+                    <div class="details-right">
+                        <p>
+                            <span class="prop" data-redFlags>Red-flags: </span>
+                            <span class="value" data-redFlags-value></span>
+                        </p>
+                        <p>
+                            <span class="prop" data-interventions>Interventions: </span>
+                            <span class="value" data-interventions-value></span>
+                        </p>
+                    </div>
+
+                    <div class="details-left">
+                        <p>
+                            <span class="prop" data-draft>Draft: </span>
+                            <span class="value" data-draft-value></span>
+                        </p>
+
+
+                        <p>
+                            <span class="prop" data-underInvestigation>Under investigation: </span>
+                            <span class="value" data-underInvestigation-value></span>
+                        </p>
+
+                        <p>
+                            <span class="prop" data-rejected>Rejected: </span>
+                            <span class="value" data-rejected-value></span>
+                        </p>
+
+                        <p>
+                            <span class="prop" data-resvd>Resolved: </span>
+                            <span class="value" data-resvd-value></span>
+                        </p>
+
+
+                    </div>
+
+
+
+                </div>
+                <div class="div-over-total">
+
+                    <p>
+                        <span class="prop" data-total>Total: </span>
+                        <span class="value" data-total-value></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty-div"></div>
+    </div>
+
+
+    <footer>
+        <div>
+            <span>Privacy policy</span>
+            <span>Terms of use</span>
+        </div>
+        <div>
+            <p>&copy 2019 iReporter. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/checks.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</body>
+
+</html>
