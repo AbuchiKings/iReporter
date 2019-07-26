@@ -184,7 +184,8 @@ class UserController {
 
                 return res.status(201).json({
                     status: 201,
-                    data: [result]
+                    data: [result],
+                    message: 'Updated'
 
                 });
             });
