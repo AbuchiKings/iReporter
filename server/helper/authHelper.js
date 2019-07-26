@@ -4,9 +4,19 @@ import jwt from 'jsonwebtoken';
 import query from '../queries/dbqueries';
 import pool from '../queries/pool';
 import dotenv from 'dotenv';
+import cloudinary from 'cloudinary';
+import { request } from 'https';
+
 
 dotenv.config();
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 const SECRET = process.env.JWT_KEY;
+
 
 class Helper {
 
@@ -227,6 +237,24 @@ class Helper {
 
     }
 
+    static async createProfileImage(req, data) {
+        try {
+            const result = await cloudinary.uploader.upload(data, {upload_preset:'dhuokyu2'})
+            if (result === undefined || !result.url) {
+                return 'cloudinary error';
+            }
+
+            const userId = parseInt(req.user.id, 10)
+            const { public_id, secure_url } = result;
+            const userInfo = await pool.query(query.updateUserImage(public_id, secure_url, userId));
+            const { image, image_id } = userInfo.rows[0]
+            return {image, image_id};
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     static async deleteUser(req) {
         try {
             const userId = parseInt(req.user.id, 10);
@@ -237,7 +265,7 @@ class Helper {
             const password = req.body.psw;
             const user = rows[0];
             const validPassword = await bcrypt.compare(password, user.password);
-          
+
             if (!validPassword) return 'invalidPassword';
 
             if (user.is_admin && user.id === 1) {

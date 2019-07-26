@@ -1,6 +1,8 @@
 import 'babel-polyfill';
 import Helper from '../helper/authHelper';
-
+import dotenv from 'dotenv';
+import formidable from 'formidable';
+import { relative, join, resolve } from 'path'
 
 
 class UserController {
@@ -156,7 +158,39 @@ class UserController {
                 status: 200,
                 data: [result]
 
-            })
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    static async createProfileImage(req, res) {
+        try {
+            let result;
+            const form = new formidable.IncomingForm();
+            form.parse(req);
+
+            form.on('fileBegin', function (name, file) {
+                file.path = join(resolve('./'), `/uploads/${file.name}`);
+            });
+
+            form.on('file', async function (name, file) {
+                result = await Helper.createProfileImage(req, file.path);
+                console.log('Uploaded ' + file.name);
+                console.log(result);
+                if (result === 'cloudinary error') {
+                    return res.status(503).json({status: 503, message: 'Service unavailable'})
+                }
+
+                return res.status(201).json({
+                    status: 201,
+                    data: [result],
+                    message: 'Updated'
+
+                });
+            });
+
+
         } catch (error) {
             console.log(error);
         }

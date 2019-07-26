@@ -1,9 +1,22 @@
-import { Router } from 'express';
-import UserController from '../controller/userController'
-import auth from '../middleware/Auth'
+//import { Router } from 'express';
+import express from 'express'
+import UserController from '../controller/userController';
+import auth from '../middleware/Auth';
+import util from 'util';
 
-const router = Router();
 
+/*var storage = multer.diskStorage({
+    destination: '/tmp'
+    ,
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now())
+    }
+})
+
+var upload = multer({ storage: storage })*/
+
+const app = express()
+const router = express.Router();
 router.patch(
     '/users/update-email',
     auth.verifyToken,
@@ -30,10 +43,15 @@ router.get('/users',
     UserController.getAllUsers
 );
 
+router.patch('/users/profile-picture',
+    auth.verifyToken,
+    UserController.createProfileImage
+);
+
 router.post('/users/delete',
     auth.verifyToken,
     UserController.deleteUser
-)
+);
 
 
 export default router
