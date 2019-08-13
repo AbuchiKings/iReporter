@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Abuchi Ndinigwe">
+    <meta name="keyword" content="iReporter, Red-flag, Intervention, Corruption, End corruption">
+    <meta name="description"
+        content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
+    <title>iReporter - Make Report</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="create-report.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body id="crt-rpt-body">
+
+    <header>
+        <nav class="nav-bar">
+            <div class="logo-wrapper">
+                <a href="index.html" class="app-name"><span>iR</span>eporter</a>
+                <a href="javascript:void(0)" class="first-icon" onclick="openNav()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <div class="side-nav" id="nav-div">
+        <a href="javascript:void(0)" class="icon" id="icon" onclick="closeNav()">&times;</a>
+        <a href="user-dashboard.html" class="link" id="first-link">MY DASHBOARD</a>
+        <a href="create-report.html" class="active link" id="second-link">CREATE REPORT</a>
+        <a href="profile.html" class="link" id="third-link">MY PROFILE</a>
+        <a href="" class="signout-link link">SIGN OUT</a>
+
+    </div>
+
+    <section class="bg-design"></section>
+    <div class="errors success"></div>
+    <section class="create-report">
+        <div class="crt-rpt-form-wrapper">
+            <form action="" id="crt-rpt-form">
+                
+                <div class="div-over-all-inputs">
+                    <div class="crt-input-container div-over-input">
+                        <p><label for="crt-incident-type ">Select report type </label></p>
+                        <select name="rptIncidentType" id="crt-incident-type" required>
+                            <option value="" selected disabled>Select incident type</option>
+                            <option value="Red-flag">Red-flag</option>
+                            <option value="Intervention">Intervention</option>
+                        </select>
+                    </div>
+
+
+                    <div class="crt-input-container div-over-input">
+                        <p> <label for="address">
+                                <span>Address</span>
+                            </label>
+                        </p>
+
+
+                        <input type="text" id="address" name="address" placeholder="St name, Town/City name, State"
+                            minlength="5">
+
+                    </div>
+
+                    <div class="crt-input-container div-over-input">
+
+                        <p> <label for="location">
+                                <span>Geolocation</span>
+                            </label>
+                        </p>
+
+
+                        <input type="text" id="location" name="location" readonly>
+
+                    </div>
+
+                    <div class="crt-input-container div-over-input">
+
+                        <p> <label for="title">
+                                <span>Title</span>
+                            </label>
+                        </p>
+
+                        <input type="text" id="title" name="title" required placeholder="Enter report title"
+                            minlength="10" maxlength="30">
+
+                    </div>
+                </div>
+
+                <div class="crt-input-container">
+                    <p>
+                        <label for="comment">
+                            <span>Comment</span>
+                        </label>
+                    </p>
+                    <textarea type="text" id="comment" name="comment" required
+                        placeholder="Enter a brief description of your report"></textarea>
+
+                </div>
+
+                <BR></BR>
+                <div class="file-upload-container">
+                    <div class="video-upload-container">
+                        <label for="video" class="file-upload">Videos</label>
+                        <input type="file" class="file-upload-input" id="video" name="video"
+                            accept="video/*;capture=camcoder" multiple>
+                    </div>
+                    <div class="image-upload-container">
+                        <label for="image" class="file-upload">Images</label>
+                        <input type="file" class="file-upload-input" id="image" name="image"
+                            accept="image/*;capture=camera" multiple>
+                    </div>
+                </div>
+                <br>
+                <div class="div-over-get-location">
+                    <p class="clickable">Click <span class="get-location">here</span> if geolocation field is still
+                        empty.</p>
+                </div>
+
+                <BR></BR>
+                <div class="submit-container">
+                    <button type="submit" id="submit-report" class="button" disabled>Submit</button>
+                </div>
+                <div class="report-input-errors input-errors"></div>
+            </form>
+        </div>
+
+        <div class="map-area">
+            <div id="map">Map</div>
+        </div>
+
+
+    </section>
+
+
+    <footer>
+            <div>
+                <span>Privacy policy</span>
+                <span>Terms of use</span>
+            </div>
+            <div>
+                <p>&copy 2019 iReporter. All rights reserved.</p>
+            </div>
+        </footer>
+
+    <script src="js/checks.js"></script>
+    <script src="js/gmap.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsPc92ZcMDHK2wx3zgcu8ysBQVCOfBCSE&callback=initMap"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

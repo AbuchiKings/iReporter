@@ -11,6 +11,7 @@
         content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
     <title>iReporter-Login</title>
     <link href="login.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
 
@@ -20,10 +21,21 @@
 
     <header>
         <nav class="nav-bar">
-            <a href="index.html" class="app-name"><span>iR</span>eporter</a>
-            <a href="./signup.html"><span class="signup-link">GET STARTED</span></a>
+            <div class="logo-wrapper">
+                <a href="index.html" class="app-name"><span>iR</span>eporter</a>
+                <a href="javascript:void(0)" class="first-icon" onclick="openNav()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
         </nav>
     </header>
+
+
+    <div class="side-nav" id="nav-div">
+        <a href="javascript:void(0)" class="icon" id="icon" onclick="closeNav()">&times;</a>
+        <a href="signup.html" class="link" id="first-link">SIGN UP</a>
+
+    </div>
 
 
     <section id="login-main">
@@ -67,7 +79,7 @@
 
                     <div class="report-input-errors input-errors"></div>
 
-                    <p class="new-here">New here? <a href="">Create an account</a> </p>
+                    <p class="new-here">New here? <a href="signup.html">Create an account</a> </p>
 
 
                 </div>

@@ -138,7 +138,7 @@ switch (window.location.pathname) {
         reportValidation();
         break;
     case '/signup.html':
-        signupValidation()
+       // signupValidation()
         break;
 }
 

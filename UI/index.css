@@ -11,136 +11,6 @@ body {
     position: relative;
 }
 
-/*********************popup form****************************/
-
-div.signup {
-    display: none;
-    text-align: center;
-    background: rgb(0, 0, 0, 0.7);
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 5;
-    color: white;
-}
-
-form {
-    margin-bottom: auto;
-    background: rgb(0, 0, 0, 0.9);
-    display: flex;
-    flex-direction: column;
-    padding: 10px 20px 20px;
-    width: 60%;
-    margin: auto;
-    border-radius: 1em;
-    justify-content: space-around;
-    align-items: center;
-    top: 45px;
-    position: absolute;
-    left: 50%;
-    margin-left: -33%;
-}
-
-form .form-inputs-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.input-container {
-    margin-left: 4px;
-    margin-right: 4px;
-    flex: 0 45%;
-    font-weight: 500;
-    font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
-}
-
-form .sign-up {
-    font-size: calc(15px + (30 - 15) * ((100vw - 300px) / (1600 - 300)));
-    font-family: 'Roboto Mono', monospace;
-    font-weight: bold;
-}
-
-form label span {
-    font-weight: 700;
-}
-
-input {
-    color: rgb(0, 0, 0);
-    font-weight: 500;
-    max-width: 100%;
-    padding-left: 5px;
-    height: 40px;
-    display: block;
-    width: 100%;
-    min-width: 192px;
-    font-size: 14px;
-    text-align: start;
-    border-style: none;
-    border-radius: 3px;
-    background-color: rgb(238, 247, 245);
-    line-height: 20px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    -ms-border-radius: 3px;
-    -o-border-radius: 3px;
-}
-
-input:focus {
-    outline: none;
-}
-
-div button[type=submit] {
-    background-color: #e80a89;
-}
-
-div button {
-    width: 100%;
-    font: 14px sans-serif;
-    color: #fff;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    -ms-border-radius: 6px;
-    -o-border-radius: 6px;
-    opacity: 0.7;
-    border: none;
-    outline: none;
-}
-
-div button.cancel {
-    background-color: red;
-    margin-top: 10px;
-}
-
-.signup div button:hover {
-    background-color: #2b050c;
-}
-
-.form-submit-container div:nth-of-type(2) {
-    font-size: 13px;
-    text-align: center;
-    color: #fff;
-}
-
-div.returning-here a {
-    color: rgb(67, 141, 6);
-}
-
-div.returning-here a:hover {
-    color: #e80a89;
-    text-decoration: underline;
-}
-
-.input-errors {
-    display: none;
-    color: red;
-    font-size: 13px;
-    width: 100%;
-}
-
 /************************end*******************************/
 
 .section1 {
@@ -203,14 +73,34 @@ a {
 
 .div-seeSomething {
     font-size: 20px;
+    text-align: center
+}
+
+.signupLink {
+    margin-bottom: 0px;
+    background-color: rgb(41, 49, 121);
+    height: 30px;
+    width: 230px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
 }
 
 .button1 {
-    margin-bottom: 100px;
+    vertical-align: middle;
+    padding-top: 10px;
+
 }
 
-.button1, .section3 div.over-button button {
-    background-color: rgb(41, 49, 121);
+.button1:hover {
+    color: rgb(67, 141, 6);
+}
+
+.section3 div.over-button button {
     color: white;
     outline: none;
     border: none;
@@ -229,7 +119,7 @@ a {
     -o-border-radius: 20px;
 }
 
-.button1:hover, .section3 div.over-button button:hover {
+.section3 div.over-button button:hover {
     opacity: 1;
     width: 235px;
     height: 45px;

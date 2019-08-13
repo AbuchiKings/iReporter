@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Abuchi Ndinigwe">
+    <meta name="keyword" content="iReporter, Red-flag, Intervention, Corruption, End corruption">
+    <meta name="description"    content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
+    <title>iReporter-Signup</title>
+    <link href="signup.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <header>
+        <nav class="nav-bar">
+            <div class="logo-wrapper">
+                <a href="index.html" class="app-name"><span>iR</span>eporter</a>
+                <a href="javascript:void(0)" class="first-icon" onclick="openNav()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <div class="side-nav" id="nav-div">
+        <a href="javascript:void(0)" class="icon" id="icon" onclick="closeNav()">&times;</a>
+        <a href="login.html" class="link" id="first-link">SIGN IN</a>
+
+    </div>
+
+
+    <BR></BR>
+
+    <div class="signup">
+
+        <form action="" class="signup-form" id="signup-form">
+            <p class="sign-up">Sign up</p>
+
+            <div class="form-inputs-container">
+                <div class="input-container">
+                    <p>
+                        <label for="first-name">
+                            <span>First name </span>
+                        </label>
+                    </p>
+
+                    <input type="text" id="first-name" name="first-name" required>
+
+
+                </div>
+
+                <div class="input-container">
+                    <p>
+                        <label for="last-name">
+                            <span>Last name </span>
+                        </label>
+                    </p>
+                    <input type="text" id="last-name" name="last-name" required>
+
+
+                </div>
+
+
+                <div class="input-container">
+                    <p>
+                        <label for="email">
+                            <span>Email </span>
+                        </label>
+                    </p>
+
+                    <input type="email" id="email" name="email" required>
+
+
+                </div>
+
+
+                <div class="input-container">
+                    <p>
+                        <label for="phone-number">
+                            <span>Phone number </span>
+                        </label>
+                    </p>
+
+                    <input type="text" id="phone-number" name="phone-number" required>
+
+
+                </div>
+
+                <div class="input-container">
+                    <p>
+                        <label for="username">
+                            <span>Username</span>
+                        </label>
+                    </p>
+                    <input type="text" id="username" name="username" required>
+
+                </div>
+
+                <div class="input-container">
+                    <p>
+                        <label for="password">
+                            <span>Password </span>
+                        </label>
+                    </p>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+
+
+                </div>
+
+            </div>
+            <BR>
+            <div class="form-submit-container">
+                <div> <button type="submit" class="signup-bt">Sign up</button> </div>
+                <br>
+                <div class="returning-here">Already have an account? <a href="login.html">Sign in</a> </div>
+            </div>
+            <div class="report-input-errors input-errors"></div>
+
+        </form>
+
+
+
+    </div>
+
+    <footer>
+        <div>
+            <span>Privacy policy</span>
+            <span>Terms of use</span>
+        </div>
+        <div>
+            <p>&copy 2019 iReporter. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/checks.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="Abuchi Ndinigwe">
+    <meta name="keyword" content="iReporter, Red-flag, Intervention, Corruption, End corruption">
+    <meta name="description"    content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
+    <title>iReporter - Dashboard</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="user-dashboard.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+
+</head>
+
+<body>
+    <header>
+        <nav class="nav-bar">
+            <div class="logo-wrapper">
+                <a href="index.html" class="app-name"><span>iR</span>eporter</a>
+                <a href="javascript:void(0)" class="first-icon" onclick="openNav()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="bg-design"></section>
+
+    <div class="side-nav" id="nav-div">
+        <a href="javascript:void(0)" class="icon" id="icon" onclick="closeNav()">&times;</a>
+        <a href="user-dashboard.html" class="link active" id="first-link">MY DASHBOARD</a>
+        <a href="create-report.html" class="link" id="second-link">CREATE REPORT</a>
+        <a href="profile.html" class="link" id="third-link">MY PROFILE</a>
+        <a href="./login.html" class="signout-link link">SIGN OUT</a>
+
+    </div>
+
+    <section class="user-dashboard" id="user-dashboard">
+        <div class="user-dashboard-select">
+            <p>Sort incidents</p>
+            <div class="user-dashboard-select-wrapper">
+                <p>
+                    <select name=" by-status" class="select-by" id="by-status">
+                        <option value="" selected disabled>Select by status</option>
+                        <option value="Draft">Draft</option>
+                        <option value="Under investigation">Under investigation</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                </p>
+
+                <p>
+                    <select name="by-type" class="select-by" id="by-type">
+                        <option value="" selected disabled>Select by type</option>
+                        <option value="Intervention">Interventions</option>
+                        <option value="Red-flag">Red-flags</option>
+                    </select>
+                </p>
+
+            </div>
+
+        </div>
+        <BR></BR>
+        <div class="user-dashboard-main dashboard" id="user-dashboard-main">
+
+            <i aria-hidden="true"></i>
+            <i aria-hidden="true"></i>
+            <i aria-hidden="true"></i>
+
+
+        </div>
+
+    </section>
+
+
+
+    <footer>
+        <div>
+            <span>Privacy policy</span>
+            <span>Terms of use</span>
+        </div>
+        <div>
+            <p>&copy 2019 iReporter. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/checks.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
