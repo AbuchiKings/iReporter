@@ -109,6 +109,7 @@ header .first-icon {
     background-color: rgb(34, 34, 34);
     text-align: center;
     width: 100%;
+    padding-top: 10px;
     font-size: 13.2px;
     border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -207,7 +208,7 @@ div.user-photo {
 }
 
 div.user-photo img{
-    height: 150px;
+    height: auto;
     width: 150px;
 }
 

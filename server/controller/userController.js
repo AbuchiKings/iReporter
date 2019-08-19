@@ -1,6 +1,5 @@
 import 'babel-polyfill';
 import Helper from '../helper/authHelper';
-import dotenv from 'dotenv';
 import formidable from 'formidable';
 import { relative, join, resolve } from 'path'
 
@@ -171,13 +170,13 @@ class UserController {
             form.parse(req);
 
             form.on('fileBegin', function (name, file) {
+
                 file.path = join(resolve('./'), `/uploads/${file.name}`);
             });
 
             form.on('file', async function (name, file) {
                 result = await Helper.createProfileImage(req, file.path);
-                console.log('Uploaded ' + file.name);
-                console.log(result);
+          
                 if (result === 'cloudinary error') {
                     return res.status(503).json({status: 503, message: 'Service unavailable'})
                 }

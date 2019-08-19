@@ -5,7 +5,6 @@ import query from '../queries/dbqueries';
 import pool from '../queries/pool';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
-import { request } from 'https';
 
 
 dotenv.config();
@@ -262,7 +261,7 @@ class Helper {
 
             if (rowCount < 1) return 'accountNotFound';
 
-            const password = req.body.psw;
+            const password = req.body.password;
             const user = rows[0];
             const validPassword = await bcrypt.compare(password, user.password);
 

@@ -7,9 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="author" content="Abuchi Ndinigwe">
     <meta name="keyword" content="iReporter, Red-flag, Intervention, Corruption, End corruption">
-    <meta name="description"    content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
+    <meta name="description"
+        content="A web app designed for citizen to report instances of corruption or situations in need of government intervention">
     <title>iReporter-Signup</title>
     <link href="signup.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="spinner.css" />    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
@@ -18,6 +20,9 @@
 </head>
 
 <body>
+    <div class="loader-div">
+        <div class="spinner"></div>
+    </div>
 
     <header>
         <nav class="nav-bar">
@@ -45,6 +50,7 @@
 
         <form action="" class="signup-form" id="signup-form">
             <p class="sign-up">Sign up</p>
+            <div class="errors"></div>
 
             <div class="form-inputs-container">
                 <div class="input-container">
@@ -54,7 +60,7 @@
                         </label>
                     </p>
 
-                    <input type="text" id="first-name" name="first-name" required>
+                    <input type="text" id="first-name" name="first-name" required placeholder="At least 3 characters">
 
 
                 </div>
@@ -65,7 +71,7 @@
                             <span>Last name </span>
                         </label>
                     </p>
-                    <input type="text" id="last-name" name="last-name" required>
+                    <input type="text" id="last-name" name="last-name" required placeholder="At least 3 characters">
 
 
                 </div>
@@ -91,7 +97,7 @@
                         </label>
                     </p>
 
-                    <input type="text" id="phone-number" name="phone-number" required>
+                    <input type="text" id="phone-number" name="phone-number" required placeholder="+23480xxxxxxxx">
 
 
                 </div>
@@ -102,7 +108,7 @@
                             <span>Username</span>
                         </label>
                     </p>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" required placeholder="At least 3 characters">
 
                 </div>
 
@@ -112,7 +118,7 @@
                             <span>Password </span>
                         </label>
                     </p>
-                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="At least 5 characters" required>
 
 
                 </div>

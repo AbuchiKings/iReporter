@@ -26,11 +26,11 @@
         <form action="" class="popup-form email-update" id="email-update">
             <h3>Update email</h3>
             <br>
-            <div class="response"></div>
+            <div class="errors"></div>
             <br>
             <p class="over-input">
                 <label for="password">Password</label>
-                <input type="password" name="psw" placeholder="Enter password" required>
+                <input type="password" name="psw" placeholder="Enter password" required minlength="5">
             </p>
 
             <p class="over-input">
@@ -48,16 +48,16 @@
         <form action="" class="popup-form password-update" id="password-update">
             <h3>Update password</h3>
             <br>
-            <div class="response2"></div>
+            <div class="errors errors2"></div>
             <br>
             <p class="over-input">
                 <label for="oldPSW">Old password</label>
-                <input type="password" name="oldPsw" placeholder="Enter old password" required>
+                <input type="password" name="oldPsw" placeholder="Enter old password" required minlength="5">
             </p>
 
             <p class="over-input">
                 <label for="newPsw">New password</label>
-                <input type="password" name="newPsw" minlength="5" placeholder="Enter new password" required>
+                <input type="password" name="newPsw" minlength="5" placeholder="Enter new password" required minlength="5">
             </p>
 
             <button type="submit" class="btn">Submit</button>
@@ -69,9 +69,9 @@
         <form action="" class="popup-form dp-upload" id="dp-upload" enctype="multipart/form-data">
             <h3>Upload Picture</h3>
             <br>
-            <div class="response3"></div>
+            <div class="errors errors3"></div>
             <p class="over-input">
-                <input type="file" id="dp" name="profilePic" accept="image/*;capture=camera">
+                <input type="file" id="dp" name="profilePic" accept="image/*;capture=camera" required>
             </p>
             <button type="submit" class="btn uploadDp">Submit</button>
             <button type="button" class="btn cancel" onclick="closeImageForm()">Close</button>
@@ -82,11 +82,11 @@
         <form action="" class="popup-form delete-form " id="deletion">
             <h3>Delete Account</h3>
             <br>
-            <div class="response4"></div>
+            <div class="errors errors4"></div>
             <br>
             <p class="over-input">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" autofocus required placeholder="Enter password">
+                <input type="password" id="password" name="password" autofocus required placeholder="Enter password" minlength="5">
             </p>
 
             <button type="submit" class="btn">Delete</button>

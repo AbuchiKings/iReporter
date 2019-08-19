@@ -143,6 +143,12 @@ form .sign-up {
     font-family: 'Roboto Mono', monospace;
     font-weight: bold;
 }
+.errors {
+    display: block;
+    color: white;
+    font-size: 13px;
+    width: 100%;
+}
 
 form label span {
     font-weight: 700;
@@ -188,7 +194,7 @@ input:focus {
     -o-border-radius: 6px;
 }
 
-div button:hover {
+form .signup-bt:hover {
     background-color: #2b050c;
 }
 

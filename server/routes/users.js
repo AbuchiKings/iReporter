@@ -1,30 +1,24 @@
-//import { Router } from 'express';
 import express from 'express'
 import UserController from '../controller/userController';
 import auth from '../middleware/Auth';
-import util from 'util';
+import validator from '../middleware/validation';
 
 
-/*var storage = multer.diskStorage({
-    destination: '/tmp'
-    ,
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now())
-    }
-})
-
-var upload = multer({ storage: storage })*/
 
 const app = express()
 const router = express.Router();
 router.patch(
     '/users/update-email',
     auth.verifyToken,
+    validator.validateEmailUpdate,
+    validator.validationHandler,
     UserController.updateUserEmail
 );
 
 router.patch('/users/update-password',
     auth.verifyToken,
+    validator.validatePasswordUpdate,
+    validator.validationHandler,
     UserController.updatePassword
 );
 
@@ -35,6 +29,8 @@ router.get('/users/get-by-username/:username',
 
 router.get('/users/:id',
     auth.verifyToken,
+    validator.validateId,
+    validator.validationHandler,
     UserController.getUserById
 );
 
@@ -50,6 +46,8 @@ router.patch('/users/profile-picture',
 
 router.post('/users/delete',
     auth.verifyToken,
+    validator.validateDeleteUser,
+    validator.validationHandler,
     UserController.deleteUser
 );
 

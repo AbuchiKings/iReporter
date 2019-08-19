@@ -14,12 +14,15 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="create-report.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="spinner.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 
 <body id="crt-rpt-body">
-
+    <div class="loader-div">
+        <div class="spinner"></div>
+    </div>
     <header>
         <nav class="nav-bar">
             <div class="logo-wrapper">
@@ -128,7 +131,7 @@
 
                 <BR></BR>
                 <div class="submit-container">
-                    <button type="submit" id="submit-report" class="button" disabled>Submit</button>
+                    <button type="submit" id="submit-report" class="button" >Submit</button>
                 </div>
                 <div class="report-input-errors input-errors"></div>
             </form>

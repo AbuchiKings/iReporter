@@ -1,4 +1,6 @@
 const validationErrors = [];
+/****        .custom(phoneNumber => /^(\+?234)?0?[7-9]0[0-9]{8}$/.test(phoneNumber))
+ */
 const validate = {
     parameterId: req => {
 

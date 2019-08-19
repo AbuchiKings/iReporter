@@ -18,7 +18,9 @@ const newPasswordForm = document.querySelector('.password-update');
 const deleteForm = document.querySelector('.delete-form');
 const dpForm = document.querySelector('#dp-upload');
 const uploadDp = document.querySelector('.uploadDp');
-
+const popup = document.querySelector('.first-popup') ||
+    document.querySelector('second-popup');
+const logo = document.querySelector('.app-name');
 
 
 
@@ -36,7 +38,7 @@ const onSuccess = async (res) => {
 };
 
 const onError = (err) => {
-    const { message, error } = err;
+    const { message, error, errors } = err;
     if (message) {
         if (
             message.includes('JsonWebTokenError') ||
@@ -47,7 +49,8 @@ const onError = (err) => {
             window.location.replace('./index.html');
         }
     }
-    return ({ error, message });
+
+    return ({ error, message, errors });
 };
 
 const requestHandler = (method = 'GET', url, body = undefined) => {
@@ -83,6 +86,39 @@ const spinner = () => {
     loader.classList.toggle('over-spinner');
 }
 
+const errorHandler = (response, errorDisplay = undefined) => {
+    let message;
+    console.log(response.message);
+    console.log(response.errors)
+    if (dashboard && (popup === null || popup.style.display === 'none')) {
+        if (response.message) {
+            message = response.message;
+            createTag(dashboard, 'p', message, 'responseMessage')
+        } else if (response.errors) {
+
+            message = response.errors[0].msg;
+            createTag(dashboard, 'p', message, 'responseMessage')
+        }
+        return;
+    }
+    else {
+        if (!errorDisplay) errorDisplay = document.querySelector('.errors');
+        if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
+
+        if (response.message) {
+
+            message = response.message;
+            createTag(errorDisplay, 'p', message);
+
+        } else if (response.errors) {
+
+            message = response.errors[0].msg;
+            createTag(errorDisplay, 'p', message);
+        }
+        return;
+    }
+};
+
 
 const removeIncidentCards = () => {
     if (dashboard && dashboard.firstChild) {
@@ -113,7 +149,7 @@ const populateIncidentsDashboard = (reports, parentElement) => {
     reports.forEach(report => {
         parentElement.insertAdjacentHTML('afterbegin',
             `<article class="incident-card" id="incident${report.incidentid}">
-            <img src="./images/New-GRA.jpg" alt="" 
+            <img src="https://via.placeholder.com/240" alt="" 
             class="incident-img"><div><table><tbody>
                     <tr><th>Title:</th><td>${report.title}</td></tr>
 
@@ -140,26 +176,23 @@ const populateIncidentsDashboard = (reports, parentElement) => {
 
 const login = async (event) => {
     event.preventDefault();
+    spinner();
     const email = loginForm.email.value;
     const password = loginForm.password.value;
     const userData = { email, password };
     const loginPath = `${baseURL}/auth/login`;
-    const mesgContainer = document.querySelector('.errors');
     const response = await requestHandler('POST', loginPath, userData);
     if (response.data === undefined) {
-        if (response.message) {
-            if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-            createTag(mesgContainer, 'p', response.message)
-        }
-        console.log(response.message);
+        errorHandler(response);
+        spinner();
         return;
     }
-
     const [result] = response.data;
     const { id, token, is_admin } = result;
     window.localStorage.setItem('token', token);
     window.localStorage.setItem('is_admin', is_admin);
     window.localStorage.setItem('id', id);
+    spinner();
     if (is_admin) {
         window.location.assign('/admin-dashboard.html');
         return;
@@ -171,6 +204,7 @@ const login = async (event) => {
 
 const signup = async (event) => {
     event.preventDefault();
+    spinner();
     const firstName = document.querySelector('#first-name').value;
     const lastName = document.querySelector('#last-name').value;
     const email = document.querySelector('#email').value;
@@ -181,13 +215,12 @@ const signup = async (event) => {
     const signupPath = `${baseURL}/auth/signup`;
     const msg = document.querySelector('.errors');
     const response = await requestHandler('POST', signupPath, signupData)
-    if (!response.data) {
-        if (response.message) {
-            if (msg.firstChild) { msg.removeChild(msg.firstChild) }
-            createTag(msg, 'p', response.message)
-        }
+    if (response.data === undefined) {
+        errorHandler(response);
+        spinner();
         return;
     }
+    spinner();
     window.location.replace('./login.html');
     return;
 
@@ -195,6 +228,7 @@ const signup = async (event) => {
 
 const createReport = async (event) => {
     event.preventDefault()
+    spinner();
     const createdby = Number(localStorage.getItem('id'));
     const type = document.querySelector('#crt-incident-type').value;
     const title = document.querySelector('#title').value;
@@ -205,30 +239,31 @@ const createReport = async (event) => {
     const incidentsurl = `${baseURL}/red-flags`;
     const msg = document.querySelector('.errors');
     const response = await requestHandler('POST', incidentsurl, report)
-    if (!response.data) {
-        if (response.message) {
-            if (msg.firstChild) { msg.removeChild(msg.firstChild) }
-            createTag(msg, 'p', response.message)
-        }
+    if (response.data === undefined) {
+        errorHandler(response);
+        spinner();
         return;
     }
+    
     document.querySelector('.errors').textContent = response.message;
+    spinner();
     return;
 
 };
 
 
 const requestDashboard = async () => {
+    spinner();
     const incidentsurl = `${baseURL}/red-flags`;
     const response = await requestHandler('GET', incidentsurl)
     if (!response.data) {
-        if (response.message) {
-            createTag(dashboard, 'p', response.message, 'responseMessage')
-        }
+        errorHandler(response);
+        spinner();
         return;
     }
     const [reports] = response.data;
     populateIncidentsDashboard(reports, dashboard);
+    spinner();
     return;
 };
 
@@ -245,6 +280,7 @@ const fetchUsers = async () => {
 };
 
 const sortReports = async ({ target }) => {
+    spinner();
     let reportsURL;
     switch (target.id) {
         case 'by-user':
@@ -262,30 +298,32 @@ const sortReports = async ({ target }) => {
     }
 
     const response = await requestHandler('GET', reportsURL);
+
     removeIncidentCards();
+    removeMessage();
     if (!response.data) {
-        removeMessage();
-        if (response.message) {
-            createTag(dashboard, 'p', response.message, 'responseMessage')
-        }
+
+        errorHandler(response);
+        spinner();
         return;
     }
     const [reports] = response.data;
     removeMessage();
     populateIncidentsDashboard(reports, dashboard);
+    spinner();
     return;
 };
 
 const getUserProfile = async () => {
+    spinner();
     const userId = localStorage.getItem('id');
     const profileURL = `${baseURL}/users/${userId}`;
-    const mesgContainer = document.querySelector('.server-errors');
+    const errorDisplay = document.querySelector('.server-errors');
     const response = await requestHandler('GET', profileURL);
+
     if (!response.data) {
-        if (response.message) {
-            if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-            createTag(mesgContainer, 'p', response.message)
-        }
+        errorHandler(response, errorDisplay);
+        spinner();
         return;
     }
     const [values] = response.data;
@@ -299,6 +337,7 @@ const getUserProfile = async () => {
         if (el !== null) el.textContent = values[prop];
 
     })
+    spinner();
     return;
 };
 
@@ -309,17 +348,15 @@ const updateEmail = async (e) => {
     const email = newEmailForm.email.value;
     const data = { password, email };
     const updateURL = `${baseURL}/users/update-email`;
-    const mesgContainer = document.querySelector('.response');
+    const errorDisplay = document.querySelector('.errors');
     const response = await requestHandler('PATCH', updateURL, data);
     if (!response.data) {
-        if (response.message) {
-            if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-            createTag(mesgContainer, 'p', response.message)
-        }
+        errorHandler(response, errorDisplay);
+        spinner();
         return;
     }
-    if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-    createTag(mesgContainer, 'p', response.message)
+    if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
+    createTag(errorDisplay, 'p', response.message)
     getUserProfile();
     spinner()
     return;
@@ -332,18 +369,15 @@ const updatePassword = async (e) => {
     const newPassword = newPasswordForm.newPsw.value;
     const data = ({ oldPassword, newPassword });
     const updateURL = `${baseURL}/users/update-password`;
-    const mesgContainer = document.querySelector('.response2');
+    const errorDisplay = document.querySelector('div.errors2');
     const response = await requestHandler('PATCH', updateURL, data);
     if (!response.data) {
-        if (response.message) {
-            if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-            createTag(mesgContainer, 'p', response.message)
-        }
+        errorHandler(response, errorDisplay);
         spinner();
         return;
     }
-    if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-    createTag(mesgContainer, 'p', response.message)
+    if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
+    createTag(errorDisplay, 'p', response.message)
     spinner();
     return;
 
@@ -355,10 +389,11 @@ const setDp = async (e) => {
     const picURL = `${baseURL}/users/profile-picture`;
     const upload = document.getElementById('dp');
     const myImg = upload.files[0];
-    const mesgContainer = document.querySelector('.response3');
+    const errorDisplay = document.querySelector('div.errors3');
     const img = document.querySelector('#profile-picture');
     const data = new FormData();
     data.append('profilePic', myImg);
+
     const token = localStorage.getItem('token');
     const headers = new Headers({
         Authorization: `Bearer ${token}`
@@ -378,18 +413,15 @@ const setDp = async (e) => {
 
 
     if (!response.data) {
-        if (response.message) {
-            if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-            createTag(mesgContainer, 'p', response.message)
-        }
-        spinner()
+        errorHandler(response, errorDisplay);
+        spinner();
         return;
     }
-    if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-    createTag(mesgContainer, 'p', response.message);
+    if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
+    createTag(errorDisplay, 'p', response.message);
     const { image } = response.data[0];
     img.src = image;
-    upload.value= '';
+    upload.value = '';
     spinner()
     return;
 }
@@ -399,17 +431,14 @@ const deleteUser = async (e) => {
     confirm('Account and all reports will be deleted. Continue?');
     spinner();
     const deleteURL = `${baseURL}/users/delete`;
-    const psw = deleteForm.password.value;
-    const data = { psw };
+    const password = deleteForm.password.value;
+    const data = { password };
     const response = await requestHandler('POST', deleteURL, data)
-    const mesgContainer = document.querySelector('.response4');
+    const errorDisplay = document.querySelector('div.errors4');
 
     if (response.status !== 204) {
-        if (response.message) {
-            if (mesgContainer.firstChild) { mesgContainer.removeChild(mesgContainer.firstChild) }
-            createTag(mesgContainer, 'p', response.message)
-        }
-        spinner()
+        errorHandler(response, errorDisplay);
+        spinner();
         return;
     }
     window.location.replace('./index.html')
@@ -447,6 +476,9 @@ if (selectStatus) {
 if (signOut) {
     signOut.addEventListener('click', logOut);
 }
+if (logo) {
+    logo.addEventListener('click', logOut);
+}
 if (newEmailForm) {
     newEmailForm.addEventListener('submit', updateEmail);
 }
@@ -463,8 +495,9 @@ if (dpForm) {
 
 
 if (window.location.pathname === '/admin-dashboard.html') {
-    requestDashboard();
-    fetchUsers();
+        requestDashboard();
+        fetchUsers();
+   
 }
 if (window.location.pathname === '/user-dashboard.html') {
     requestDashboard();
