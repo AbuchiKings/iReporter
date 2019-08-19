@@ -1,5 +1,5 @@
 
-const baseURL = `http://localhost:5000/api/v1`;
+const baseURL = `${window.location.origin}/api/v1`;
 const loginForm = document.querySelector('#login-form');
 const loginBtn = document.querySelector('.login-bt');
 const signupForm = document.querySelector('.signup-form');
