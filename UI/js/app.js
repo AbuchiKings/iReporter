@@ -1,5 +1,5 @@
 
-const baseURL = `${window.location.origin}/api/v1`;
+const baseURL = `http://localhost:5000/api/v1`;
 const loginForm = document.querySelector('#login-form');
 const loginBtn = document.querySelector('.login-bt');
 const signupForm = document.querySelector('.signup-form');
@@ -175,96 +175,115 @@ const populateIncidentsDashboard = (reports, parentElement) => {
 /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 const login = async (event) => {
-    event.preventDefault();
-    spinner();
-    const email = loginForm.email.value;
-    const password = loginForm.password.value;
-    const userData = { email, password };
-    const loginPath = `${baseURL}/auth/login`;
-    const response = await requestHandler('POST', loginPath, userData);
-    if (response.data === undefined) {
-        errorHandler(response);
+    try {
+        event.preventDefault();
         spinner();
+        const email = loginForm.email.value;
+        const password = loginForm.password.value;
+        const userData = { email, password };
+        const loginPath = `${baseURL}/auth/login`;
+        const response = await requestHandler('POST', loginPath, userData);
+        if (response.data === undefined) {
+            errorHandler(response);
+            spinner();
+            return;
+        }
+        const [result] = response.data;
+        const { id, token, is_admin } = result;
+        window.localStorage.setItem('token', token);
+        window.localStorage.setItem('is_admin', is_admin);
+        window.localStorage.setItem('id', id);
+        spinner();
+        if (is_admin) {
+            window.location.assign('/admin-dashboard.html');
+            return;
+        }
+        window.location.assign('./user-dashboard.html');
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    const [result] = response.data;
-    const { id, token, is_admin } = result;
-    window.localStorage.setItem('token', token);
-    window.localStorage.setItem('is_admin', is_admin);
-    window.localStorage.setItem('id', id);
-    spinner();
-    if (is_admin) {
-        window.location.assign('/admin-dashboard.html');
-        return;
-    }
-    window.location.assign('./user-dashboard.html');
-    return;
 
 };
 
 const signup = async (event) => {
-    event.preventDefault();
-    spinner();
-    const firstName = document.querySelector('#first-name').value;
-    const lastName = document.querySelector('#last-name').value;
-    const email = document.querySelector('#email').value;
-    const phoneNumber = document.querySelector('#phone-number').value;
-    const userName = document.querySelector('#username').value;
-    const password = document.querySelector('#password').value;
-    const signupData = { firstName, lastName, email, password, userName, phoneNumber };
-    const signupPath = `${baseURL}/auth/signup`;
-    const msg = document.querySelector('.errors');
-    const response = await requestHandler('POST', signupPath, signupData)
-    if (response.data === undefined) {
-        errorHandler(response);
+    try {
+        event.preventDefault();
         spinner();
+        const firstName = document.querySelector('#first-name').value;
+        const lastName = document.querySelector('#last-name').value;
+        const email = document.querySelector('#email').value;
+        const phoneNumber = document.querySelector('#phone-number').value;
+        const userName = document.querySelector('#username').value;
+        const password = document.querySelector('#password').value;
+        const signupData = { firstName, lastName, email, password, userName, phoneNumber };
+        const signupPath = `${baseURL}/auth/signup`;
+        const msg = document.querySelector('.errors');
+        const response = await requestHandler('POST', signupPath, signupData)
+        if (response.data === undefined) {
+            errorHandler(response);
+            spinner();
+            return;
+        }
+        spinner();
+        window.location.replace('./login.html');
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    spinner();
-    window.location.replace('./login.html');
-    return;
-
 };
 
 const createReport = async (event) => {
-    event.preventDefault()
-    spinner();
-    const createdby = Number(localStorage.getItem('id'));
-    const type = document.querySelector('#crt-incident-type').value;
-    const title = document.querySelector('#title').value;
-    const location = document.querySelector('#location').value;
-    const comment = document.querySelector('#comment').value;
-    const status = 'Draft'
-    const report = { createdby, title, type, location, comment, status };
-    const incidentsurl = `${baseURL}/red-flags`;
-    const msg = document.querySelector('.errors');
-    const response = await requestHandler('POST', incidentsurl, report)
-    if (response.data === undefined) {
-        errorHandler(response);
+    try {
+        event.preventDefault()
+        spinner();
+        const createdby = Number(localStorage.getItem('id'));
+        const type = document.querySelector('#crt-incident-type').value;
+        const title = document.querySelector('#title').value;
+        const location = document.querySelector('#location').value;
+        const comment = document.querySelector('#comment').value;
+        const status = 'Draft'
+        const report = { createdby, title, type, location, comment, status };
+        const incidentsurl = `${baseURL}/red-flags`;
+        const msg = document.querySelector('.errors');
+        const response = await requestHandler('POST', incidentsurl, report)
+        if (response.data === undefined) {
+            errorHandler(response);
+            spinner();
+            return;
+        }
+
+        document.querySelector('.errors').textContent = response.message;
         spinner();
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    
-    document.querySelector('.errors').textContent = response.message;
-    spinner();
-    return;
-
 };
 
 
 const requestDashboard = async () => {
-    spinner();
-    const incidentsurl = `${baseURL}/red-flags`;
-    const response = await requestHandler('GET', incidentsurl)
-    if (!response.data) {
-        errorHandler(response);
+    try {
+        spinner();
+        const incidentsurl = `${baseURL}/red-flags`;
+        const response = await requestHandler('GET', incidentsurl)
+        console.log(response);
+        if (!response.data) {
+            errorHandler(response);
+            spinner();
+            return;
+        }
+        const [reports] = response.data;
+        populateIncidentsDashboard(reports, dashboard);
         spinner();
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    const [reports] = response.data;
-    populateIncidentsDashboard(reports, dashboard);
-    spinner();
-    return;
 };
 
 const fetchUsers = async () => {
@@ -277,172 +296,204 @@ const fetchUsers = async () => {
     const [users] = response.data;
     displayUsers(users);
     return;
+
 };
 
 const sortReports = async ({ target }) => {
-    spinner();
-    let reportsURL;
-    switch (target.id) {
-        case 'by-user':
-            const userId = target.value;
-            reportsURL = `${baseURL}/red-flags/?userId=${userId}`;
-            break;
-        case 'by-type':
-            const type = target.value;
-            reportsURL = `${baseURL}/red-flags/?type=${type}`;
-            break;
-        case 'by-status':
-            const status = target.value;
-            reportsURL = `${baseURL}/red-flags/?status=${status}`;
-            break;
-    }
+    try {
+        spinner();
+        let reportsURL;
+        switch (target.id) {
+            case 'by-user':
+                const userId = target.value;
+                reportsURL = `${baseURL}/red-flags/?userId=${userId}`;
+                break;
+            case 'by-type':
+                const type = target.value;
+                reportsURL = `${baseURL}/red-flags/?type=${type}`;
+                break;
+            case 'by-status':
+                const status = target.value;
+                reportsURL = `${baseURL}/red-flags/?status=${status}`;
+                break;
+        }
 
-    const response = await requestHandler('GET', reportsURL);
+        const response = await requestHandler('GET', reportsURL);
 
-    removeIncidentCards();
-    removeMessage();
-    if (!response.data) {
+        removeIncidentCards();
+        removeMessage();
+        if (!response.data) {
 
-        errorHandler(response);
+            errorHandler(response);
+            spinner();
+            return;
+        }
+        const [reports] = response.data;
+        removeMessage();
+        populateIncidentsDashboard(reports, dashboard);
         spinner();
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    const [reports] = response.data;
-    removeMessage();
-    populateIncidentsDashboard(reports, dashboard);
-    spinner();
-    return;
 };
 
 const getUserProfile = async () => {
-    spinner();
-    const userId = localStorage.getItem('id');
-    const profileURL = `${baseURL}/users/${userId}`;
-    const errorDisplay = document.querySelector('.server-errors');
-    const response = await requestHandler('GET', profileURL);
+    try {
+        spinner();
+        const userId = localStorage.getItem('id');
+        const profileURL = `${baseURL}/users/${userId}`;
+        const errorDisplay = document.querySelector('.server-errors');
+        const response = await requestHandler('GET', profileURL);
 
-    if (!response.data) {
-        errorHandler(response, errorDisplay);
+        if (!response.data) {
+            errorHandler(response, errorDisplay);
+            spinner();
+            return;
+        }
+        const [values] = response.data;
+        const img = document.querySelector('#profile-picture');
+        if (values.image !== null) {
+            img.src = values.image;
+        }
+        const properties = Object.keys(values);
+        properties.forEach((prop) => {
+            let el = document.querySelector(`[data-${prop}-value]`);
+            if (el !== null) el.textContent = values[prop];
+
+        })
         spinner();
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    const [values] = response.data;
-    const img = document.querySelector('#profile-picture');
-    if (values.image !== null) {
-        img.src = values.image;
-    }
-    const properties = Object.keys(values);
-    properties.forEach((prop) => {
-        let el = document.querySelector(`[data-${prop}-value]`);
-        if (el !== null) el.textContent = values[prop];
-
-    })
-    spinner();
-    return;
 };
 
 const updateEmail = async (e) => {
-    e.preventDefault();
-    spinner();
-    const password = newEmailForm.psw.value;
-    const email = newEmailForm.email.value;
-    const data = { password, email };
-    const updateURL = `${baseURL}/users/update-email`;
-    const errorDisplay = document.querySelector('.errors');
-    const response = await requestHandler('PATCH', updateURL, data);
-    if (!response.data) {
-        errorHandler(response, errorDisplay);
+    try {
+        e.preventDefault();
         spinner();
+        const password = newEmailForm.psw.value;
+        const email = newEmailForm.email.value;
+        const data = { password, email };
+        const updateURL = `${baseURL}/users/update-email`;
+        const errorDisplay = document.querySelector('.errors');
+        const response = await requestHandler('PATCH', updateURL, data);
+        if (!response.data) {
+            errorHandler(response, errorDisplay);
+            spinner();
+            return;
+        }
+        if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
+        createTag(errorDisplay, 'p', response.message)
+        getUserProfile();
+        spinner()
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
-    createTag(errorDisplay, 'p', response.message)
-    getUserProfile();
-    spinner()
-    return;
 };
 
 const updatePassword = async (e) => {
-    e.preventDefault();
-    spinner();
-    const oldPassword = newPasswordForm.oldPsw.value;
-    const newPassword = newPasswordForm.newPsw.value;
-    const data = ({ oldPassword, newPassword });
-    const updateURL = `${baseURL}/users/update-password`;
-    const errorDisplay = document.querySelector('div.errors2');
-    const response = await requestHandler('PATCH', updateURL, data);
-    if (!response.data) {
-        errorHandler(response, errorDisplay);
+    try {
+        e.preventDefault();
+        spinner();
+        const oldPassword = newPasswordForm.oldPsw.value;
+        const newPassword = newPasswordForm.newPsw.value;
+        const data = ({ oldPassword, newPassword });
+        const updateURL = `${baseURL}/users/update-password`;
+        const errorDisplay = document.querySelector('div.errors2');
+        const response = await requestHandler('PATCH', updateURL, data);
+        if (!response.data) {
+            errorHandler(response, errorDisplay);
+            spinner();
+            return;
+        }
+        if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
+        createTag(errorDisplay, 'p', response.message)
         spinner();
         return;
+    } catch (error) {
+        spinner();
+        console.log(error);
     }
-    if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
-    createTag(errorDisplay, 'p', response.message)
-    spinner();
-    return;
-
-}
+};
 
 const setDp = async (e) => {
-    e.preventDefault();
-    spinner();
-    const picURL = `${baseURL}/users/profile-picture`;
-    const upload = document.getElementById('dp');
-    const myImg = upload.files[0];
-    const errorDisplay = document.querySelector('div.errors3');
-    const img = document.querySelector('#profile-picture');
-    const data = new FormData();
-    data.append('profilePic', myImg);
+    try {
 
-    const token = localStorage.getItem('token');
-    const headers = new Headers({
-        Authorization: `Bearer ${token}`
-    });
-
-    const options = {
-        method: 'PATCH',
-        mode: 'cors',
-        headers,
-        body: data
-    }
-
-    const request = new Request(picURL, options)
-    const response = await fetch(request)
-        .then(onSuccess)
-        .catch(onError);
-
-
-    if (!response.data) {
-        errorHandler(response, errorDisplay);
+        e.preventDefault();
         spinner();
+        const picURL = `${baseURL}/users/profile-picture`;
+        const upload = document.getElementById('dp');
+        const myImg = upload.files[0];
+        const errorDisplay = document.querySelector('div.errors3');
+        const img = document.querySelector('#profile-picture');
+        const data = new FormData();
+        data.append('profilePic', myImg);
+
+        const token = localStorage.getItem('token');
+        const headers = new Headers({
+            Authorization: `Bearer ${token}`
+        });
+
+        const options = {
+            method: 'PATCH',
+            mode: 'cors',
+            headers,
+            body: data
+        }
+
+        const request = new Request(picURL, options)
+        const response = await fetch(request)
+            .then(onSuccess)
+            .catch(onError);
+
+
+        if (!response.data) {
+            errorHandler(response, errorDisplay);
+            spinner();
+            return;
+        }
+        if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
+        createTag(errorDisplay, 'p', response.message);
+        const { image } = response.data[0];
+        img.src = image;
+        upload.value = '';
+        spinner()
         return;
+    } catch (error) {
+        spinner();
+        console.log(error)
     }
-    if (errorDisplay.firstChild) { errorDisplay.removeChild(errorDisplay.firstChild) }
-    createTag(errorDisplay, 'p', response.message);
-    const { image } = response.data[0];
-    img.src = image;
-    upload.value = '';
-    spinner()
-    return;
 }
 
 const deleteUser = async (e) => {
-    e.preventDefault();
-    confirm('Account and all reports will be deleted. Continue?');
-    spinner();
-    const deleteURL = `${baseURL}/users/delete`;
-    const password = deleteForm.password.value;
-    const data = { password };
-    const response = await requestHandler('POST', deleteURL, data)
-    const errorDisplay = document.querySelector('div.errors4');
+    try {
+        e.preventDefault();
+        confirm('Account and all reports will be deleted. Continue?');
+        spinner();
+        const deleteURL = `${baseURL}/users/delete`;
+        const password = deleteForm.password.value;
+        const data = { password };
+        const response = await requestHandler('POST', deleteURL, data)
+        const errorDisplay = document.querySelector('div.errors4');
 
-    if (response.status !== 204) {
-        errorHandler(response, errorDisplay);
+        if (response.status !== 204) {
+            errorHandler(response, errorDisplay);
+            spinner();
+            return;
+        }
+        window.location.replace('./index.html')
+        return;
+    } catch (error) {
         spinner();
         return;
     }
-    window.location.replace('./index.html')
-}
+};
 
 const logOut = async (e) => {
     e.preventDefault();
@@ -495,9 +546,9 @@ if (dpForm) {
 
 
 if (window.location.pathname === '/admin-dashboard.html') {
-        requestDashboard();
-        fetchUsers();
-   
+    requestDashboard();
+    fetchUsers();
+
 }
 if (window.location.pathname === '/user-dashboard.html') {
     requestDashboard();

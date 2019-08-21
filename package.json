@@ -4,17 +4,27 @@
   "description": "iReporter is a web app that allows users to report instances of illegal conducts or situations in need of government intervention.",
   "main": "app.js",
   "scripts": {
+    "db": "babel-node ./server/db.js --env",
     "build": "rm -rf ./dist/* && babel ./server --out-dir ./dist --ignore ./server/tests/test.js",
-    "start": "npm run build && node ./dist/db && node ./dist/app"
+    "start": "npm run db && npm run build && node ./dist/app"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AbuchiKings/iReporter.git"
   },
+  "keywords": [
+    "ireporter",
+    "reports",
+    "Red-flags",
+    "Interventions"
+  ],
   "author": "Abuchi Ndinigwe",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/AbuchiKings/iReporter/issues"
+  },
+  "engines": {
+    "node": "10.15.1"
   },
   "homepage": "https://github.com/AbuchiKings/iReporter#readme",
   "devDependencies": {

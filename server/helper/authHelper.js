@@ -60,7 +60,6 @@ class Helper {
             else if (email) {
                 result = await pool.query(query.getUserByEmail(email));
             }
-
             if (!result.rows[0]) return 'accountNotFound';
             const db = result.rows[0];
             const validPassword = await bcrypt.compare(password, db.password);
@@ -68,6 +67,7 @@ class Helper {
             if (!validPassword) return 'invalidPassword';
 
             const { id, is_admin } = db;
+            
 
             const token = jwt.sign({ id, email, is_admin }, SECRET, { expiresIn: '12h' });
             //mailer.mail();
