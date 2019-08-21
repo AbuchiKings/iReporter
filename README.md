@@ -4,6 +4,8 @@
 
 iReporter is a web app that allows users to report instances of illegal conducts or situations in need of government intervention.
 
+#### **Homepage** - [My Diary](https://abuchikings-ireporter.herokuapp.com/) 
+
 * [Technologies Used](#technologies-used)
 * [Features](#features)
 * [API Endpoints](#api-endpoints)
@@ -56,7 +58,7 @@ iReporter is a web app that allows users to report instances of illegal conducts
 * PATCH user email                  (/users/update-email)
 * PATCH user password               (/users/update-password)
 * DELETE red-flag record            (/red-flags/:id)
-* DELETE a user's account           (/users/delete)
+* Delete a user's account (uses a Post request)           (/users/delete)
 
 
 ## Getting Started
