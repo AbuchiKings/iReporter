@@ -4,7 +4,7 @@
 
 iReporter is a web app that allows users to report instances of illegal conducts or situations in need of government intervention.
 
-#### **Homepage** - [My Diary](https://abuchikings-ireporter.herokuapp.com/) 
+#### **Homepage** - [iReporter](https://abuchikings-ireporter.herokuapp.com/) 
 
 * [Technologies Used](#technologies-used)
 * [Features](#features)
