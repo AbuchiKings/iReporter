@@ -103,6 +103,7 @@ header .first-icon {
     flex-wrap: wrap;
     margin: auto;
     width: 85%;
+    max-width: 1200px;
     justify-content: center;
     align-items: center;
 }

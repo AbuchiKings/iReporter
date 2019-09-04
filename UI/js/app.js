@@ -1,5 +1,5 @@
 
-const baseURL = `http://localhost:5000/api/v1`;
+const baseURL = `${window.location.origin}/api/v1`;
 const loginForm = document.querySelector('#login-form');
 const loginBtn = document.querySelector('.login-bt');
 const signupForm = document.querySelector('.signup-form');
@@ -270,7 +270,6 @@ const requestDashboard = async () => {
         spinner();
         const incidentsurl = `${baseURL}/red-flags`;
         const response = await requestHandler('GET', incidentsurl)
-        console.log(response);
         if (!response.data) {
             errorHandler(response);
             spinner();
