@@ -5,6 +5,7 @@ import path from 'path';
 import helmet from 'helmet';
 import rateLimiter from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
+require('dotenv').config();
 
 
 const app = express();
@@ -23,7 +24,8 @@ app.listen(port, () => {
 });
 
 process.on('uncaughtException', function(err) {
-  console.log(err)
+  console.log(err);
+  process.exit(1);
 })
 
 export default app;

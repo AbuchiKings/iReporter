@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import query from '../queries/dbqueries';
@@ -21,28 +20,7 @@ class Helper {
 
     static async createUser(req) {
         try {
-            const { firstName, lastName, email, password, userName, phoneNumber } = req.body;
-            const username1 = userName.toLowerCase();
 
-            const { rowCount } = await pool.query(query.getUserByUserName(username1));
-            const foundUser = await pool.query(query.getUserByEmail(email));
-            const result = await pool.query(query.getUserByPhone(phoneNumber));
-
-            if (rowCount > 0) return 'notUniqueUserName';
-            if (foundUser.rowCount > 0) return 'notUniqueEmail';
-            if (result.rowCount > 0) return 'notUniquePhoneNumber';
-
-            let isAdmin;
-            if (req.user && (req.user.id === 1 && req.user.isAdmin === true)) {
-                isAdmin = true;
-            } else { isAdmin = false; }
-
-            //if(password.length < 8) responseHandler.handleError('Password less than acceptable length')
-
-            const hashpassword = await bcrypt.hash(password, 10);
-            const user = await pool.query(query.regUser(firstName, lastName, email, phoneNumber, userName, hashpassword, isAdmin));
-
-            return user.rows[0];
 
         } catch (error) {
             console.log(error);

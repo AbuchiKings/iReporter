@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 

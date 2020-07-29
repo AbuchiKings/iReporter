@@ -1,31 +1,31 @@
-import 'babel-polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime';
 import Helper from '../helper/authHelper';
 import formidable from 'formidable';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import query from '../queries/dbqueries';
+import pool from '../queries/pool';
 import { relative, join, resolve } from 'path'
+import responseHandler from '../utils/responseHandler';
+import errorHandler from './../utils/errorHandler';
+
 
 
 class UserController {
-    static async createUser(req, res) {
+    static async createUser(req, res, next) {
         try {
-            const result = await Helper.createUser(req);
-            switch (result) {
-                case 'notUniqueEmail':
-                    return res.status(409).json({ status: 409, message: 'Email address already exist' });
+            const { firstName, lastName, email, password, confirmPassword, userName, phoneNumber, admin_code } = req.body;
+            if(confirmPassword !== password) errorHandler(422, 'Passwords do not match');
 
-                case 'notUniqueUserName':
-                    return res.status(409).json({ status: 409, message: 'Username already exist' });
-
-                case 'notUniqueUserPhoneNumber':
-                    return res.status(409).json({ status: 409, message: 'Phone number  already exist' });
-            }
-            return res.status(201).json({
-                status: 201,
-                data: [result],
-                message: 'Account created'
-
-            })
+            let isAdmin = process.env.ADMIN_CODE === admin_code? true: false;
+            const hashpassword = await bcrypt.hash(password, 10);
+            const user = await pool.query(query.regUser(firstName, lastName, email, phoneNumber, userName, hashpassword, isAdmin));
+             user.rows[0];
+            return responseHandler();
         } catch (error) {
-            console.log(error)
+            return next(error);
         }
 
 

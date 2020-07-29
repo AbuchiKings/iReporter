@@ -1,4 +1,3 @@
-import 'babel-polyfill'
 import query from '../queries/dbqueries'
 import pool from '../queries/pool'
 import mailer from './mailer'

@@ -1,7 +1,5 @@
-require('babel-polyfill')
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
-const query = require('./queries/dbqueries');
 const bcrypt = require('bcrypt');
 
 
@@ -80,13 +78,6 @@ const check = `SELECT * FROM myireportdb.users`;
     await pool.query(createIncidentType);
     await pool.query(createIncidentStatus);    
     await pool.query(usersTable);
-    const { rowCount } = await pool.query(check);
-    if(rowCount < 1){
-      const pass = 'qwerty'
-      const result = await bcrypt.hash(pass, 10);
-      await pool.query(query.regUser('Abuchi', 'Kingsley', 'abuchikings@ireporter.com', '0806215xxxx', 
-      'abuchikings', result, true));
-    }
     await pool.query(incidentTable);
   } catch (error) {
     console.log(error);
