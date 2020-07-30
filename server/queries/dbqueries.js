@@ -119,18 +119,18 @@ const query = {
         })
     },
 
-    regUser(firstName, lastName, email, phoneNumber, userName, hashpassword, isAdmin) {
+    regUser(firstname, lastname, email, phoneNumber, username, hashpassword, isAdmin) {
         return ({
-            text: `INSERT INTO myireportdb.users (first_name, last_name, 
-                email, phone_number, user_name, password, is_admin)
+            text: `INSERT INTO myireportdb.users (firstname, lastname, 
+                email, phone_number, username, password, is_admin)
                 VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
 
             values: [
-                firstName,
-                lastName,
+                firstname,
+                lastname,
                 email,
                 phoneNumber,
-                userName,
+                username,
                 hashpassword,
                 isAdmin
             ]
@@ -143,10 +143,10 @@ const query = {
             values: []
         })
     },
-    getAllUsernames() {
+    getAllusernames() {
         return ({
-            text: `SELECT user_name, id FROM myireportdb.users
-            ORDER BY user_name ASC`,
+            text: `SELECT username, id FROM myireportdb.users
+            ORDER BY username ASC`,
             values: []
         })
     },
@@ -158,10 +158,10 @@ const query = {
         })
     },
 
-    getUserByUserName(userName) {
+    getUserByusername(username) {
         return ({
-            text: `SELECT * FROM myireportdb.users WHERE LOWER(user_name) = $1`,
-            values: [userName]
+            text: `SELECT * FROM myireportdb.users WHERE LOWER(username) = $1`,
+            values: [username.toLowerCase()]
 
         })
     },
@@ -190,14 +190,14 @@ const query = {
         })
     },
 
-    updateUser(email, phoneNumber, userName, userId) {
+    updateUser(email, phoneNumber, username, userId) {
         return ({
             text: `UPDATE myireportdb.users SET
             email = COALESCE($1, email),
             phone_number = COALESCE($2, phone_number),
-            user_name = COALESCE($4, user_name) 
+            username = COALESCE($4, username) 
             WHERE id = $5 RETURNING *`,
-            values: [email, phoneNumber, userName, userId]
+            values: [email, phoneNumber, username, userId]
         })
     },
 

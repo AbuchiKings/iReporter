@@ -56,16 +56,17 @@ const incidentTable = `CREATE TABLE IF NOT EXISTS myireportdb.incidents(
 
 const usersTable = `CREATE TABLE IF NOT EXISTS myireportdb.users(
   id SERIAL PRIMARY KEY NOT NULL,
-  first_name TEXT NOT NULL,
-  last_name TEXT NOT NULL,
+  firstname TEXT NOT NULL,
+  lastname TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   phone_number TEXT UNIQUE NOT NULL,
-  user_name TEXT UNIQUE,
+  username TEXT UNIQUE,
   registered TIMESTAMP DEFAULT CURRENT_DATE NOT NULL,
   password VARCHAR(100),
   image TEXT DEFAULT NULL,
   image_id TEXT DEFAULT NULL,
-  is_admin BOOLEAN DEFAULT false
+  is_admin BOOLEAN DEFAULT false,
+  is_verified BOOLEAN DEFAULT false
 
 );`;
 

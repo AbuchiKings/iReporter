@@ -13,11 +13,11 @@ import errorHandler from './../utils/errorHandler';
 
 
 function errorMessage(msg) {
-    const reg = /users_phone_number_key|users_user_name_key|users_email_key/;
+    const reg = /users_phone_number_key|users_username_key|users_email_key/;
     const duplicateMessages = {
         "users_email_key": "This email is already in use",
         "users_phone_number_key": "Phone number is already in use",
-        "users_user_name_key": "Username is  already in use"
+        "users_username_key": "Username is  already in use"
     }
     const message = duplicateMessages[msg.match(reg)[0]];
     return message ? message : undefined;
@@ -34,47 +34,53 @@ function checkError(error, next) {
     }
 }
 
+const factor = parseInt(process.env.HASH_FACTOR);
+
 class UserController {
+
     static async createUser(req, res, next) {
         try {
-            const { firstName, lastName, email, password, confirmPassword, userName, phoneNumber, admin_code } = req.body;
+            const { firstname, lastname, email, password, confirmPassword, username, phoneNumber, admin_code } = req.body;
             if (confirmPassword !== password) errorHandler(422, 'Passwords do not match');
 
             let isAdmin = process.env.ADMIN_CODE === admin_code ? true : false;
-            const factor = parseInt(process.env.HASH_FACTOR);
-            const hashpassword = await bcrypt.hash(password, 10);
-            const user = await pool.query(query.regUser(firstName, lastName, email, phoneNumber, userName, hashpassword, isAdmin));
+            const hashpassword = await bcrypt.hash(password, factor);
+            const user = await pool.query(query.regUser(firstname, lastname, email, phoneNumber, username.toLowerCase(), hashpassword, isAdmin));
             const result = user.rows[0];
             result.password = '';
+            //later add a code for email or phone verification
             return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
         } catch (error) {
-            console.log(error.detail);
+            console.log(error);
             return checkError(error, next);
         }
 
 
     }
 
-    static async login(req, res) {
+    static async login(req, res, next) {
         try {
-            const result = await Helper.login(req);
-            switch (result) {
-                case 'invalidPassword':
-                    return res.status(401).json({ status: 401, message: 'Invalid email or password' });
-
-                case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Invalid email or password' });
+            const { username, email, password } = req.body;
+            let result;
+            if (username) {
+                result = await pool.query(query.getUserByusername(username));
             }
-            return res.status(201).json({
-                status: 200,
-                data: [result],
-                message: 'Logged in'
+            else if (email) {
+                result = await pool.query(query.getUserByEmail(email));
+            }
+            if (!result.rows[0]) return errorHandler(404, 'Email or password is incorrect');
 
-            })
+            const user = result.rows[0];
+            const validPassword = await bcrypt.compare(password, user.password);
+
+            if (!validPassword) return errorHandler(404, 'Email or password is incorrect');
+            user.password = '';
+            req.user = user;
+            return next();
         } catch (error) {
             console.log(error);
+            return next(error);
         }
-
     }
 
     static async updateUserEmail(req, res) {
@@ -124,9 +130,9 @@ class UserController {
         }
     }
 
-    static async getUserByUserName(req, res) {
+    static async getUserByUsername(req, res) {
         try {
-            const result = await Helper.getUserByUserName(req);
+            const result = await Helper.getUserByusername(req);
             switch (result) {
 
                 case 'forbidden':

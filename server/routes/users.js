@@ -24,7 +24,7 @@ router.patch('/users/update-password',
 
 router.get('/users/get-by-username/:username',
     auth.verifyToken,
-    UserController.getUserByUserName
+    UserController.getUserByUsername
 );
 
 router.get('/users/:id',

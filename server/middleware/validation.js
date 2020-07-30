@@ -16,13 +16,13 @@ const validateLogin = [
 ];
 
 const validateSignup = [
-    body(['firstName', 'lastName', 'userName'])
+    body(['firstname', 'lastname', 'username'])
         .exists()
         .withMessage('Name fields and username cannot be empty')
         .isString()
         .isLength({ min: 3 })
         .withMessage('Name fields and username must have a minimum of 3 characters'),
-    sanitizeBody(['firstName', 'lastName', 'userName', 'phoneNumber'])
+    sanitizeBody(['firstname', 'lastname', 'username', 'phoneNumber'])
         .customSanitizer(value => {
             if (value !== undefined) return value.replace(/\s+/g, '').trim();
         }),
