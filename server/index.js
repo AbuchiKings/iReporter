@@ -19,6 +19,12 @@ app.use(helmet());
 app.use(router);
 app.use(express.static(path.join(__dirname, '../UI')))
 
+app.use((err, req, res, next) => {
+  res.status(err.statusCode || 500);
+  res.json({ status: err.status, message: err.message });
+  next();
+});
+
 app.listen(port, () => {
   console.log(`Server Started on port ${port}`);
 });

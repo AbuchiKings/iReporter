@@ -12,20 +12,44 @@ import responseHandler from '../utils/responseHandler';
 import errorHandler from './../utils/errorHandler';
 
 
+function errorMessage(msg) {
+    const reg = /users_phone_number_key|users_user_name_key|users_email_key/;
+    const duplicateMessages = {
+        "users_email_key": "This email is already in use",
+        "users_phone_number_key": "Phone number is already in use",
+        "users_user_name_key": "Username is  already in use"
+    }
+    const message = duplicateMessages[msg.match(reg)[0]];
+    return message ? message : undefined;
+}
+function checkError(error, next) {
+    if (error.code == 23505) {
+        const err = new Error();
+        err.statusCode = 409;
+        err.status = 'error';
+        err.message = errorMessage(error.message);
+        return next(err);
+    } else {
+        return next(error);
+    }
+}
 
 class UserController {
     static async createUser(req, res, next) {
         try {
             const { firstName, lastName, email, password, confirmPassword, userName, phoneNumber, admin_code } = req.body;
-            if(confirmPassword !== password) errorHandler(422, 'Passwords do not match');
+            if (confirmPassword !== password) errorHandler(422, 'Passwords do not match');
 
-            let isAdmin = process.env.ADMIN_CODE === admin_code? true: false;
+            let isAdmin = process.env.ADMIN_CODE === admin_code ? true : false;
+            const factor = parseInt(process.env.HASH_FACTOR);
             const hashpassword = await bcrypt.hash(password, 10);
             const user = await pool.query(query.regUser(firstName, lastName, email, phoneNumber, userName, hashpassword, isAdmin));
-             user.rows[0];
-            return responseHandler();
+            const result = user.rows[0];
+            result.password = '';
+            return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
         } catch (error) {
-            return next(error);
+            console.log(error.detail);
+            return checkError(error, next);
         }
 
 
@@ -36,13 +60,13 @@ class UserController {
             const result = await Helper.login(req);
             switch (result) {
                 case 'invalidPassword':
-                    return res.status(401).json({ status: 401, message: 'Invalid password' });
+                    return res.status(401).json({ status: 401, message: 'Invalid email or password' });
 
                 case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Account not found' });
+                    return res.status(404).json({ status: 404, message: 'Invalid email or password' });
             }
             return res.status(201).json({
-                status: 201,
+                status: 200,
                 data: [result],
                 message: 'Logged in'
 
@@ -176,9 +200,9 @@ class UserController {
 
             form.on('file', async function (name, file) {
                 result = await Helper.createProfileImage(req, file.path);
-          
+
                 if (result === 'cloudinary error') {
-                    return res.status(503).json({status: 503, message: 'Service unavailable'})
+                    return res.status(503).json({ status: 503, message: 'Service unavailable' })
                 }
 
                 return res.status(201).json({
