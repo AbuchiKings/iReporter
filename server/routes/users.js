@@ -1,6 +1,5 @@
 import express from 'express'
 import UserController from '../controller/userController';
-import auth from '../middleware/Auth';
 import validator from '../middleware/validation';
 import auth from './../middleware/Auth';
 
@@ -11,8 +10,7 @@ const app = express()
 const router = express.Router();
 router.patch(
     '/users/:user_id/update-user',
-    auth.verifyToken,
-    UserController.updateUser
+    auth.verifyToken, UserController.updateUser, auth.signToken, auth.addToken
 );
 
 router.patch('/users/:user_id/update-password',

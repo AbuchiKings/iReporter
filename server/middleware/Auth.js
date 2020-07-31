@@ -22,8 +22,8 @@ const auth = {
             let bearerToken = access.split(' ');
             token = bearerToken[1];
 
-        } else if (request.cookies.jwt) {
-            token = request.cookies.jwt;
+        } else if (req.cookies && req.cookies.jwt) {
+            token = req.cookies.jwt;
         }
 
         if (!token) return errorHandler(401, 'Unauthorised. Please login with your details');
@@ -58,9 +58,9 @@ const auth = {
         if (process.env.NODE_ENV === 'production' && !cookieOptions.secure) {
             return errorHandler(401, 'You cannot be logged in when your network connection is not secure!');
         }
-
+        const message = req.message || 'Successfully logged in'
         res.cookie('jwt', token, cookieOptions);
-        return responseHandler(res, { token, ...req.user }, next, 200, 'Successfully logged in', 1);
+        return responseHandler(res, { token, ...req.user }, next, 200, message, 1);
     },
 
     hashPassword: async (password) => {

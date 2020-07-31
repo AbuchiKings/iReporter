@@ -15,6 +15,7 @@ app.use(cors())
 
 app.use(express.json());
 app.use(helmet());
+app.use(cookieParser());
 
 app.use(router);
 app.use(express.static(path.join(__dirname, '../UI')))

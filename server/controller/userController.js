@@ -2,9 +2,6 @@ import 'core-js/stable';
 import 'regenerator-runtime';
 import Helper from '../helper/authHelper';
 import formidable from 'formidable';
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import query from '../queries/dbqueries';
 import pool from '../queries/pool';
 import { relative, join, resolve } from 'path'
@@ -87,21 +84,24 @@ class UserController {
         }
     }
 
-    static async updateUser(req, res) {
+    static async updateUser(req, res, next) {
         try {
 
             const userId = parseInt(req.user.id, 10);
+            console.log(userId)
             const { email, phoneNumber, username, firstname, lastname } = req.body;
 
-            // const foundUser = await pool.query(query.getUserByEmail(req.body.email));
-            // if (foundUser.rowCount > 0) return errorHandler(404, 'Your account was not found');
+            const foundUser = await pool.query(query.getUserById(userId));
+            if (!foundUser.rows[0]) return errorHandler(404, 'Account was not found');
 
             const user = await pool.query(query.updateUser(email, phoneNumber, username, firstname, lastname, userId));
             user.password = '';
-            req.user = user;
+            req.user = user.rows[0]
+            req.message = 'Account was successfully updated';
             return next();
         } catch (error) {
-            next(error);
+            console.log(error)
+            return next(error);
         }
     }
 
