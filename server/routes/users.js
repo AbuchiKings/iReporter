@@ -2,32 +2,28 @@ import express from 'express'
 import UserController from '../controller/userController';
 import auth from '../middleware/Auth';
 import validator from '../middleware/validation';
+import auth from './../middleware/Auth';
+
 
 
 
 const app = express()
 const router = express.Router();
 router.patch(
-    '/users/update-email',
+    '/users/:user_id/update-user',
     auth.verifyToken,
-    validator.validateEmailUpdate,
-    validator.validationHandler,
-    UserController.updateUserEmail
+    UserController.updateUser
 );
 
-router.patch('/users/update-password',
+router.patch('/users/:user_id/update-password',
     auth.verifyToken,
     validator.validatePasswordUpdate,
     validator.validationHandler,
     UserController.updatePassword
 );
 
-router.get('/users/get-by-username/:username',
-    auth.verifyToken,
-    UserController.getUserByUsername
-);
 
-router.get('/users/:id',
+router.get('/users/:user_id',
     auth.verifyToken,
     validator.validateId,
     validator.validationHandler,

@@ -10,6 +10,7 @@ import pool from '../queries/pool';
 import { relative, join, resolve } from 'path'
 import responseHandler from '../utils/responseHandler';
 import errorHandler from './../utils/errorHandler';
+import auth from './../middleware/Auth';
 
 
 function errorMessage(msg) {
@@ -44,7 +45,9 @@ class UserController {
             if (confirmPassword !== password) errorHandler(422, 'Passwords do not match');
 
             let isAdmin = process.env.ADMIN_CODE === admin_code ? true : false;
-            const hashpassword = await bcrypt.hash(password, factor);
+            //const hashpassword = await bcrypt.hash(password, factor);
+            const hashpassword = await auth.hashPassword(password);
+
             const user = await pool.query(query.regUser(firstname, lastname, email, phoneNumber, username.toLowerCase(), hashpassword, isAdmin));
             const result = user.rows[0];
             result.password = '';
@@ -71,7 +74,8 @@ class UserController {
             if (!result.rows[0]) return errorHandler(404, 'Email or password is incorrect');
 
             const user = result.rows[0];
-            const validPassword = await bcrypt.compare(password, user.password);
+            //const validPassword = await bcrypt.compare(password, user.password);
+            const validPassword = await auth.isVerified(password, user.password);
 
             if (!validPassword) return errorHandler(404, 'Email or password is incorrect');
             user.password = '';
@@ -83,28 +87,21 @@ class UserController {
         }
     }
 
-    static async updateUserEmail(req, res) {
+    static async updateUser(req, res) {
         try {
 
-            const result = await Helper.updateUserEmail(req);
-            switch (result) {
-                case 'notUniqueEmail':
-                    return res.status(409).json({ status: 401, message: 'Email address already exist' });
+            const userId = parseInt(req.user.id, 10);
+            const { email, phoneNumber, username, firstname, lastname } = req.body;
 
-                case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Account not found' });
+            // const foundUser = await pool.query(query.getUserByEmail(req.body.email));
+            // if (foundUser.rowCount > 0) return errorHandler(404, 'Your account was not found');
 
-                case 'invalidPassword':
-                    return res.status(401).json({ status: 401, message: 'Invalid password' });
-            }
-            return res.status(201).json({
-                status: 201,
-                data: [result],
-                message: 'Email updated'
-
-            })
+            const user = await pool.query(query.updateUser(email, phoneNumber, username, firstname, lastname, userId));
+            user.password = '';
+            req.user = user;
+            return next();
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     }
 

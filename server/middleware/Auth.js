@@ -4,11 +4,13 @@ import errorHandler from './../utils/errorHandler';
 import responseHandler from '../utils/responseHandler';
 import crypto from 'crypto';
 import { config } from './../../config';
+import util from 'util';
 
 
 
 dotenv.config();
 const SECRET = process.env.JWT_KEY;
+const pbkd = util.promisify(crypto.pbkdf2Sync);
 
 
 const auth = {
@@ -61,27 +63,21 @@ const auth = {
         return responseHandler(res, { token, ...req.user }, next, 200, 'Successfully logged in', 1);
     },
 
-    hashPassword(password) {
+    hashPassword: async (password) => {
         const salt = crypto.randomBytes(config.saltBytes).toString('hex');
-        const hash = await crypto.pbkdf2(password, salt, config.iterations, config.hashBytes, 'sha512').toString('hex');
+        const hash = await pbkd(password, salt, config.iterations, config.hashBytes, 'sha512').toString('hex');
         return [salt, hash].join('$');
     },
 
-    verifyPassword(password, dbPassword) {
+    isVerified: async (password, dbPassword) => {
         const originalHash = dbPassword.split('$')[1];
         const salt = dbPassword.split('$')[0];
-        const hash = await crypto.pbkdf2(password, salt, config.iterations, config.hashBytes, 'sha512').toString('hex');
+        const hash = await pbkd(password, salt, config.iterations, config.hashBytes, 'sha512').toString('hex');
 
         return hash === originalHash
 
     }
 
 }
-
-
-let hash = auth.hashPassword('test');
-console.log('HASH = ' + hash);
-console.log(auth.verifyHash('test', hash)); // will return true
-console.log(auth.verifyHash('test1', hash)); // will return false
 
 export default auth;

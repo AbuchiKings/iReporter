@@ -62,7 +62,7 @@ const usersTable = `CREATE TABLE IF NOT EXISTS myireportdb.users(
   phone_number TEXT UNIQUE NOT NULL,
   username TEXT UNIQUE,
   registered TIMESTAMP DEFAULT CURRENT_DATE NOT NULL,
-  password VARCHAR(100),
+  password TEXT NOT NULL,
   image TEXT DEFAULT NULL,
   image_id TEXT DEFAULT NULL,
   is_admin BOOLEAN DEFAULT false,

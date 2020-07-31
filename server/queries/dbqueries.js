@@ -190,14 +190,16 @@ const query = {
         })
     },
 
-    updateUser(email, phoneNumber, username, userId) {
+    updateUser(email, phoneNumber, username, firstname, lastname, userId) {
         return ({
             text: `UPDATE myireportdb.users SET
             email = COALESCE($1, email),
             phone_number = COALESCE($2, phone_number),
-            username = COALESCE($4, username) 
-            WHERE id = $5 RETURNING *`,
-            values: [email, phoneNumber, username, userId]
+            username = COALESCE($3, username), 
+            firstname = COALESCE($4, firstname), 
+            lastname = COALESCE($5, lastname) 
+            WHERE id = $6 RETURNING *`,
+            values: [email, phoneNumber, username, firstname, lastname, userId]
         })
     },
 
