@@ -88,14 +88,13 @@ class UserController {
         try {
 
             const userId = parseInt(req.user.id, 10);
-            console.log(userId)
             const { email, phoneNumber, username, firstname, lastname } = req.body;
 
             const foundUser = await pool.query(query.getUserById(userId));
             if (!foundUser.rows[0]) return errorHandler(404, 'Account was not found');
 
             const user = await pool.query(query.updateUser(email, phoneNumber, username, firstname, lastname, userId));
-            user.password = '';
+            user.rows[0].password = '';
             req.user = user.rows[0]
             req.message = 'Account was successfully updated';
             return next();
@@ -127,100 +126,31 @@ class UserController {
         }
     }
 
-    static async getUserByUsername(req, res) {
+
+    static async getUser(req, res, next) {
         try {
-            const result = await Helper.getUserByusername(req);
-            switch (result) {
+            const userId = parseInt(req.user.id, 10);
+            const user = await pool.query(query.getUserById(userId));
+            if (!user.rows[0]) return errorHandler(404, 'Account was not found');
 
-                case 'forbidden':
-                    return res.status(403).json({ status: 403, message: 'Forbidden' });
-
-                case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Account not found' });
-            }
-            return res.status(200).json({
-                status: 200,
-                data: [result]
-
-            })
+            user.password = '';
+            return responseHandler(res, user.rows[0], next, 200, 'Account retrieved successfully', 1)
         } catch (error) {
             console.log(error);
+            next(error)
         }
     }
 
-    static async getUserById(req, res) {
+    static async getAllUsers(req, res, next) {
         try {
-            const result = await Helper.getUserById(req);
-            switch (result) {
-
-                case 'forbidden':
-                    return res.status(403).json({ status: 403, message: 'Forbidden' });
-
-                case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Account not found' });
-            }
-            return res.status(200).json({
-                status: 200,
-                data: [result]
-
-            })
+            const result = await pool.query(query.getAllUsers());
+            return responseHandler(res, result.rows, next, 200, 'Users retrieved successfully', result.rowCount);
         } catch (error) {
             console.log(error);
+            next(error);
         }
     }
 
-    static async getAllUsers(req, res) {
-        try {
-            const result = await Helper.getAllUsers(req);
-            switch (result) {
-
-                case 'forbidden':
-                    return res.status(403).json({ status: 403, message: 'Forbidden' });
-
-                case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Account not found' });
-            }
-            return res.status(200).json({
-                status: 200,
-                data: [result]
-
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    static async createProfileImage(req, res) {
-        try {
-            let result;
-            const form = new formidable.IncomingForm();
-            form.parse(req);
-
-            form.on('fileBegin', function (name, file) {
-
-                file.path = join(resolve('./'), `/uploads/${file.name}`);
-            });
-
-            form.on('file', async function (name, file) {
-                result = await Helper.createProfileImage(req, file.path);
-
-                if (result === 'cloudinary error') {
-                    return res.status(503).json({ status: 503, message: 'Service unavailable' })
-                }
-
-                return res.status(201).json({
-                    status: 201,
-                    data: [result],
-                    message: 'Updated'
-
-                });
-            });
-
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     static async deleteUser(req, res) {
         try {

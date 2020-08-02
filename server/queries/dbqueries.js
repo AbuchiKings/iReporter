@@ -139,7 +139,7 @@ const query = {
 
     getAllUsers() {
         return ({
-            text: `SELECT * FROM myireportdb.users`,
+            text: `SELECT id, firstname, lastname, email, registered, is_admin FROM myireportdb.users`,
             values: []
         })
     },

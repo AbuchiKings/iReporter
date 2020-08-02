@@ -4,7 +4,10 @@ import validator from '../middleware/validation';
 import auth from './../middleware/Auth';
 
 
-
+// Add restriction to avoid one user accessing anothers 
+// Add non admin restriction
+//Lift verification of token
+//fix password update
 
 const app = express()
 const router = express.Router();
@@ -25,17 +28,12 @@ router.get('/users/:user_id',
     auth.verifyToken,
     validator.validateId,
     validator.validationHandler,
-    UserController.getUserById
+    UserController.getUser
 );
 
 router.get('/users',
     auth.verifyToken,
     UserController.getAllUsers
-);
-
-router.patch('/users/profile-picture',
-    auth.verifyToken,
-    UserController.createProfileImage
 );
 
 router.post('/users/delete',
