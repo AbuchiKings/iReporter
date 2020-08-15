@@ -119,6 +119,13 @@ const query = {
         })
     },
 
+    getUserByEmail(email) {
+        return ({
+            text: `SELECT firstname, lastname FROM myireportdb.users WHERE email = $1`,
+            values: [email]
+        })
+    },
+
     regUser(firstname, lastname, email, phoneNumber, username, hashpassword, isAdmin) {
         return ({
             text: `INSERT INTO myireportdb.users (firstname, lastname, 
@@ -200,6 +207,16 @@ const query = {
             lastname = COALESCE($5, lastname) 
             WHERE id = $6 RETURNING *`,
             values: [email, phoneNumber, username, firstname, lastname, userId]
+        })
+    },
+
+    saveResetCode( reset_code, reset_expires, email) {
+        return ({
+            text: `UPDATE myireportdb.users SET
+            reset_code = $1,
+            reset_expires = $2,
+            WHERE email = $3`,
+            values: [reset_code, reset_expires, email]
         })
     },
 
