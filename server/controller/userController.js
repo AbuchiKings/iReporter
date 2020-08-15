@@ -87,7 +87,7 @@ class UserController {
     static async updateUser(req, res, next) {
         try {
 
-            const userId = parseInt(req.user.id, 10);
+            const userId = parseInt(req.params.id, 10);
             const { email, phoneNumber, username, firstname, lastname } = req.body;
 
             const foundUser = await pool.query(query.getUserById(userId));
@@ -100,7 +100,7 @@ class UserController {
             return next();
         } catch (error) {
             console.log(error)
-            return next(error);
+            return checkError(error, next);
         }
     }
 
@@ -129,7 +129,7 @@ class UserController {
 
     static async getUser(req, res, next) {
         try {
-            const userId = parseInt(req.user.id, 10);
+            const userId = parseInt(req.params.id, 10);
             const user = await pool.query(query.getUserById(userId));
             if (!user.rows[0]) return errorHandler(404, 'Account was not found');
 
@@ -152,27 +152,15 @@ class UserController {
     }
 
 
-    static async deleteUser(req, res) {
+    static async deleteUser(req, res, next) {
         try {
-            const result = await Helper.deleteUser(req);
-            switch (result) {
-
-                case 'forbidden':
-                    return res.status(403).json({ status: 403, message: 'Forbidden' });
-
-                case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Account not found' });
-
-                case 'invalidPassword':
-                    return res.status(401).json({ status: 401, message: 'Invalid password' });
-            }
-            return res.status(200).json({
-                status: 204,
-                message: 'Account deleted successfully'
-
-            })
+            const userId = parseInt(req.params.id, 10);
+            const user = await pool.query(query.deleteUser(userId));
+            if(user.rows[0]) errorHandler(404, "User was not found");
+            return responseHandler(res, null, next, 204, 'Account deleted successfully', 1);
         } catch (error) {
             console.log(error);
+            next(error);
         }
     }
 
