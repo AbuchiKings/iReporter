@@ -8,6 +8,7 @@ import { relative, join, resolve } from 'path'
 import responseHandler from '../utils/responseHandler';
 import errorHandler from './../utils/errorHandler';
 import auth from './../middleware/Auth';
+import crypto from 'crypto';
 
 
 function errorMessage(msg) {
@@ -31,7 +32,9 @@ function checkError(error, next) {
         return next(error);
     }
 }
+function createResetToken() {
 
+}
 const factor = parseInt(process.env.HASH_FACTOR);
 
 class UserController {
@@ -126,6 +129,37 @@ class UserController {
         }
     }
 
+    static async forgotPassword(req, res, next) {
+        try {
+            const { email } = req.email;
+
+            const user = await pool.query(query.getUserByEmail(email))
+            if (!user.rows[0]) return errorHandler(404, 'Account not found.');
+
+            const resetToken = crypto.randomBytes(3).toString('hex');
+            const reset_code = crypto.createHash('sha256').update(resetToken).digest('hex');
+            const reset_expires = Date.now() + (1000 * 60 * 5);
+
+            await pool.query(query.saveResetCode(reset_code, reset_expires, email))
+
+            // await client.messages.create({
+            //     to: admin.phoneNumber,
+            //     from: process.env.TWILIO_PHONE_NUMBER,
+            //     body: `Your password reset code is ${resetToken}. Expires in 5 minutes.`
+            // });
+
+            return response.status(200).json({
+                status: 'Success',
+                message: 'Your password reset token has been sent to your mobile phone as a text message',
+                resetCode: resetToken
+            });
+        } catch (error) {
+            console.log(error);
+            return next(error);
+        }
+
+    }
+
 
     static async getUser(req, res, next) {
         try {
@@ -137,7 +171,7 @@ class UserController {
             return responseHandler(res, user.rows[0], next, 200, 'Account retrieved successfully', 1)
         } catch (error) {
             console.log(error);
-            next(error)
+            return next(error)
         }
     }
 
@@ -147,7 +181,7 @@ class UserController {
             return responseHandler(res, result.rows, next, 200, 'Users retrieved successfully', result.rowCount);
         } catch (error) {
             console.log(error);
-            next(error);
+            return next(error);
         }
     }
 
@@ -156,11 +190,11 @@ class UserController {
         try {
             const userId = parseInt(req.params.id, 10);
             const user = await pool.query(query.deleteUser(userId));
-            if(user.rows[0]) errorHandler(404, "User was not found");
+            if (user.rows[0]) errorHandler(404, "User was not found");
             return responseHandler(res, null, next, 204, 'Account deleted successfully', 1);
         } catch (error) {
             console.log(error);
-            next(error);
+            return next(error);
         }
     }
 
