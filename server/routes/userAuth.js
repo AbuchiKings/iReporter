@@ -9,4 +9,6 @@ router.post('/auth/signup', validator.validateSignup, validator.validationHandle
 
 router.post('/auth/login', validator.validateLogin, validator.validationHandler, UserController.login, auth.signToken, auth.addToken);
 
+router.post('/auth/reset-password', UserController.forgotPassword);
+
 export default router;

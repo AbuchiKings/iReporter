@@ -14,7 +14,7 @@ import crypto from 'crypto';
 function errorMessage(msg) {
     const reg = /users_phone_number_key|users_username_key|users_email_key/;
     const duplicateMessages = {
-        "users_email_key": "This email is already in use",
+        "users_email_key": "Email is already in use",
         "users_phone_number_key": "Phone number is already in use",
         "users_username_key": "Username is  already in use"
     }
@@ -35,7 +35,6 @@ function checkError(error, next) {
 function createResetToken() {
 
 }
-const factor = parseInt(process.env.HASH_FACTOR);
 
 class UserController {
 
@@ -45,25 +44,18 @@ class UserController {
             if (confirmPassword !== password) errorHandler(422, 'Passwords do not match');
 
             let isAdmin = process.env.ADMIN_CODE === admin_code ? true : false;
-            //const hashpassword = await bcrypt.hash(password, factor);
-            auth.hashPassword(password, (error, pwdBuffer, salt) => {
-                if (error) {
-                    throw (error);
-                }
+            const hashpassword = await auth.hashPassword(password);
+            const registered = new Date();
 
-                const hash = pwdBuffer.toString('hex');
-                const hashpassword = [salt, hash].join('$');
-                pool.query(query.regUser(firstname, lastname, email, phoneNumber, username.toLowerCase(), hashpassword, isAdmin))
-                    .then(user => {
-                        const result = user.rows[0];
-                        result.password = '';
-                        return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
-                    }).catch(error => checkError(error, next));
-            });
+            const user = await pool.query(query.regUser(firstname, lastname, email, phoneNumber, username.toLowerCase(), hashpassword, isAdmin, registered))
+            const result = user.rows[0];
+            result.password = '';
+
+            return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
             //later add a code for email or phone verification
         } catch (error) {
             console.log(error);
-            return next(error);
+            return checkError(error, next);
         }
     }
 
@@ -113,9 +105,9 @@ class UserController {
         }
     }
 
-    static async updatePassword(req, res) {
+    static async updatePassword(req, res, next) {
         try {
-            const result = await Helper.updatePassword(req);
+            const result = await pool.query(`SELECT * FROM myireportdb.users WHERE reset_code = ${res}`);
             switch (result) {
 
                 case 'invalidPassword':
@@ -132,33 +124,31 @@ class UserController {
             })
         } catch (error) {
             console.log(error);
+            next(error);
         }
     }
 
     static async forgotPassword(req, res, next) {
         try {
-            const { email } = req.email;
+            const { email } = req.body;
 
             const user = await pool.query(query.getUserByEmail(email))
             if (!user.rows[0]) return errorHandler(404, 'Account not found.');
 
-            const resetToken = crypto.randomBytes(3).toString('hex');
+            let resetToken = crypto.randomBytes(3).toString('hex');
             const reset_code = crypto.createHash('sha256').update(resetToken).digest('hex');
-            const reset_expires = Date.now() + (1000 * 60 * 5);
+            const reset_expires = new Date(Date.now() + (1000 * 60 * 5));
 
             await pool.query(query.saveResetCode(reset_code, reset_expires, email))
 
+            // send code to email or phoneNumber
             // await client.messages.create({
-            //     to: admin.phoneNumber,
+            //     to: user.rows[0].phone_number,
             //     from: process.env.TWILIO_PHONE_NUMBER,
             //     body: `Your password reset code is ${resetToken}. Expires in 5 minutes.`
             // });
-
-            return response.status(200).json({
-                status: 'Success',
-                message: 'Your password reset token has been sent to your mobile phone as a text message',
-                resetCode: resetToken
-            });
+            resetToken = process.env.NODE_ENV === 'production' ? null : resetToken;
+            return responseHandler(res, resetToken, next, 200, 'Reset code has been sent to your email', 1)
         } catch (error) {
             console.log(error);
             return next(error);
@@ -184,6 +174,9 @@ class UserController {
     static async getAllUsers(req, res, next) {
         try {
             const result = await pool.query(query.getAllUsers());
+            if(result.rowCount < 1){
+                return errorHandler(404, 'No user found');
+            }
             return responseHandler(res, result.rows, next, 200, 'Users retrieved successfully', result.rowCount);
         } catch (error) {
             console.log(error);

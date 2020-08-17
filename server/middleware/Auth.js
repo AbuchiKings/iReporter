@@ -72,29 +72,31 @@ const auth = {
         return [salt, hash].join('$');
     },
 
-    hashPassword(password, cb) {
-        const salt = crypto.randomBytes(saltBytes).toString('hex');
+    // hashPassword(password, cb) {
+    //     const salt = crypto.randomBytes(saltBytes).toString('hex');
 
-        const callback = (error, buffer) => {
-            return cb(error, buffer, salt ? salt : null);
-        }
-        return crypto.pbkdf2(password, salt, iterations, hashBytes, 'sha512', callback);
-    },
-
-    // hashPassword(password, cb = () => { }) {
-    //     return new Promise((resolve, reject) => {
-    //         const salt = crypto.randomBytes(saltBytes).toString('hex');
-    //         const callback = (error, buffer) => {
-    //             if (error) {
-    //                 cb(error);
-    //                 return reject(error);
-    //             }
-    //             resolve(buffer);
-    //             cb(null, buffer, salt);
-    //         }
-    //         return crypto.pbkdf2(password, salt, iterations, hashBytes, 'sha512', callback);
-    //     });
+    //     const callback = (error, buffer) => {
+    //         return cb(error, buffer, salt ? salt : null);
+    //     }
+    //     return crypto.pbkdf2(password, salt, iterations, hashBytes, 'sha512', callback);
     // },
+
+    hashPassword(password, cb = () => { }) {
+        return new Promise((resolve, reject) => {
+            const salt = crypto.randomBytes(saltBytes).toString('hex');
+            const callback = (error, buffer) => {
+                if (error) {
+                    cb(error);
+                    return reject(error);
+                }
+                const hash = buffer.toString('hex');
+                const hashpassword = [salt, hash].join('$');
+                resolve(hashpassword);
+                cb(null, hashpassword);
+            }
+            return crypto.pbkdf2(password, salt, iterations, hashBytes, 'sha512', callback);
+        });
+    },
 
     isPassword(password, dbPassword, cb = () => { }) {
         return new Promise((resolve, reject) => {
