@@ -74,7 +74,7 @@ const usersTable = `CREATE TABLE IF NOT EXISTS myireportdb.users(
 );`;
 
 const check = `SELECT * FROM myireportdb.users`;
-
+//should add password reset date
 
 (async function () {
   try {

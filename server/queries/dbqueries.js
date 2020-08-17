@@ -165,10 +165,10 @@ const query = {
             values: [email]
         })
     },
-    getUserByResetcode(reset_code) {
+    getUserByResetcode(resetCode) {
         return ({
-            text: `SELECT * FROM myireportdb.users WHERE reset_code = $1 AND reset_expires > ${new Date()}`,
-            values: [reset_code]
+            text: `SELECT * FROM myireportdb.users WHERE reset_code = $1;`,
+            values: [resetCode]
         })
     },
 
@@ -196,11 +196,15 @@ const query = {
         })
     },
 
-    updateUserPassword(hashNewPassword, userId) {
+    updateUserPassword(hashedPassword, oldPassword, resetExpires, resetCode, token ) {
         return ({
             text: `UPDATE myireportdb.users SET
-            password = COALESCE($1, password) WHERE id = $2 RETURNING *`,
-            values: [hashNewPassword, userId]
+            password =$1,
+            old_password = $2,
+            reset_expires = $3, 
+            reset_code = $4 
+            WHERE reset_code = $5 RETURNING *`,
+            values: [hashedPassword, oldPassword, resetExpires, resetCode, token]
         })
     },
 

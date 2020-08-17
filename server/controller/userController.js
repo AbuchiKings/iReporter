@@ -107,24 +107,26 @@ class UserController {
 
     static async updatePassword(req, res, next) {
         try {
-            const result = await pool.query(`SELECT * FROM myireportdb.users WHERE reset_code = ${res}`);
-            switch (result) {
+            const { resetToken, password, confirmPassword } = req.body;
+            const reset_code = crypto.createHash('sha256').update(resetToken).digest('hex');
 
-                case 'invalidPassword':
-                    return res.status(401).json({ status: 401, message: 'Invalid password' });
+            const result = await pool.query(query.getUserByResetcode(reset_code));
 
-                case 'accountNotFound':
-                    return res.status(404).json({ status: 404, message: 'Account not found' });
+            if (!result.rows[0]) {
+                return errorHandler(400, 'Invalid or expired reset code');
             }
-            return res.status(201).json({
-                status: 201,
-                data: [result],
-                message: 'Password updated'
 
-            })
+            const isExpired = new Date() > new Date(result.rows[0].reset_expires);
+            console.log( Date(), "  ",Date(result.rows[0].reset_expires));
+            console.log(isExpired);
+            if (isExpired) return errorHandler(400, 'Invalid or expired reset code');
+            const hashpassword = await auth.hashPassword(password);
+            const user = await pool.query(query.updateUserPassword(hashpassword, result.rows[0].password, null, null, reset_code));
+
+            return responseHandler(res, null, next, 201, 'Your passwordhas been updated', 0);
         } catch (error) {
             console.log(error);
-            next(error);
+           return next(error);
         }
     }
 
@@ -174,7 +176,7 @@ class UserController {
     static async getAllUsers(req, res, next) {
         try {
             const result = await pool.query(query.getAllUsers());
-            if(result.rowCount < 1){
+            if (result.rowCount < 1) {
                 return errorHandler(404, 'No user found');
             }
             return responseHandler(res, result.rows, next, 200, 'Users retrieved successfully', result.rowCount);
