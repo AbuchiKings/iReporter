@@ -46,19 +46,25 @@ class UserController {
 
             let isAdmin = process.env.ADMIN_CODE === admin_code ? true : false;
             //const hashpassword = await bcrypt.hash(password, factor);
-            const hashpassword = await auth.hashPassword(password);
+            auth.hashPassword(password, (error, pwdBuffer, salt) => {
+                if (error) {
+                    throw (error);
+                }
 
-            const user = await pool.query(query.regUser(firstname, lastname, email, phoneNumber, username.toLowerCase(), hashpassword, isAdmin));
-            const result = user.rows[0];
-            result.password = '';
+                const hash = pwdBuffer.toString('hex');
+                const hashpassword = [salt, hash].join('$');
+                pool.query(query.regUser(firstname, lastname, email, phoneNumber, username.toLowerCase(), hashpassword, isAdmin))
+                    .then(user => {
+                        const result = user.rows[0];
+                        result.password = '';
+                        return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
+                    }).catch(error => checkError(error, next));
+            });
             //later add a code for email or phone verification
-            return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
         } catch (error) {
             console.log(error);
-            return checkError(error, next);
+            return next(error);
         }
-
-
     }
 
     static async login(req, res, next) {
@@ -75,7 +81,7 @@ class UserController {
 
             const user = result.rows[0];
             //const validPassword = await bcrypt.compare(password, user.password);
-            const validPassword = await auth.isVerified(password, user.password);
+            const validPassword = await auth.isPassword(password, user.password);
 
             if (!validPassword) return errorHandler(404, 'Email or password is incorrect');
             user.password = '';
