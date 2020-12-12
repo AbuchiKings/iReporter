@@ -130,7 +130,7 @@ const query = {
         return ({
             text: `INSERT INTO myireportdb.users (firstname, lastname, 
                 email, phone_number, username, password, is_admin, registered)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+                VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING firstname, lastname, email, phone_number, username, is_admin, registered`,
 
             values: [
                 firstname,
@@ -159,31 +159,17 @@ const query = {
         })
     },
 
-    getUserByEmail(email) {
+    getUserByResetcode(selector, fields) {
         return ({
-            text: `SELECT * FROM myireportdb.users WHERE email = $1`,
-            values: [email]
-        })
-    },
-    getUserByResetcode(resetCode) {
-        return ({
-            text: `SELECT * FROM myireportdb.users WHERE reset_code = $1;`,
-            values: [resetCode]
+            text: `SELECT ${fields} FROM myireportdb.users WHERE ${selector} = $1;`,
+            values: [select]
         })
     },
 
-    getUserByusername(username) {
+    getUserByusername(username, fields) {
         return ({
-            text: `SELECT * FROM myireportdb.users WHERE LOWER(username) = $1`,
+            text: `SELECT ${fields} FROM myireportdb.users WHERE LOWER(username) = $1`,
             values: [username.toLowerCase()]
-
-        })
-    },
-
-    getUserByPhone(phoneNumber) {
-        return ({
-            text: `SELECT * FROM myireportdb.users WHERE phone_number = $1`,
-            values: [phoneNumber]
 
         })
     },

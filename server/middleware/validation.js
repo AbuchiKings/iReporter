@@ -26,7 +26,7 @@ const validateSignup = [
         .customSanitizer(value => {
             if (value !== undefined) return value.replace(/\s+/g, '').trim();
         }),
-    body('phoneNumber')
+    body('phone_number')
         .exists()
         .withMessage('A valid phone number must be provided')
         .isMobilePhone("any", { strictMode: true })

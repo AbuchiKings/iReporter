@@ -66,6 +66,8 @@ const usersTable = `CREATE TABLE IF NOT EXISTS myireportdb.users(
   old_password TEXT DEFAULT NULL,
   reset_code TEXT DEFAULT NULL,
   reset_expires TIMESTAMP DEFAULT NULL,
+  verify_code TEXT DEFAULT NULL,
+  verify_expires TIMESTAMP DEFAULT NULL,
   image TEXT DEFAULT NULL,
   image_id TEXT DEFAULT NULL,
   is_admin BOOLEAN DEFAULT false,

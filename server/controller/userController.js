@@ -40,14 +40,13 @@ class UserController {
 
     static async createUser(req, res, next) {
         try {
-            const { firstname, lastname, email, password, confirmPassword, username, phoneNumber, admin_code } = req.body;
-            if (confirmPassword !== password) errorHandler(422, 'Passwords do not match');
+            const { firstname, lastname, email, password, username, phone_number, admin_code } = req.body;
 
             let isAdmin = process.env.ADMIN_CODE === admin_code ? true : false;
             const hashpassword = await auth.hashPassword(password);
             const registered = new Date();
 
-            const user = await pool.query(query.regUser(firstname, lastname, email, phoneNumber, username.toLowerCase(), hashpassword, isAdmin, registered))
+            const user = await pool.query(query.regUser(firstname, lastname, email, phone_number, username.toLowerCase(), hashpassword, isAdmin, registered))
             const result = user.rows[0];
             result.password = '';
 
@@ -111,15 +110,13 @@ class UserController {
             const reset_code = crypto.createHash('sha256').update(resetToken).digest('hex');
 
             const result = await pool.query(query.getUserByResetcode(reset_code));
-
             if (!result.rows[0]) {
                 return errorHandler(400, 'Invalid or expired reset code');
             }
 
             const isExpired = new Date() > new Date(result.rows[0].reset_expires);
-            console.log( Date(), "  ",Date(result.rows[0].reset_expires));
-            console.log(isExpired);
             if (isExpired) return errorHandler(400, 'Invalid or expired reset code');
+            
             const hashpassword = await auth.hashPassword(password);
             const user = await pool.query(query.updateUserPassword(hashpassword, result.rows[0].password, null, null, reset_code));
 
