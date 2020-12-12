@@ -48,7 +48,6 @@ class UserController {
 
             const user = await pool.query(query.regUser(firstname, lastname, email, phone_number, username.toLowerCase(), hashpassword, isAdmin, registered))
             const result = user.rows[0];
-            result.password = '';
 
             return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
             //later add a code for email or phone verification
@@ -61,12 +60,13 @@ class UserController {
     static async login(req, res, next) {
         try {
             const { username, email, password } = req.body;
+            const fields = "firstname, lastname, email, phone_number, username, is_admin, registered, password"
             let result;
             if (username) {
-                result = await pool.query(query.getUserByusername(username));
+                result = await pool.query(query.getUserByValue(username.toLowerCase(), 'username', fields));
             }
             else if (email) {
-                result = await pool.query(query.getUserByEmail(email));
+                result = await pool.query(query.getUserByValue(email, 'email', fields));
             }
             if (!result.rows[0]) return errorHandler(404, 'Email or password is incorrect');
 
@@ -75,7 +75,7 @@ class UserController {
             const validPassword = await auth.isPassword(password, user.password);
 
             if (!validPassword) return errorHandler(404, 'Email or password is incorrect');
-            user.password = '';
+            user.password = null;
             req.user = user;
             return next();
         } catch (error) {
@@ -163,7 +163,7 @@ class UserController {
             if (!user.rows[0]) return errorHandler(404, 'Account was not found');
 
             user.password = '';
-            return responseHandler(res, user.rows[0], next, 200, 'Account retrieved successfully', 1)
+            return responseHandler(res, user.rows[0], next, 200, 'Account retrieved successfully', 1);
         } catch (error) {
             console.log(error);
             return next(error)

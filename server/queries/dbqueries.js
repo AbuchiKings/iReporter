@@ -119,12 +119,6 @@ const query = {
         })
     },
 
-    getUserByEmail(email) {
-        return ({
-            text: `SELECT firstname, lastname FROM myireportdb.users WHERE email = $1`,
-            values: [email]
-        })
-    },
 
     regUser(firstname, lastname, email, phoneNumber, username, hashpassword, isAdmin, registered) {
         return ({
@@ -159,18 +153,10 @@ const query = {
         })
     },
 
-    getUserByResetcode(selector, fields) {
+    getUserByValue(selector, field, fields) {
         return ({
-            text: `SELECT ${fields} FROM myireportdb.users WHERE ${selector} = $1;`,
-            values: [select]
-        })
-    },
-
-    getUserByusername(username, fields) {
-        return ({
-            text: `SELECT ${fields} FROM myireportdb.users WHERE LOWER(username) = $1`,
-            values: [username.toLowerCase()]
-
+            text: `SELECT ${fields} FROM myireportdb.users WHERE ${field} = $1;`,
+            values: [selector]
         })
     },
 
