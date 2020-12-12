@@ -112,14 +112,6 @@ const query = {
         })
     },
 
-    getUserById(id) {
-        return ({
-            text: `SELECT * FROM myireportdb.users WHERE id = $1`,
-            values: [id]
-        })
-    },
-
-
     regUser(firstname, lastname, email, phoneNumber, username, hashpassword, isAdmin, registered) {
         return ({
             text: `INSERT INTO myireportdb.users (firstname, lastname, 
@@ -127,14 +119,7 @@ const query = {
                 VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING firstname, lastname, email, phone_number, username, is_admin, registered`,
 
             values: [
-                firstname,
-                lastname,
-                email,
-                phoneNumber,
-                username,
-                hashpassword,
-                isAdmin,
-                registered
+                firstname, lastname, email, phoneNumber, username, hashpassword, isAdmin, registered
             ]
         })
     },
@@ -168,7 +153,7 @@ const query = {
         })
     },
 
-    updateUserPassword(hashedPassword, oldPassword, resetExpires, resetCode, token ) {
+    updateUserPassword(hashedPassword, oldPassword, resetExpires, resetCode, token) {
         return ({
             text: `UPDATE myireportdb.users SET
             password =$1,
@@ -193,7 +178,7 @@ const query = {
         })
     },
 
-    saveResetCode( reset_code, reset_expires, email) {
+    saveResetCode(reset_code, reset_expires, email) {
         return ({
             text: `UPDATE myireportdb.users SET
             reset_code = $1,
