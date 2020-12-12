@@ -1,7 +1,5 @@
 import 'core-js/stable';
 import 'regenerator-runtime';
-import Helper from '../helper/authHelper';
-import formidable from 'formidable';
 import query from '../queries/dbqueries';
 import pool from '../queries/pool';
 import { relative, join, resolve } from 'path'
