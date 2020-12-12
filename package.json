@@ -6,7 +6,7 @@
   "scripts": {
     "db": "babel-node ./server/database/db.js --env",
     "build": "rm -rf ./dist/* && babel ./server --out-dir ./dist --ignore ./server/tests/test.js",
-    "start": "npm run db && npm run build && node ./dist/app",
+    "start": "npm run db && npm run build && node ./dist/index",
     "dev": "npm run db && nodemon --exec babel-node ./server/index.js --env"
   },
   "repository": {
