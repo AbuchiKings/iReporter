@@ -3,14 +3,12 @@ import dotenv from 'dotenv';
 import errorHandler from './../utils/errorHandler';
 import responseHandler from '../utils/responseHandler';
 import crypto, { pbkdf2 } from 'crypto';
-import { config } from './../../config';
 import util from 'util';
 
 
 
 dotenv.config();
 const SECRET = process.env.JWT_KEY;
-const pbkd = util.promisify(crypto.pbkdf2);
 const iterations = parseInt(process.env.ITERATIONS, 10);
 const hashBytes = parseInt(process.env.HASH_BYTES, 10);
 const saltBytes = parseInt(process.env.SALT_BYTES, 10);
@@ -66,11 +64,11 @@ const auth = {
         return responseHandler(res, { token, ...req.user }, next, 200, message, 1);
     },
 
-    hashPassword1: async (password) => {
-        const salt = crypto.randomBytes(config.saltBytes).toString('hex');
-        const hash = await pbkd(password, salt, config.iterations, config.hashBytes, 'sha512').toString('hex');
-        return [salt, hash].join('$');
-    },
+    // hashPassword1: async (password) => {
+    //     const salt = crypto.randomBytes(config.saltBytes).toString('hex');
+    //     const hash = await pbkd(password, salt, config.iterations, config.hashBytes, 'sha512').toString('hex');
+    //     return [salt, hash].join('$');
+    // },
 
     // hashPassword(password, cb) {
     //     const salt = crypto.randomBytes(saltBytes).toString('hex');
