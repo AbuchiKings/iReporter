@@ -92,7 +92,7 @@ class UserController {
             if (!foundUser.rows[0]) return errorHandler(404, 'Account was not found');
 
             const user = await pool.query(query.updateUser(email, phone_number, username, firstname, lastname, userId));
-            user.rows[0].password = '';
+            user.rows[0].password = null;
             req.user = user.rows[0]
             req.message = 'Account was successfully updated';
             return next();
