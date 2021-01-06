@@ -58,7 +58,7 @@ class UserController {
     static async login(req, res, next) {
         try {
             const { username, email, password } = req.body;
-            const fields = "firstname, lastname, email, phone_number, username, is_admin, registered, password"
+            const fields = "firstname, lastname, email, phone_number, username, is_admin, registered, id, password"
             let result;
             if (username) {
                 result = await pool.query(query.getUserByValue(username.toLowerCase(), 'username', fields));
@@ -73,7 +73,6 @@ class UserController {
             const validPassword = await auth.isPassword(password, user.password);
 
             if (!validPassword) return errorHandler(404, 'Email or password is incorrect');
-            user.password = null;
             req.user = user;
             return next();
         } catch (error) {
