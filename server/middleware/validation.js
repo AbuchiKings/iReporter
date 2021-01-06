@@ -84,7 +84,7 @@ const validateId = [
         .exists()
         .withMessage('Provide an id')
         .isInt({ min: 1 })
-        .withMessage('Id must be a positive integer not less than 1')
+        .withMessage('Route parameter, id, must be a positive integer not less than 1')
 ];
 
 const validateGetReports = [

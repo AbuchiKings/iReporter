@@ -2,6 +2,7 @@ import express from 'express'
 import UserController from '../controller/userController';
 import validator from '../middleware/validation';
 import auth from './../middleware/Auth';
+import {confirmOwnership} from './../middleware/permissions';
 
 
 // Add restriction to avoid one user accessing anothers 
@@ -24,10 +25,11 @@ router.patch('/users/:user_id/update-password',
 );
 
 
-router.get('/users/:user_id',
+router.get('/users/:id',
     auth.verifyToken,
     validator.validateId,
     validator.validationHandler,
+    confirmOwnership,
     UserController.getUser
 );
 

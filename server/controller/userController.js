@@ -50,7 +50,6 @@ class UserController {
             return responseHandler(res, result, next, 201, 'Account was successfully created', 1);
             //later add a code for email or phone verification
         } catch (error) {
-            console.log(error);
             return checkError(error, next);
         }
     }
@@ -76,7 +75,6 @@ class UserController {
             req.user = user;
             return next();
         } catch (error) {
-            console.log(error);
             return next(error);
         }
     }
@@ -156,13 +154,13 @@ class UserController {
     static async getUser(req, res, next) {
         try {
             const userId = parseInt(req.params.id, 10);
-            const user = await pool.query(query.getUserById(userId));
+            const fields = "firstname, lastname, email, phone_number, username, is_admin, registered, id, password"
+            const user = await pool.query(query.getUserByValue(userId, 'id', fields));
             if (!user.rows[0]) return errorHandler(404, 'Account was not found');
 
             user.password = '';
             return responseHandler(res, user.rows[0], next, 200, 'Account retrieved successfully', 1);
         } catch (error) {
-            console.log(error);
             return next(error)
         }
     }
