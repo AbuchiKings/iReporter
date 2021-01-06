@@ -13,11 +13,11 @@ import {confirmOwnership} from './../middleware/permissions';
 const app = express()
 const router = express.Router();
 router.patch(
-    '/users/:user_id/update-user',
-    auth.verifyToken, UserController.updateUser, auth.signToken, auth.addToken
+    '/users/:id/update-user',
+    auth.verifyToken, confirmOwnership, UserController.updateUser, auth.signToken, auth.addToken
 );
 
-router.patch('/users/:user_id/update-password',
+router.patch('/users/id/update-password',
     auth.verifyToken,
     validator.validatePasswordUpdate,
     validator.validationHandler,

@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode || 500);
 
   if (process.env.NODE_ENV === 'production') {
-      err.statusCode = err.status || 500;
+      err.statusCode = err.statusCode || 500;
       err.message = err.statusCode === 500 ? "Something has gone very wrong" : err.message;
   }
   return res.json({ status: err.status, message: err.message });
