@@ -148,7 +148,7 @@ const query = {
     updateUserEmail(email, userId) {
         return ({
             text: `UPDATE myireportdb.users SET
-            email = COALESCE($1, email) WHERE id = $2 RETURNING *`,
+            email = COALESCE($1, email) WHERE id = $2 RETURNING `,
             values: [email, userId]
         })
     },
@@ -173,7 +173,7 @@ const query = {
             username = COALESCE($3, username), 
             firstname = COALESCE($4, firstname), 
             lastname = COALESCE($5, lastname) 
-            WHERE id = $6 RETURNING *`,
+            WHERE id = $6 RETURNING firstname, lastname, email, phone_number, username, is_admin, registered, id`,
             values: [email, phoneNumber, username, firstname, lastname, userId]
         })
     },

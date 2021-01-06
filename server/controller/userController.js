@@ -72,6 +72,7 @@ class UserController {
             const validPassword = await auth.isPassword(password, user.password);
 
             if (!validPassword) return errorHandler(404, 'Email or password is incorrect');
+            user.password = null;
             req.user = user;
             return next();
         } catch (error) {
@@ -84,12 +85,11 @@ class UserController {
 
             const userId = parseInt(req.params.id, 10);
             const { email, phone_number, username, firstname, lastname } = req.body;
-
-            const foundUser = await pool.query(query.getUserById(userId));
+            const fields = "firstname, lastname, email"
+            const foundUser = await pool.query(query.getUserByValue(userId, 'id', fields));
             if (!foundUser.rows[0]) return errorHandler(404, 'Account was not found');
 
             const user = await pool.query(query.updateUser(email, phone_number, username, firstname, lastname, userId));
-            user.rows[0].password = null;
             req.user = user.rows[0]
             req.message = 'Account was successfully updated';
             return next();
@@ -154,11 +154,9 @@ class UserController {
     static async getUser(req, res, next) {
         try {
             const userId = parseInt(req.params.id, 10);
-            const fields = "firstname, lastname, email, phone_number, username, is_admin, registered, id, password"
+            const fields = "firstname, lastname, email, phone_number, username, is_admin, registered, id";
             const user = await pool.query(query.getUserByValue(userId, 'id', fields));
             if (!user.rows[0]) return errorHandler(404, 'Account was not found');
-
-            user.password = '';
             return responseHandler(res, user.rows[0], next, 200, 'Account retrieved successfully', 1);
         } catch (error) {
             return next(error)
